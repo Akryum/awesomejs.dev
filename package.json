@@ -1,0 +1,19 @@
+{
+  "name": "awesomejs.dev",
+  "version": "1.0.0",
+  "description": "Find awesome packages for the framework you are using",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akryum/awesomejs.dev.git"
+  },
+  "author": "Guillaume Chau <guillaume.b.chau@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Akryum/awesomejs.dev/issues"
+  },
+  "homepage": "https://github.com/Akryum/awesomejs.dev#readme"
+}

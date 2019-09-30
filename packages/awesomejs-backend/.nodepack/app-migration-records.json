@@ -1,0 +1,46 @@
+[
+  {
+    "id": "defaultTemplate",
+    "pluginId": "@nodepack/service",
+    "pluginVersion": "0.4.11",
+    "options": {},
+    "date": "2019-09-30T17:11:45.061Z"
+  },
+  {
+    "id": "defaultTemplate",
+    "pluginId": "@nodepack/plugin-typescript",
+    "pluginVersion": "0.4.5",
+    "options": {
+      "tslint": true
+    },
+    "date": "2019-09-30T17:11:45.074Z"
+  },
+  {
+    "id": "configPath",
+    "pluginId": "@nodepack/plugin-typescript",
+    "pluginVersion": "0.4.5",
+    "options": {},
+    "date": "2019-09-30T17:11:45.300Z"
+  },
+  {
+    "id": "defaultRoutes",
+    "pluginId": "@nodepack/plugin-express",
+    "pluginVersion": "0.4.7",
+    "options": {},
+    "date": "2019-09-30T17:11:45.326Z"
+  },
+  {
+    "id": "defaultPackage",
+    "pluginId": "@nodepack/plugin-apollo",
+    "pluginVersion": "0.4.7",
+    "options": {},
+    "date": "2019-09-30T17:11:45.334Z"
+  },
+  {
+    "id": "defaultSchema",
+    "pluginId": "@nodepack/plugin-apollo",
+    "pluginVersion": "0.4.7",
+    "options": {},
+    "date": "2019-09-30T17:11:45.343Z"
+  }
+]

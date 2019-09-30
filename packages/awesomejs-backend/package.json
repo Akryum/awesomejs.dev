@@ -1,0 +1,26 @@
+{
+  "name": "awesomejs-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodepack-service dev",
+    "build": "nodepack-service build",
+    "lint": "nodepack-service lint",
+    "start": "node ./dist/app.js"
+  },
+  "dependencies": {
+    "@nodepack/app": "^0.4.0",
+    "faunadb": "^2.8.1",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1",
+    "passport-github2": "^0.1.11"
+  },
+  "devDependencies": {
+    "@nodepack/plugin-apollo": "^0.4.7",
+    "@nodepack/plugin-babel": "^0.4.5",
+    "@nodepack/plugin-express": "^0.4.7",
+    "@nodepack/plugin-passport": "^0.4.7",
+    "@nodepack/plugin-typescript": "^0.4.5",
+    "@nodepack/service": "^0.4.11"
+  }
+}
