@@ -1,6 +1,6 @@
 <template>
   <header
-    class="px-16 py-8"
+    class="px-16 my-8"
   >
     <AppHeaderLogo />
   </header>

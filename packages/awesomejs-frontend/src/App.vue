@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <AppHeader/>
+    <AppHeader />
 
-    <router-view/>
+    <div class="px-16 my-8">
+      <router-view />
+    </div>
   </div>
 </template>
 
