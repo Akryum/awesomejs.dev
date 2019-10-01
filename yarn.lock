@@ -1725,10 +1725,10 @@
     "@nodepack/app-config" "^0.4.5"
     "@nodepack/hookable" "^0.4.2"
 
-"@nodepack/app-migrator@^0.4.11", "@nodepack/app-migrator@^0.4.13":
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/@nodepack/app-migrator/-/app-migrator-0.4.13.tgz#b7dd3d0f0627b0f253dc3dcc4a53123c28a7fd3f"
-  integrity sha512-DykXzn3yvbDxOjmgoLmcV7BWK1GPrw3TO8eosWWu3ONCNu8yCgdbl3F1KT6WU3uTdt5XbPetJCCCCRpyuLBkUQ==
+"@nodepack/app-migrator@^0.4.14":
+  version "0.4.14"
+  resolved "https://registry.yarnpkg.com/@nodepack/app-migrator/-/app-migrator-0.4.14.tgz#31beeae817429dce3cca6d402e18eeb2e14f0a8a"
+  integrity sha512-ttlwzd2xzyyE/O4W3jbughFPRJLVniLUROzirGa6qS9L9JXKoO/gARs4c8g0V4VhXJZWZg5dTcYlPssGRwhhow==
   dependencies:
     "@nodepack/config-transformer" "^0.4.9"
     "@nodepack/module" "^0.4.0"
@@ -1781,12 +1781,12 @@
     js-yaml "^3.13.1"
     recast "^0.18.2"
 
-"@nodepack/db-migrator@^0.4.11":
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/@nodepack/db-migrator/-/db-migrator-0.4.13.tgz#4ddd07be19ad84d204506e3e4b371fe8f5ad535c"
-  integrity sha512-/OcHP1PU69aJrHwZAjfgfzTiuGf6tmYslQxHKM4LgUsrcQRrbdYtOWindJVjvetaRAsxmC+u3GSjfbcP0eV1tw==
+"@nodepack/db-migrator@^0.4.14":
+  version "0.4.14"
+  resolved "https://registry.yarnpkg.com/@nodepack/db-migrator/-/db-migrator-0.4.14.tgz#05782ac416fc6d6fdf326e22621a631fc28a4e29"
+  integrity sha512-VHLoglurL/X3GJRVGGd6674JXzOteuN56ggH/MldPrVXzRkM05wtbpaD+KRyAnT2GvNYAgMq+FyekzyDv9M3cA==
   dependencies:
-    "@nodepack/env-migrator" "^0.4.13"
+    "@nodepack/env-migrator" "^0.4.14"
 
 "@nodepack/env-check@^0.4.0":
   version "0.4.0"
@@ -1799,10 +1799,10 @@
     semver "^6.3.0"
     systeminformation "^4.14.4"
 
-"@nodepack/env-migrator@^0.4.11", "@nodepack/env-migrator@^0.4.13":
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/@nodepack/env-migrator/-/env-migrator-0.4.13.tgz#38d28b07f7448ca091ab24d81ca69eb7631fb861"
-  integrity sha512-O2qwqSc94Udw3HKpyBfnyNs9PsOzRRLsphc2ZUqODxaT4SqhHbd95z/Ns7D10LSCjclMeAPrtEJUGI+EMPJ8Ew==
+"@nodepack/env-migrator@^0.4.14":
+  version "0.4.14"
+  resolved "https://registry.yarnpkg.com/@nodepack/env-migrator/-/env-migrator-0.4.14.tgz#36d6f962b0d97d582350c8583fbf5b0985688210"
+  integrity sha512-vpBfCXs2j6oqkVZ6soD8IEIVuOBXWnZix1hbhDshy8bzUwaSOM+l9u2Npmj/cReACpEJOIXtO9ny0m2d2R94pg==
   dependencies:
     "@nodepack/module" "^0.4.0"
     "@nodepack/utils" "^0.4.9"
@@ -1821,14 +1821,14 @@
   resolved "https://registry.yarnpkg.com/@nodepack/hookable/-/hookable-0.4.2.tgz#84a0bec1232d3b25ace90d0779b01f23b94ea7cc"
   integrity sha512-LHBX+sxgbhehvE5PM3xKLxTg//hfEdHw39JoYX2kiTB7rCxi9f+2tmYjSa+rBeLo/h8m0G51I+AGxjpeL56h8g==
 
-"@nodepack/maintenance@^0.4.11":
-  version "0.4.11"
-  resolved "https://registry.yarnpkg.com/@nodepack/maintenance/-/maintenance-0.4.11.tgz#693a944053094b423c8ff9882532d6cd77c9fd1c"
-  integrity sha512-4+z/ysankotisPo1+/m5HduZOMxnSLESnyf3VydjNYAcIWxMwxps3JSzGdXuMmZNzIwKwVg6u9fvrqobwp71FQ==
+"@nodepack/maintenance@^0.4.14":
+  version "0.4.14"
+  resolved "https://registry.yarnpkg.com/@nodepack/maintenance/-/maintenance-0.4.14.tgz#1dd2608e8858c34a72078fc348a6ec2872ca72eb"
+  integrity sha512-vr9dg1uZH97mXnGA6XiH4YcuX/EjidR+UCUTLVTyO12Qz1DOlViEoGpzVglN4OijjtFLzFYWY5Eqttlc7HotxA==
   dependencies:
-    "@nodepack/app-migrator" "^0.4.11"
-    "@nodepack/db-migrator" "^0.4.11"
-    "@nodepack/env-migrator" "^0.4.11"
+    "@nodepack/app-migrator" "^0.4.14"
+    "@nodepack/db-migrator" "^0.4.14"
+    "@nodepack/env-migrator" "^0.4.14"
     "@nodepack/fragment" "^0.4.5"
     "@nodepack/hookable" "^0.4.2"
     "@nodepack/utils" "^0.4.9"
@@ -1898,16 +1898,16 @@
     tslint "^5.18.0"
     typescript "^3.5.3"
 
-"@nodepack/service@^0.4.11":
-  version "0.4.13"
-  resolved "https://registry.yarnpkg.com/@nodepack/service/-/service-0.4.13.tgz#fb022d9cd4d55800300db2b18d2aa21bbc5a4a98"
-  integrity sha512-L4yV19fWt43Az0HHfqE5oMiAMscDsZ2JGk89K3I1BXvvg7AZvSf6vMSUBXjWZDqUlXVeVAiD1sjp27+PT0Kfig==
+"@nodepack/service@^0.4.14":
+  version "0.4.14"
+  resolved "https://registry.yarnpkg.com/@nodepack/service/-/service-0.4.14.tgz#51fd8ed5bd0a06c29b76de72565eafefc6a8076b"
+  integrity sha512-7+gqz345mTS8qWlQ/rVLxF+KLIZsla6f+xkks8ZWI/5xcIENLclmGMIn4WGIY1ugLOZvMdZzWxpyRFyMrXd6Mg==
   dependencies:
     "@nodepack/app-context" "^0.4.7"
-    "@nodepack/app-migrator" "^0.4.13"
+    "@nodepack/app-migrator" "^0.4.14"
     "@nodepack/env-check" "^0.4.0"
     "@nodepack/fragment" "^0.4.5"
-    "@nodepack/maintenance" "^0.4.11"
+    "@nodepack/maintenance" "^0.4.14"
     "@nodepack/module" "^0.4.0"
     "@nodepack/utils" "^0.4.9"
     "@nuxt/friendly-errors-webpack-plugin" "^2.5.0"
