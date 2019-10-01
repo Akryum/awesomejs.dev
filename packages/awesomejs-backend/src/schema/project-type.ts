@@ -40,9 +40,9 @@ export const resolvers: IResolvers<any, Context> = {
       const { data } = await ctx.db.query(
         q.Map(
           q.Paginate(
-            q.Match(q.Index('all_projecttypes')),
+            q.Match(q.Index('projecttypes_sort_by_name_asc')),
           ),
-          q.Lambda('X', q.Get(q.Var('X'))),
+          q.Lambda(['name', 'ref'], q.Get(q.Var('ref'))),
         ),
       )
       return data.map((doc: values.Document) => ({
