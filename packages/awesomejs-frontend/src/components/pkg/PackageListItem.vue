@@ -1,22 +1,27 @@
 <template>
   <div
-    class="flex items-center bg-gray-800 rounded p-4"
+    class="flex items-center bg-gray-800 rounded px-6 py-4"
   >
-    <div class="flex-1">
-      <div class="flex">
-        <div class="text-gray-100 mr-1">
-          {{ pkg.name }}
-        </div>
+    <PackageLogo
+      :pkg="pkg"
+      class="mr-6"
+    />
 
-        <div class="text-gray-600">
-          by {{ pkg.author.name }}
-        </div>
+    <div class="flex-1 w-0 mr-6">
+      <div class="w-full truncate text-gray-600">
+        <span class="text-gray-100">
+          {{ pkg.name }}
+        </span>
+
+        <span>
+          by {{ pkg.maintainers.map(m => m.name).join(', ') }}
+        </span>
       </div>
 
-      <div class="flex">
-        <div class="text-gray-500">
+      <div class="w-full truncate text-gray-500">
+        <span>
           {{ pkg.description }}
-        </div>
+        </span>
       </div>
     </div>
 
@@ -27,10 +32,12 @@
 </template>
 
 <script>
+import PackageLogo from './PackageLogo.vue'
 import PackageStars from './PackageStars.vue'
 
 export default {
   components: {
+    PackageLogo,
     PackageStars,
   },
 

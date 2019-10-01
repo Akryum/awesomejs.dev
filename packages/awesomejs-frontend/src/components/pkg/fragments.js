@@ -6,9 +6,11 @@ fragment pkg on Package {
   name
   description
   stars
-  author {
-    id
+  defaultLogo
+  maintainers {
     name
+    email
+    avatar
   }
 }
 `

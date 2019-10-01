@@ -9,6 +9,7 @@
         v-for="pkg of packages"
         :key="pkg.id"
         :pkg="pkg"
+        class="mb-6"
       />
     </template>
   </div>
