@@ -1,8 +1,8 @@
 <template>
   <section>
-    <h1 class="h1">
+    <PageTitle>
       Select your project type
-    </h1>
+    </PageTitle>
 
     <div
       class="project-types my-8"
@@ -19,10 +19,12 @@
 <script>
 import gql from 'graphql-tag'
 
+import PageTitle from './PageTitle.vue'
 import ProjectTypesItem from './ProjectTypesItem.vue'
 
 export default {
   components: {
+    PageTitle,
     ProjectTypesItem,
   },
 
