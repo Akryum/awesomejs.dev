@@ -1,5 +1,10 @@
 <template>
+  <LoadingIndicator
+    v-if="$apollo.loading"
+    class="py-16"
+  />
   <div
+    v-else
     class="project-types my-8"
   >
     <ProjectTypesItem
@@ -12,12 +17,13 @@
 
 <script>
 import gql from 'graphql-tag'
-
+import LoadingIndicator from '../LoadingIndicator.vue'
 import ProjectTypesItem from './ProjectTypesItem.vue'
 import { projectType } from './fragments'
 
 export default {
   components: {
+    LoadingIndicator,
     ProjectTypesItem,
   },
 

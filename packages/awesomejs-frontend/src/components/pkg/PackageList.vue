@@ -1,20 +1,28 @@
 <template>
   <div>
-    <PackageListItem
-      v-for="pkg of packages"
-      :key="pkg.id"
-      :pkg="pkg"
+    <LoadingIndicator
+      v-if="$apollo.loading"
+      class="py-8"
     />
+    <template v-else>
+      <PackageListItem
+        v-for="pkg of packages"
+        :key="pkg.id"
+        :pkg="pkg"
+      />
+    </template>
   </div>
 </template>
 
 <script>
 import gql from 'graphql-tag'
 import { pkg } from './fragments'
+import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageListItem from './PackageListItem.vue'
 
 export default {
   components: {
+    LoadingIndicator,
     PackageListItem,
   },
 
