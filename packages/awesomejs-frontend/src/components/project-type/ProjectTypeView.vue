@@ -7,8 +7,11 @@
     <div class="flex mt-8">
       <PackageList
         :project-type-slug="projectType.slug"
+        class="w-1/3"
       />
-      <router-view />
+      <div class="w-2/3">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
