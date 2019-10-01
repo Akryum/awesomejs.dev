@@ -6,6 +6,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "build": "lerna run build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Akryum/awesomejs.dev.git"
@@ -15,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Akryum/awesomejs.dev/issues"
   },
-  "homepage": "https://github.com/Akryum/awesomejs.dev#readme"
+  "homepage": "https://github.com/Akryum/awesomejs.dev#readme",
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  }
 }
