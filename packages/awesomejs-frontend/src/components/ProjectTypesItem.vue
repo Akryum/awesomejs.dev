@@ -2,7 +2,7 @@
   <div
     class="
     flex flex-col items-center justify-center p-2 bg-gray-800 rounded
-    w-32 h-32
+    w-32 h-32 cursor-pointer
     hover:bg-gray-700
     "
   >
