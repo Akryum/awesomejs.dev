@@ -7,13 +7,14 @@ export const typeDefs = gql`
 type ProjectType {
   id: ID!
   name: String!
+  slug: String!
   logo: String!
   packages: [Package!]!
 }
 
 extend type Query {
   projectTypes: [ProjectType!]!
-  projectType (id: ID!): ProjectType
+  projectType (slug: String!): ProjectType
 }
 `
 
@@ -51,9 +52,9 @@ export const resolvers: IResolvers<any, Context> = {
       }))
     },
 
-    projectType: async (root, { id }, ctx) => {
-      const { data } = await ctx.db.query(
-        q.Get(q.Ref(q.Collection('ProjectTypes'), id)),
+    projectType: async (root, { slug }, ctx) => {
+      const { ref: { id }, data } = await ctx.db.query(
+        q.Get(q.Match(q.Index('projecttypes_by_slug'), slug)),
       )
       if (data) {
         return {

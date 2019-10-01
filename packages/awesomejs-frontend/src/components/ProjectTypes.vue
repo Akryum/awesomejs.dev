@@ -1,30 +1,22 @@
 <template>
-  <section>
-    <PageTitle>
-      Select your project type
-    </PageTitle>
-
-    <div
-      class="project-types my-8"
-    >
-      <ProjectTypesItem
-        v-for="projectType of projectTypes"
-        :key="projectType.id"
-        :project-type="projectType"
-      />
-    </div>
-  </section>
+  <div
+    class="project-types my-8"
+  >
+    <ProjectTypesItem
+      v-for="projectType of projectTypes"
+      :key="projectType.id"
+      :project-type="projectType"
+    />
+  </div>
 </template>
 
 <script>
 import gql from 'graphql-tag'
 
-import PageTitle from './PageTitle.vue'
 import ProjectTypesItem from './ProjectTypesItem.vue'
 
 export default {
   components: {
-    PageTitle,
     ProjectTypesItem,
   },
 
@@ -40,6 +32,7 @@ export default {
         projectTypes {
           id
           name
+          slug
           logo
         }
       }
