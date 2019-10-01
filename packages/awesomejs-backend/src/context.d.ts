@@ -10,11 +10,10 @@ export interface Config {
   db: typeof DbConfig
 }
 
-export interface Context extends 
+export interface Context extends
   Omit<ApolloContext, 'user'>,
   ExpressContext,
-  PassportContext
-{
+  PassportContext {
   db: Client
   config: Config
 }

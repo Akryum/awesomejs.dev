@@ -23,16 +23,16 @@ export const resolvers: IResolvers<any, Context> = {
       const { data } = await ctx.db.query(
         q.Map(
           q.Paginate(
-            q.Match(q.Index('packages_projecttypeid'), projectType.id)
+            q.Match(q.Index('packages_projecttypeid'), projectType.id),
           ),
-          q.Lambda('X', q.Get(q.Var('X')))
-        )
+          q.Lambda('X', q.Get(q.Var('X'))),
+        ),
       )
       return data.map((doc: values.Document) => ({
         id: doc.ref.id,
         ...doc.data,
       }))
-    }
+    },
   },
 
   Query: {
@@ -40,10 +40,10 @@ export const resolvers: IResolvers<any, Context> = {
       const { data } = await ctx.db.query(
         q.Map(
           q.Paginate(
-            q.Match(q.Index('all_projecttypes'))
+            q.Match(q.Index('all_projecttypes')),
           ),
-          q.Lambda('X', q.Get(q.Var('X')))
-        )
+          q.Lambda('X', q.Get(q.Var('X'))),
+        ),
       )
       return data.map((doc: values.Document) => ({
         id: doc.ref.id,
@@ -53,14 +53,14 @@ export const resolvers: IResolvers<any, Context> = {
 
     projectType: async (root, { id }, ctx) => {
       const { data } = await ctx.db.query(
-        q.Get(q.Ref(q.Collection('ProjectTypes'), id))
+        q.Get(q.Ref(q.Collection('ProjectTypes'), id)),
       )
       if (data) {
         return {
           id,
-          ...data
+          ...data,
         }
       }
-    }
-  }
+    },
+  },
 }

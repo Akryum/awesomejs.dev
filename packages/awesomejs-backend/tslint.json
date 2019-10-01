@@ -17,6 +17,7 @@
     "no-consecutive-blank-lines": false,
     "semicolon": [true, "never"],
     "space-before-function-paren": [true, "always"],
-    "no-console": false
+    "no-console": false,
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}]
   }
 }

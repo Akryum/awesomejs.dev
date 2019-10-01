@@ -27,7 +27,7 @@ export const resolvers: IResolvers<any, Context> = {
   Package: {
     author: async (pkg, args, ctx) => {
       const { ref: { id }, data } = await ctx.db.query(
-        q.Get(q.Ref(q.Collection('PackageAuthors'), pkg.authorId))
+        q.Get(q.Ref(q.Collection('PackageAuthors'), pkg.authorId)),
       )
       if (data) {
         return {
@@ -35,13 +35,13 @@ export const resolvers: IResolvers<any, Context> = {
           ...data,
         }
       }
-    }
+    },
   },
 
   Query: {
     package: async (root, { id }, ctx) => {
       const { data } = await ctx.db.query(
-        q.Get(q.Ref(q.Collection('Packages'), id))
+        q.Get(q.Ref(q.Collection('Packages'), id)),
       )
       if (data) {
         return {
@@ -49,6 +49,6 @@ export const resolvers: IResolvers<any, Context> = {
           ...data,
         }
       }
-    }
-  }
+    },
+  },
 }
