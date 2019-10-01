@@ -24,9 +24,9 @@ export const resolvers: IResolvers<any, Context> = {
       const { data } = await ctx.db.query(
         q.Map(
           q.Paginate(
-            q.Match(q.Index('packages_projecttypeid'), projectType.id),
+            q.Match(q.Index('packages_sort_by_stars_desc'), projectType.id),
           ),
-          q.Lambda('X', q.Get(q.Var('X'))),
+          q.Lambda(['stars', 'ref'], q.Get(q.Var('ref'))),
         ),
       )
       return data.map((doc: values.Document) => ({
