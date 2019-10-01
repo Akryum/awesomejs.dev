@@ -7,8 +7,9 @@
 </template>
 
 <script>
-import PageTitle from './PageTitle.vue'
+import PageTitle from '../PageTitle.vue'
 import gql from 'graphql-tag'
+import { projectType } from './fragments'
 
 export default {
   components: {
@@ -27,12 +28,10 @@ export default {
       query: gql`
         query ProjectType ($slug: String!) {
           projectType (slug: $slug) {
-            id
-            name
-            slug
-            logo
+            ...projectType
           }
         }
+        ${projectType}
       `,
       variables () {
         return {

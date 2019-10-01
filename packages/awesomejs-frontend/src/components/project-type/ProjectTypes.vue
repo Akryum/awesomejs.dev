@@ -14,6 +14,7 @@
 import gql from 'graphql-tag'
 
 import ProjectTypesItem from './ProjectTypesItem.vue'
+import { projectType } from './fragments'
 
 export default {
   components: {
@@ -30,12 +31,10 @@ export default {
     projectTypes: gql`
       query ProjectTypes {
         projectTypes {
-          id
-          name
-          slug
-          logo
+          ...projectType
         }
       }
+      ${projectType}
     `,
   },
 }

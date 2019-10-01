@@ -10,6 +10,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { projectType } from './project-type/fragments'
 
 export default {
   computed: {
@@ -30,12 +31,10 @@ export default {
       query: gql`
         query ProjectType ($slug: String!) {
           projectType (slug: $slug) {
-            id
-            name
-            slug
-            logo
+            ...projectType
           }
         }
+        ${projectType}
       `,
       variables () {
         return {

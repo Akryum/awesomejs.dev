@@ -10,7 +10,7 @@
 
 <script>
 import PageTitle from './PageTitle.vue'
-import ProjectTypes from './ProjectTypes.vue'
+import ProjectTypes from './project-type/ProjectTypes.vue'
 
 export default {
   components: {

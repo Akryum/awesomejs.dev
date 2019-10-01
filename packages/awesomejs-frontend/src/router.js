@@ -16,7 +16,7 @@ export default new Router({
     {
       path: '/project-type/:projectTypeSlug',
       name: 'project-type',
-      component: () => import(/* webpackChunkName: "project-type" */ './components/ProjectType.vue'),
+      component: () => import(/* webpackChunkName: "project-type" */ './components/project-type/ProjectType.vue'),
       props: true,
     },
   ],
