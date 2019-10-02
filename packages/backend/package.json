@@ -6,7 +6,8 @@
     "dev": "nodepack-service dev",
     "build": "nodepack-service build",
     "lint": "nodepack-service lint",
-    "start": "node ./dist/app.js"
+    "start": "node ./dist/app.js",
+    "now-build": "NODEPACK_NO_MAINTENANCE=true yarn run build --no-preInstall"
   },
   "dependencies": {
     "@nodepack/app": "^0.4.0",
@@ -20,7 +21,7 @@
     "passport-github2": "^0.1.11"
   },
   "devDependencies": {
-    "@nodepack/plugin-apollo": "^0.4.7",
+    "@nodepack/plugin-apollo": "^0.4.18",
     "@nodepack/plugin-babel": "^0.4.5",
     "@nodepack/plugin-express": "^0.4.7",
     "@nodepack/plugin-passport": "^0.4.7",
@@ -28,5 +29,8 @@
     "@nodepack/service": "^0.4.14",
     "@types/ms": "^0.7.31",
     "@types/npm-registry-fetch": "^4.0.1"
+  },
+  "engines": {
+    "node": ">=10"
   }
 }

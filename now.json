@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "./packages/frontend/package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "./packages/backend/dist/app.js",
+      "use": "@now/node",
+      "config": {
+        "includeFiles": [
+          "./packages/backend/dist/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/packages/frontend/index.html"
+    },
+    {
+      "src": "/api",
+      "dest": "/packages/backend/dist/app.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/packages/backend/dist/app.js"
+    },
+    {
+      "src": "/.well-known/apollo/server-health",
+      "dest": "/packages/backend/dist/app.js"
+    },
+    {
+      "src": "/(.*\\.(ico|js|json|css|svg|png|jpg|txt))",
+      "dest": "/packages/frontend/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/packages/frontend/index.html"
+    }
+  ],
+  "env": {
+    "PORT": "4000",
+    "APOLLO_PATH": "/api",
+    "DB_SECRET": "@awesomejs_db_secret",
+    "GITHUB_AUTH": "@awesomejs_github_auth"
+  }
+}
