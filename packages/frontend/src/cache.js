@@ -26,6 +26,8 @@ export const cache = new InMemoryCache({
           }
         }
       },
+
+      package: (_, { id }) => toIdValue(cache.config.dataIdFromObject({ __typename: 'Package', id })),
     },
   },
 })

@@ -9,7 +9,7 @@
         :project-type-slug="projectType.slug"
         class="w-1/3"
       />
-      <div class="w-2/3">
+      <div class="w-2/3 pl-16">
         <router-view />
       </div>
     </div>

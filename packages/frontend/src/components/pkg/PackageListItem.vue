@@ -1,6 +1,10 @@
 <template>
-  <div
-    class="flex items-center bg-gray-800 rounded px-6 py-4"
+  <router-link
+    :to="{
+      name: 'package',
+      params: { packageId: pkg.id },
+    }"
+    class="flex items-center bg-gray-800 rounded px-6 py-4 hover:bg-gray-700"
   >
     <PackageLogo
       :pkg="pkg"
@@ -27,8 +31,9 @@
 
     <PackageStars
       :count="pkg.stars"
+      class="stars"
     />
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -49,3 +54,29 @@ export default {
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+.router-link-active {
+  @apply bg-purple-900;
+
+  &:hover {
+    @apply bg-purple-800;
+  }
+
+  .text-gray-100 {
+    @apply text-purple-100;
+  }
+
+  .text-gray-600 {
+    @apply text-purple-600;
+  }
+
+  .text-gray-500 {
+    @apply text-purple-500;
+  }
+
+  .stars {
+    @apply text-purple-400;
+  }
+}
+</style>

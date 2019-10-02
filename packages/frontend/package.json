@@ -29,6 +29,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "graphql-tag": "^2.9.0",
+    "postcss-nested": "^4.1.2",
     "postcss-preset-env": "^6.6.0",
     "tailwindcss": "^1.0.1",
     "vue-cli-plugin-apollo": "^0.21.0",

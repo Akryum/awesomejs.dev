@@ -15,9 +15,27 @@ export default new Router({
     },
     {
       path: '/for/:projectTypeSlug',
-      name: 'project-type',
       component: () => import(/* webpackChunkName: "project-type" */ './components/project-type/ProjectTypeView.vue'),
       props: true,
+      children: [
+        {
+          path: '',
+          name: 'project-type',
+          component: () => import(/* webpackChunkName: "no-package-selected" */ './components/pkg/NoPackageSelected.vue'),
+        },
+        {
+          path: 'pkg/:packageId',
+          component: () => import(/* webpackChunkName: "package-view" */ './components/pkg/PackageView.vue'),
+          props: true,
+          children: [
+            {
+              path: '',
+              name: 'package',
+              component: () => import(/* webpackChunkName: "package-tab-general" */ './components/pkg/PackageTabGeneral.vue'),
+            },
+          ],
+        },
+      ],
     },
   ],
 })

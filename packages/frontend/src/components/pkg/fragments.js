@@ -7,6 +7,8 @@ fragment pkg on Package {
   description
   stars
   defaultLogo
+  homepage
+  repo
   maintainers {
     name
     email
