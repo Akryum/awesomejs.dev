@@ -7,7 +7,7 @@
       class="mr-6"
     />
 
-    <div class="flex-1 w-0 mr-6">
+    <div class="flex-1 w-0 mr-6 overflow-hidden">
       <div class="w-full truncate text-gray-600">
         <span class="text-gray-100">
           {{ pkg.name }}
