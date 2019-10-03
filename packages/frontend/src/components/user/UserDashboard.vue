@@ -14,6 +14,23 @@
         Logout
       </a>
     </PageTitle>
+
+    <div class="flex mt-2">
+      <RouteTab
+        :to="{ name: 'user-dashboard' }"
+        exact
+      >
+        Dashboard
+      </RouteTab>
+
+      <RouteTab
+        :to="{ name: 'user-bookmarks' }"
+      >
+        Bookmarks
+      </RouteTab>
+    </div>
+
+    <router-view :user="user" />
   </div>
 </template>
 
@@ -23,11 +40,13 @@ import { user } from './fragments'
 
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PageTitle from '../PageTitle.vue'
+import RouteTab from '../RouteTab'
 
 export default {
   components: {
     LoadingIndicator,
     PageTitle,
+    RouteTab,
   },
 
   apollo: {

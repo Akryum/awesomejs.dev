@@ -20,8 +20,19 @@ export default new Router({
     },
     {
       path: '/me',
-      name: 'user-dashboard',
       component: () => import(/* webpackChunkName: "user-dashboard" */ './components/user/UserDashboard.vue'),
+      children: [
+        {
+          path: '',
+          name: 'user-dashboard',
+          component: () => import(/* webpackChunkName: "user-tab-home" */ './components/user/UserTabHome.vue'),
+        },
+        {
+          path: 'bookmarks',
+          name: 'user-bookmarks',
+          component: () => import(/* webpackChunkName: "user-tab-bookmarks" */ './components/user/UserTabBookmarks.vue'),
+        },
+      ],
     },
     {
       path: '/for/:projectTypeSlug',
