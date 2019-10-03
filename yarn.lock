@@ -1844,9 +1844,9 @@
     semver "^6.3.0"
 
 "@nodepack/plugin-apollo@^0.4.19":
-  version "0.4.20"
-  resolved "https://registry.yarnpkg.com/@nodepack/plugin-apollo/-/plugin-apollo-0.4.20.tgz#60f0fcb052c968bda34248ef74c8e479a79e1d1a"
-  integrity sha512-lwyU7kQsh8jfDoBl78cCS3DkKr4TKdUbBhS2NKEhXmnDAlA3zXTrwBSvrkiceTG9+KPX00S/T14AstV965jqOw==
+  version "0.4.21"
+  resolved "https://registry.yarnpkg.com/@nodepack/plugin-apollo/-/plugin-apollo-0.4.21.tgz#5ea23808ddea7e7edae7cf9d757038e5dafb9f69"
+  integrity sha512-kutUM2dQmpvyobPcjDovS6xE4qxTPAyHIsXlayueHNESRvrLmln0AIJIu1XSpLr+ucd4xqxoBwRHdMLqvr3Hpw==
   dependencies:
     "@akryum/mock-express-response" "^0.2.3"
     "@types/express" "^4.11.1"
@@ -14334,7 +14334,7 @@ vscode-uri@^1.0.6:
   resolved "https://registry.yarnpkg.com/vscode-uri/-/vscode-uri-1.0.8.tgz#9769aaececae4026fb6e22359cb38946580ded59"
   integrity sha512-obtSWTlbJ+a+TFRYGaUumtVwb+InIUVI0Lu0VBUAPmj2cU5JutEXg3xUE0c2J5Tcy7h2DEKVJBFi+Y9ZSFzzPQ==
 
-vue-apollo@^3.0.0-beta.11:
+vue-apollo@^3.0.0-rc.7:
   version "3.0.0-rc.7"
   resolved "https://registry.yarnpkg.com/vue-apollo/-/vue-apollo-3.0.0-rc.7.tgz#4b603a9080acddf79d41d130609b5c66b7ded2eb"
   integrity sha512-YbE4cVKuIOowhOVhMOLrvReELXZc1l7bKGNKQXYv3H1xRMYaz5U0KhXjgO16UCnYvygAG1jRKbkgSoHwaXmlDA==

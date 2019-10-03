@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { IResolvers } from 'graphql-tools'
 import { Context } from '@/context'
-import { query as q } from 'faunadb'
+import { query as q, values } from 'faunadb'
 import mem from 'p-memoize'
 import ms from 'ms'
 
@@ -19,6 +19,7 @@ type Package {
   homepage: String
   license: String
   defaultLogo: String
+  bookmarked: Boolean
 }
 
 type PackageMaintainer {
@@ -29,6 +30,14 @@ type PackageMaintainer {
 
 extend type Query {
   package (id: ID!): Package
+}
+
+type Mutation {
+  togglePackageBookmark (input: TogglePackageBookmarkInput!): Package @auth
+}
+
+input TogglePackageBookmarkInput {
+  packageId: ID!
 }
 `
 
@@ -42,6 +51,11 @@ export const resolvers: IResolvers<any, Context> = {
     license: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).license,
     description: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).description ||
       (await getNpmMetadata(pkg, ctx)).description,
+    bookmarked: async (pkg, args, ctx) => {
+      return ctx.db.query(
+        q.Exists(q.Match(q.Index('packagebookmarks_by_package'), q.Ref(q.Collection('Packages'), pkg.id)))
+      )
+    }
   },
 
   Query: {
@@ -57,6 +71,37 @@ export const resolvers: IResolvers<any, Context> = {
       }
     },
   },
+
+  Mutation: {
+    togglePackageBookmark: async (root, { input }, ctx) => {
+      const pkg: values.Document<any> = await ctx.db.query(
+        q.Get(q.Ref(q.Collection('Packages'), input.packageId)),
+      )
+      const match = q.Match(q.Index('packagebookmarks_by_package'), q.Ref(q.Collection('Packages'), input.packageId))
+      if (await ctx.db.query(q.Exists(match))) {
+        await ctx.db.query(
+          q.Delete(q.Select(['ref'], q.Get(match)))
+        )
+      } else {
+        await ctx.db.query(
+          q.Create(
+            q.Collection('PackageBookmarks'),
+            {
+              data: {
+                packageRef: pkg.ref,
+                userRef: q.Ref(q.Collection('Users'), ctx.user.id),
+                projectTypeRef: q.Ref(q.Collection('ProjectTypes'), pkg.data.projectTypeId)
+              }
+            }
+          )
+        )
+      }
+      return {
+        id: pkg.ref.id,
+        ...pkg.data,
+      }
+    }
+  }
 }
 
 async function updateMetadata (ctx: Context, id: string, type: string, data: any, version: number) {

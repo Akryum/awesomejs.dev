@@ -41,6 +41,12 @@
         </a>
       </div>
 
+      <div class="mb-4">
+        <PackageBookmarkButton
+          :package-id="pkg.id"
+        />
+      </div>
+
       <div>
         <router-view :pkg="pkg" />
       </div>
@@ -52,6 +58,7 @@
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageLogo from './PackageLogo.vue'
 import PackageStars from './PackageStars.vue'
+import PackageBookmarkButton from './PackageBookmarkButton.vue'
 
 import gql from 'graphql-tag'
 import { pkg } from './fragments'
@@ -61,6 +68,7 @@ export default {
     LoadingIndicator,
     PackageLogo,
     PackageStars,
+    PackageBookmarkButton,
   },
 
   props: {

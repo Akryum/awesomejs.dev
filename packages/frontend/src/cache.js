@@ -10,7 +10,7 @@ export const cache = new InMemoryCache({
         // we want to redirect to the corresponding project type
         // instead of doing an unnecessary request to the API
         const { projectTypes } = cache.readQuery({
-          query: gql`{
+          query: gql`query ReachProjectTypesCache {
             projectTypes {
               id
               slug
