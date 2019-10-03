@@ -14,6 +14,11 @@ export default new Router({
       component: Home,
     },
     {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "login" */ './components/user/LoginView.vue'),
+    },
+    {
       path: '/for/:projectTypeSlug',
       component: () => import(/* webpackChunkName: "project-type" */ './components/project-type/ProjectTypeView.vue'),
       props: true,

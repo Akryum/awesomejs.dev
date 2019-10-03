@@ -30,6 +30,10 @@ const defaultOptions = {
   // Is being rendered on the server?
   ssr: false,
 
+  httpLinkOptions: {
+    credentials: 'include',
+  },
+
   // Override default apollo link
   // note: don't override httpLink here, specify httpLink options in the
   // httpLinkOptions property of defaultOptions.

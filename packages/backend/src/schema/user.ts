@@ -14,7 +14,9 @@ type User {
 type UserAccount {
   id: ID!
   provider: String!
-  name: String!
+  profileId: ID!
+  nickname: String
+  profileUrl: String
 }
 
 type Query {

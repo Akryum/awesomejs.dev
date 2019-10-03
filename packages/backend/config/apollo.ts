@@ -1,6 +1,6 @@
 import { ApolloConfig } from '@nodepack/plugin-apollo'
 
-const basePath = process.env.APOLLO_PATH || ''
+const basePath = process.env.BASE_API_PATH || ''
 
 export default {
   path: `${basePath}/graphql`,
