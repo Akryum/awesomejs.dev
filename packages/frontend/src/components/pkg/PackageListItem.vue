@@ -1,10 +1,7 @@
 <template>
   <router-link
-    :to="{
-      name: 'package',
-      params: { packageId: pkg.id },
-    }"
-    class="flex items-center bg-gray-800 rounded px-6 py-4 hover:bg-gray-700"
+    v-bind="$attrs"
+    class="package-list-item flex items-center bg-gray-800 rounded px-6 py-4 hover:bg-gray-700"
   >
     <PackageLogo
       :pkg="pkg"
@@ -46,6 +43,8 @@ export default {
     PackageStars,
   },
 
+  inheritAttrs: false,
+
   props: {
     pkg: {
       type: Object,
@@ -56,7 +55,7 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.router-link-active {
+.package-list-item.router-link-active {
   @apply bg-purple-900;
 
   &:hover {

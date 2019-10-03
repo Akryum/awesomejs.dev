@@ -28,6 +28,10 @@ type PackageMaintainer {
   avatar: String
 }
 
+extend type User {
+  bookmarkedPackages: [Package!]!
+}
+
 extend type Query {
   package (id: ID!): Package
 }
@@ -60,6 +64,21 @@ export const resolvers: IResolvers<any, Context> = {
           q.Ref(q.Collection('Packages'), pkg.id)
         ))
       )
+    }
+  },
+
+  User: {
+    bookmarkedPackages: async (user, args, ctx) => {
+      const { data } = await ctx.db.query(
+        q.Map(
+          q.Paginate(q.Match(q.Index('packagebookmarks_by_userref'), q.Ref(q.Collection('Users'), user.id))),
+          q.Lambda(['ref'], q.Get(q.Select(['data', 'packageRef'], q.Get(q.Var('ref')))))
+        )
+      )
+      return data.map((doc: values.Document) => ({
+        id: doc.ref.id,
+        ...doc.data,
+      }))
     }
   },
 

@@ -8,6 +8,10 @@
       <PackageListItem
         v-for="pkg of packages"
         :key="pkg.id"
+        :to="{
+          name: 'package',
+          params: { packageId: pkg.id },
+        }"
         :pkg="pkg"
         class="mb-6"
       />
