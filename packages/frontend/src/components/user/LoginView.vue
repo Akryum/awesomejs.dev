@@ -10,7 +10,7 @@
     <div class="mt-16">
       <BaseButton
         :href="`${baseUrl}/auth/github`"
-        class="bg-black w-64 py-4"
+        class="bg-black hover:bg-gray-800 w-64 py-4"
       >
         <img
           src="~@/assets/github.png"
