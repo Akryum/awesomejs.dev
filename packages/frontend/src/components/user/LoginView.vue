@@ -1,13 +1,13 @@
 <template>
   <div class="flex flex-col items-center">
-    <i class="material-icons text-6xl text-purple-700 mb-4">face</i>
+    <i class="material-icons text-6xl text-purple-700 mb-4">thumb_up</i>
     <h1 class="text-3xl text-gray-500">
-      Welcome!
+      Join our community now!
     </h1>
-    <div class="text-gray-300">
+    <div class="text-gray-300 mt-8">
       How do you want to sign in?
     </div>
-    <div class="mt-16">
+    <div class="mt-4">
       <BaseButton
         :href="`${baseUrl}/auth/github`"
         class="bg-black hover:bg-gray-800 w-64 py-4"
