@@ -24,7 +24,28 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
+import { user } from './fragments'
+
 export default {
+  apollo: {
+    user: {
+      query: gql`
+        query CurrentUser {
+          user: currentUser {
+            ...user
+          }
+        }
+        ${user}
+      `,
+      result () {
+        if (this.user) {
+          this.$router.replace({ name: 'home' })
+        }
+      },
+    },
+  },
+
   created () {
     this.baseUrl = process.env.VUE_APP_API_BASE
   },
