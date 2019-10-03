@@ -52,8 +52,13 @@ export const resolvers: IResolvers<any, Context> = {
     description: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).description ||
       (await getNpmMetadata(pkg, ctx)).description,
     bookmarked: async (pkg, args, ctx) => {
+      if (!ctx.user) return false
       return ctx.db.query(
-        q.Exists(q.Match(q.Index('packagebookmarks_by_package'), q.Ref(q.Collection('Packages'), pkg.id)))
+        q.Exists(q.Match(
+          q.Index('packagebookmarks_by_package_and_user'),
+          q.Ref(q.Collection('Users'), ctx.user.id),
+          q.Ref(q.Collection('Packages'), pkg.id)
+        ))
       )
     }
   },
@@ -77,7 +82,11 @@ export const resolvers: IResolvers<any, Context> = {
       const pkg: values.Document<any> = await ctx.db.query(
         q.Get(q.Ref(q.Collection('Packages'), input.packageId)),
       )
-      const match = q.Match(q.Index('packagebookmarks_by_package'), q.Ref(q.Collection('Packages'), input.packageId))
+      const match = q.Match(
+        q.Index('packagebookmarks_by_package_and_user'),
+        q.Ref(q.Collection('Users'), ctx.user.id),
+        q.Ref(q.Collection('Packages'), input.packageId)
+      )
       if (await ctx.db.query(q.Exists(match))) {
         await ctx.db.query(
           q.Delete(q.Select(['ref'], q.Get(match)))
