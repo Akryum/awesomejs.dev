@@ -1,7 +1,7 @@
 <template>
   <BaseButton
     class="bg-gray-800 px-8 py-4"
-    :icon-left="pkg.bookmarked ? 'star' : 'star_border'"
+    :icon-left="pkg.bookmarked ? 'bookmark' : 'bookmark_border'"
     @click="toggle()"
   >
     {{ pkg.bookmarked ? 'Bookmarked' : 'Bookmark' }}
