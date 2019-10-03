@@ -18,6 +18,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="postcss">
 @import 'assets/styles/tailwind.postcss';
 </style>
