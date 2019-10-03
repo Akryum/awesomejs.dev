@@ -3,7 +3,7 @@
     v-if="$apollo.loading"
     class="py-8"
   />
-  <div v-else>
+  <div v-else-if="user">
     <PageTitle>
       Hello {{ user.nickname }}! 👋️
 
@@ -32,6 +32,7 @@
 
     <router-view :user="user" />
   </div>
+  <LoginView v-else />
 </template>
 
 <script>
@@ -39,12 +40,14 @@ import gql from 'graphql-tag'
 import { user } from './fragments'
 
 import LoadingIndicator from '../LoadingIndicator.vue'
+import LoginView from './LoginView.vue'
 import PageTitle from '../PageTitle.vue'
 import RouteTab from '../RouteTab'
 
 export default {
   components: {
     LoadingIndicator,
+    LoginView,
     PageTitle,
     RouteTab,
   },
