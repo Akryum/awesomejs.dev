@@ -1,38 +1,42 @@
 <template>
-  <LoadingIndicator
-    v-if="$apollo.loading"
-    class="py-8"
-  />
-  <div v-else-if="user">
-    <PageTitle>
-      Hello {{ user.nickname }}! 👋️
+  <div>
+    <UserCheckSignedIn />
 
-      <a
-        :href="`${baseUrl}/auth/logout`"
-        class="ml-8 text-base text-gray-600 hover:text-gray-500"
-      >
-        Logout
-      </a>
-    </PageTitle>
+    <LoadingIndicator
+      v-if="$apollo.loading"
+      class="py-8"
+    />
 
-    <div class="flex mt-2">
-      <RouteTab
-        :to="{ name: 'user-dashboard' }"
-        exact
-      >
-        Dashboard
-      </RouteTab>
+    <div v-else-if="user">
+      <PageTitle>
+        Hello {{ user.nickname }}! 👋️
 
-      <RouteTab
-        :to="{ name: 'user-bookmarks' }"
-      >
-        Bookmarks
-      </RouteTab>
+        <a
+          :href="`${baseUrl}/auth/logout`"
+          class="ml-8 text-base text-gray-600 hover:text-gray-500"
+        >
+          Logout
+        </a>
+      </PageTitle>
+
+      <div class="flex mt-2">
+        <RouteTab
+          :to="{ name: 'user-dashboard' }"
+          exact
+        >
+          Dashboard
+        </RouteTab>
+
+        <RouteTab
+          :to="{ name: 'user-bookmarks' }"
+        >
+          Bookmarks
+        </RouteTab>
+      </div>
+
+      <router-view :user="user" />
     </div>
-
-    <router-view :user="user" />
   </div>
-  <LoginView v-else />
 </template>
 
 <script>
@@ -40,14 +44,14 @@ import gql from 'graphql-tag'
 import { user } from './fragments'
 
 import LoadingIndicator from '../LoadingIndicator.vue'
-import LoginView from './LoginView.vue'
+import UserCheckSignedIn from './UserCheckSignedIn.vue'
 import PageTitle from '../PageTitle.vue'
 import RouteTab from '../RouteTab'
 
 export default {
   components: {
     LoadingIndicator,
-    LoginView,
+    UserCheckSignedIn,
     PageTitle,
     RouteTab,
   },
