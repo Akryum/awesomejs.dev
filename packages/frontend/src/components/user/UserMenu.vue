@@ -4,11 +4,15 @@
       v-if="currentUser"
       class="w-8 h-8 flex items-center justify-center"
     >
-      <img
-        :src="currentUser.avatar || require('@/assets/user.svg')"
-        alt="User"
-        class="max-w-full max-h-full rounded-full bg-gray-700"
+      <router-link
+        :to="{ name: 'user-dashboard' }"
       >
+        <img
+          :src="currentUser.avatar || require('@/assets/user.svg')"
+          alt="User"
+          class="max-w-full max-h-full rounded-full bg-gray-700"
+        >
+      </router-link>
     </div>
     <div v-else>
       <BaseButton

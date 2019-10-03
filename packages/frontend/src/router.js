@@ -19,6 +19,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "login" */ './components/user/LoginView.vue'),
     },
     {
+      path: '/me',
+      name: 'user-dashboard',
+      component: () => import(/* webpackChunkName: "user-dashboard" */ './components/user/UserDashboard.vue'),
+    },
+    {
       path: '/for/:projectTypeSlug',
       component: () => import(/* webpackChunkName: "project-type" */ './components/project-type/ProjectTypeView.vue'),
       props: true,
