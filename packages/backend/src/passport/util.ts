@@ -5,6 +5,7 @@ import { useStrategy, deserializeUser } from '@nodepack/plugin-passport'
 import { hook } from '@nodepack/app-context'
 import { Context } from '@/context'
 import passport, { AuthenticateOptions } from 'passport'
+import fetch from 'node-fetch'
 
 export interface UserAccount {
   provider: string
@@ -20,6 +21,7 @@ export interface OAuthProfile {
   id: string
   username?: string
   displayName?: string
+  email?: string
   emails?: ({ value: string })[]
   photos?: ({ value: string })[]
   profileUrl?: string
@@ -84,10 +86,20 @@ export function verifyOAuth (provider: String, ctx: Context) {
       )
       if (!account) {
         // Create User
-        if (!profile.emails.length) {
-          throw new Error(`No email found in profile`)
+        let email: string
+        if (!profile.email && (!profile.emails || !profile.emails.length)) {
+          // If the user doesn't have any public email
+          // we need to fetch the private ones
+          const data = await fetch(`https://api.github.com/user/emails`, {
+            headers: {
+              authorization: `token ${accessToken}`
+            }
+          })
+          const json = await data.json()
+          email = json.find((item: any) => item.primary).email
+        } else {
+          email = profile.email || profile.emails[0].value
         }
-        const email = profile.emails[0].value
         const avatar = profile.photos.length ? profile.photos[0].value : null
         const nickname = profile.displayName || profile.username
         
