@@ -67,5 +67,10 @@ export default new Router({
         packageRoute(),
       ],
     },
+    {
+      path: '/pkg/add',
+      name: 'add-package',
+      component: () => import(/* webpackChunkName: "package-add-wizard" */ './components/pkg/PackageAddWizard.vue'),
+    },
   ],
 })

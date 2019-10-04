@@ -1,11 +1,5 @@
 <template>
-  <router-link
-    :to="{
-      name: 'project-type',
-      params: {
-        projectTypeSlug: projectType.slug
-      }
-    }"
+  <div
     class="
     flex flex-col items-center justify-center p-2 bg-gray-800 rounded
     w-32 h-32 cursor-pointer
@@ -25,7 +19,7 @@
     <div class="truncate max-w-full">
       {{ projectType.name }}
     </div>
-  </router-link>
+  </div>
 </template>
 
 <script>

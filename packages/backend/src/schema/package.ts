@@ -34,6 +34,7 @@ extend type User {
 
 extend type Query {
   package (id: ID!): Package
+  packageByName (name: String!): Package
 }
 
 type Mutation {
@@ -94,6 +95,18 @@ export const resolvers: IResolvers<any, Context> = {
         }
       }
     },
+
+    packageByName: async (root, { name } , ctx) => {
+      try {
+        const { ref: { id }, data } = await ctx.db.query(
+          q.Get(q.Match(q.Index('packages_by_name'), name))
+        )
+        return {
+          id,
+          ...data,
+        }
+      } catch (e) {}
+    }
   },
 
   Mutation: {

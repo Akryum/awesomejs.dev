@@ -1,6 +1,6 @@
 <template>
   <BaseButton
-    class="bg-gray-800 px-8 py-4"
+    class="bg-gray-800 hover:bg-gray-700 px-8 py-4"
     :icon-left="pkg.bookmarked ? 'bookmark' : 'bookmark_border'"
     @click="toggle()"
   >

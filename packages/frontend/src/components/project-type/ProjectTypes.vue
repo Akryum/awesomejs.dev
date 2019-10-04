@@ -5,13 +5,22 @@
   />
   <div
     v-else
-    class="project-types my-8"
+    class="project-types-grid my-8"
   >
-    <ProjectTypesItem
+    <router-link
       v-for="projectType of projectTypes"
       :key="projectType.id"
-      :project-type="projectType"
-    />
+      :to="{
+        name: 'project-type',
+        params: {
+          projectTypeSlug: projectType.slug
+        }
+      }"
+    >
+      <ProjectTypesItem
+        :project-type="projectType"
+      />
+    </router-link>
   </div>
 </template>
 
@@ -45,11 +54,3 @@ export default {
   },
 }
 </script>
-
-<style lang="postcss" scoped>
-.project-types {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 128px);
-  grid-gap: 48px;
-}
-</style>
