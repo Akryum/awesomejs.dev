@@ -10,6 +10,7 @@ type PackageProposal {
   name: String!
   tags: [String!]!
   projectType: ProjectType!
+  user: User
 }
 
 extend type Query {
@@ -17,7 +18,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  proposePackage (input: ProposePackageInput!): PackageProposal
+  proposePackage (input: ProposePackageInput!): PackageProposal @auth
 }
 
 input ProposePackageInput {
@@ -36,6 +37,18 @@ export const resolvers:IResolvers<any, Context> = {
         id,
         ...data,
       }
+    },
+
+    user: async (proposal, args, ctx) => {
+      try {
+        const { ref: { id }, data } = await ctx.db.query(
+          q.Get(proposal.userRef)
+        )
+        return {
+          id,
+          ...data,
+        }
+      } catch (e) {}
     }
   },
 
@@ -55,7 +68,6 @@ export const resolvers:IResolvers<any, Context> = {
 
   Mutation: {
     proposePackage: async (root, { input }, ctx) => {
-      console.log(input)
       if (await ctx.db.query(
         q.Exists(q.Match(q.Index('packageproposal_by_name'), input.packageName))
       )) {
@@ -68,6 +80,7 @@ export const resolvers:IResolvers<any, Context> = {
             data: {
               name: input.packageName,
               projectTypeRef: q.Ref(q.Collection('ProjectTypes'), input.projectTypeId),
+              userRef: q.Ref(q.Collection('Users'), ctx.user.id),
               tags: input.tags,
             }
           }
