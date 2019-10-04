@@ -73,6 +73,20 @@ export const resolvers:IResolvers<any, Context> = {
       )) {
         throw new ApolloError('Package proposal already exists')
       }
+
+      if (await ctx.db.query(
+        q.Exists(q.Match(q.Index('packages_by_name'), input.packageName))
+      )) {
+        throw new ApolloError('Package was already added')
+      }
+
+      // Npm check
+      try {
+        await ctx.npm(`/${encodeURIComponent(input.packageName)}`)
+      } catch (e) {
+        throw new ApolloError(`Package not found on npm`)
+      }
+
       const { ref: { id }, data } = await ctx.db.query(
         q.Create(
           q.Collection('PackageProposals'),
