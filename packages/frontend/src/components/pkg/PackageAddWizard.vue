@@ -41,6 +41,7 @@
 
       <div class="mt-8 flex items-center justify-end">
         <BaseButton
+          :loading="submitting"
           icon-left="add"
           class="bg-purple-800 hover:bg-purple-700 px-8 py-4"
           @click="submit()"
@@ -48,6 +49,11 @@
           Add package
         </BaseButton>
       </div>
+
+      <ErrorMessage
+        :error="error"
+        class="p-4 border border-red-700 rounded mt-8"
+      />
     </div>
   </div>
   <div v-else-if="addedProposal">
@@ -63,6 +69,7 @@ import PageTitle from '../PageTitle.vue'
 import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
 import UserCheckSignedIn from '../user/UserCheckSignedIn.vue'
 import PackageAdded from './PackageAdded.vue'
+import ErrorMessage from '../ErrorMessage.vue'
 import gql from 'graphql-tag'
 import { pkgProposal } from './fragments'
 
@@ -72,6 +79,7 @@ export default {
     ProjectTypeSelect,
     UserCheckSignedIn,
     PackageAdded,
+    ErrorMessage,
   },
 
   data () {
@@ -81,6 +89,8 @@ export default {
       packageName: '',
       tags: '',
       addedProposal: null,
+      submitting: false,
+      error: null,
     }
   },
 
@@ -131,33 +141,49 @@ export default {
       return this.packageName && this.pkg && !this.$apollo.loading
     },
 
+    validRequired () {
+      return this.projectTypeId != null && !!this.packageName
+    },
+
     valid () {
-      return this.projectTypeId != null && !!this.packageName && !this.alreadyProposed && !this.alreadyExists
+      return this.validRequired && !this.alreadyProposed && !this.alreadyExists
     },
   },
 
   methods: {
     async submit () {
-      if (!this.valid) return
-      const { data } = await this.$apollo.mutate({
-        mutation: gql`
-          mutation ProposePackage ($input: ProposePackageInput!) {
-            proposePackage (input: $input) {
-              ...pkgProposal
+      this.error = null
+      if (!this.valid) {
+        if (!this.validRequired) {
+          this.error = `Project type and package name are required`
+        }
+        return
+      }
+      this.submitting = true
+      try {
+        const { data } = await this.$apollo.mutate({
+          mutation: gql`
+            mutation ProposePackage ($input: ProposePackageInput!) {
+              proposePackage (input: $input) {
+                ...pkgProposal
+              }
             }
-          }
-          ${pkgProposal}
-        `,
-        variables: {
-          input: {
-            projectTypeId: this.projectTypeId,
-            packageName: this.packageName,
-            tags: this.tags.trim().split(',').map(t => t.trim()).filter(t => t.length),
+            ${pkgProposal}
+          `,
+          variables: {
+            input: {
+              projectTypeId: this.projectTypeId,
+              packageName: this.packageName,
+              tags: this.tags.trim().split(',').map(t => t.trim()).filter(t => t.length),
+            },
           },
-        },
-      })
-      this.addedProposal = data.proposePackage
-      this.added = true
+        })
+        this.addedProposal = data.proposePackage
+        this.added = true
+      } catch (e) {
+        this.error = e
+      }
+      this.submitting = false
     },
 
     addAnother () {

@@ -6,24 +6,45 @@
     :tabindex="ghost ? -1 : 0"
     role="button"
     :aria-disabled="ghost"
-    class="flex items-center justify-center rounded inline-block cursor-pointer text-center"
+    class="inline-block cursor-pointer text-center relative"
+    :class="{
+      'pointer-events-none opacity-50': ghost,
+    }"
     @click.capture="handleClick"
     @click.capture.native="handleClick"
   >
-    <i
-      v-if="iconLeft"
-      class="material-icons text-lg mr-1"
-    >{{ iconLeft }}</i>
-    <slot />
-    <i
-      v-if="iconRight"
-      class="material-icons text-lg ml-1"
-    >{{ iconRight }}</i>
+    <div
+      class="flex items-center justify-center rounded"
+      :class="{
+        'opacity-0': loading,
+      }"
+    >
+      <i
+        v-if="iconLeft"
+        class="material-icons text-lg mr-1"
+      >{{ iconLeft }}</i>
+      <slot />
+      <i
+        v-if="iconRight"
+        class="material-icons text-lg ml-1"
+      >{{ iconRight }}</i>
+    </div>
+
+    <SubmitAnimation
+      v-if="loading"
+      class="absolute inset-0"
+    />
   </component>
 </template>
 
 <script>
+import SubmitAnimation from './SubmitAnimation.vue'
+
 export default {
+  components: {
+    SubmitAnimation,
+  },
+
   inheritAttrs: false,
 
   props: {

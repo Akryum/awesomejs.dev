@@ -24,7 +24,7 @@
 
     <div
       v-if="open"
-      class="overlay fixed inset-0 flex items-center justify-center"
+      class="overlay fixed z-10 inset-0 flex items-center justify-center"
     >
       <div
         class="absolute inset-0 bg-black opacity-50"
