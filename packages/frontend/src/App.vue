@@ -2,7 +2,7 @@
   <div id="app">
     <AppHeader />
 
-    <div class="px-4 my-4 lg:px-16 lg:my-8">
+    <div class="main-view px-4 my-4 lg:px-16 lg:my-8">
       <router-view />
     </div>
 
@@ -24,4 +24,8 @@ export default {
 
 <style lang="postcss">
 @import 'assets/styles/tailwind.postcss';
+
+.main-view {
+  min-height: calc(100vh - 280px);
+}
 </style>

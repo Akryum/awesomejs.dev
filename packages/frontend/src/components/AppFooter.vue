@@ -1,9 +1,9 @@
 <template>
   <footer
-    class="text-center text-gray-800 px-8 py-16"
+    class="text-center text-gray-600 px-8 py-16"
   >
     <div>
-      <span class="mr-4">
+      <span class="inline-block mr-4">
         Follow us on
         <a
           href="https://twitter.com/awesomejsapp"
@@ -12,7 +12,7 @@
         >Twitter</a>
       </span>
 
-      <span class="mr-4">
+      <span class="inline-block mr-4">
         Fork on
         <a
           href="https://github.com/Akryum/awesomejs.dev"
@@ -21,7 +21,7 @@
         >Github</a>
       </span>
 
-      <span>
+      <span class="inline-block ">
         Some icons from
         <a
           href="https://icons8.com"
