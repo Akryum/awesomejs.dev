@@ -1,15 +1,22 @@
 <template>
   <div v-if="projectType">
-    <PageTitle>
+    <PageTitle
+      v-if="!$responsive.md || !packageId"
+      class="mb-8"
+    >
       Awesome {{ projectType.name }} packages
     </PageTitle>
 
-    <div class="flex mt-8">
+    <div class="flex">
       <PackageList
+        v-if="!$responsive.md || !packageId"
         :project-type-slug="projectType.slug"
-        class="w-1/3"
+        class="w-full lg:w-1/3"
       />
-      <div class="w-2/3 pl-16">
+      <div
+        v-if="!$responsive.md || packageId"
+        class="w-full lg:w-2/3 lg:pl-16"
+      >
         <router-view />
       </div>
     </div>
@@ -32,6 +39,11 @@ export default {
     projectTypeSlug: {
       type: String,
       required: true,
+    },
+
+    packageId: {
+      type: String,
+      default: null,
     },
   },
 

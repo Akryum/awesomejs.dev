@@ -6,9 +6,10 @@
     />
     <template v-else>
       <div
-        class="flex items-center py-4"
+        class="flex items-center pb-4 lg:py-4"
       >
         <PackageLogo
+          v-if="!$responsive.md"
           :pkg="pkg"
           class="mr-6"
         />

@@ -1,7 +1,10 @@
 <template>
   <div class="mt-8">
     <div class="flex mt-8">
-      <div class="w-1/3">
+      <div
+        v-if="!$responsive.md || !packageId"
+        class="w-full lg:w-1/3"
+      >
         <LoadingIndicator
           v-if="$apollo.loading"
           class="py-8"
@@ -19,7 +22,10 @@
           />
         </template>
       </div>
-      <div class="w-2/3 pl-16">
+      <div
+        v-if="!$responsive.md || packageId"
+        class="w-full lg:w-2/3 lg:pl-16"
+      >
         <router-view />
       </div>
     </div>
@@ -42,6 +48,11 @@ export default {
     user: {
       type: Object,
       required: true,
+    },
+
+    packageId: {
+      type: String,
+      default: null,
     },
   },
 

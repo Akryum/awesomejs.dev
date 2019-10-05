@@ -43,6 +43,7 @@ export default new Router({
         {
           path: 'bookmarks',
           component: () => import(/* webpackChunkName: "user-tab-bookmarks" */ './components/user/UserTabBookmarks.vue'),
+          props: true,
           children: [
             {
               path: '',
