@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex px-16 my-8"
+    class="flex px-4 my-4 lg:px-16 lg:my-8"
   >
     <AppHeaderLogo />
 

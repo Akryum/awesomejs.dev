@@ -2,7 +2,7 @@
   <div id="app">
     <AppHeader />
 
-    <div class="px-16 my-8">
+    <div class="px-4 my-4 lg:px-16 lg:my-8">
       <router-view />
     </div>
 
