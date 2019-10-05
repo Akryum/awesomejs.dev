@@ -11,7 +11,7 @@
       <PackageList
         v-if="!$responsive.md || !packageId"
         :project-type-slug="projectType.slug"
-        class="w-full lg:w-1/3"
+        class="w-full lg:w-1/3 lg:pb-64"
       />
       <div
         v-if="!$responsive.md || packageId"

@@ -3,7 +3,7 @@
     <div class="flex mt-8">
       <div
         v-if="!$responsive.md || !packageId"
-        class="w-full lg:w-1/3"
+        class="w-full lg:w-1/3 lg:pb-64"
       >
         <LoadingIndicator
           v-if="$apollo.loading"
