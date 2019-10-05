@@ -2,12 +2,12 @@
   <div
     class="
     flex flex-col items-center justify-center p-2 bg-gray-800 rounded
-    w-32 h-32 cursor-pointer
+    w-24 h-24 lg:w-32 lg:h-32 cursor-pointer
     hover:bg-gray-700
     "
   >
     <div
-      class="w-16 flex items-center justify-center flex-1"
+      class="w-8 lg:w-16 flex items-center justify-center flex-1"
     >
       <img
         :src="projectType.logo"

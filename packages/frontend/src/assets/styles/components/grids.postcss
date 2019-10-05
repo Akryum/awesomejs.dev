@@ -1,6 +1,12 @@
 .project-types-grid {
   display: grid;
   /* @TODO use theme values */
-  grid-template-columns: repeat(auto-fill, 128px);
+  grid-template-columns: repeat(auto-fit, 128px);
   grid-gap: 48px;
+  justify-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+    grid-gap: 24px;
+  }
 }
