@@ -1,7 +1,7 @@
 {
   "name": "AwesomeJS",
   "short_name": "AwesomeJS",
-  "start_url": "./index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#25241F",
   "theme_color": "#F7DF1D",
