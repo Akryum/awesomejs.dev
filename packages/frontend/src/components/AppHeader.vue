@@ -2,7 +2,7 @@
   <header
     class="flex px-4 my-4 lg:px-16 lg:my-8"
   >
-    <AppHeaderLogo />
+    <AppHeaderLogo class="flex-none" />
 
     <div class="flex-1" />
 
