@@ -2,6 +2,7 @@
   <div v-if="projectType">
     <PageTitle
       v-if="!$responsive.md || !packageId"
+      :back-to="{ name: 'home' }"
       class="mb-8"
     >
       Awesome {{ projectType.name }} packages
