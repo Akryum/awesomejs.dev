@@ -85,7 +85,7 @@ export default {
   data () {
     return {
       added: false,
-      projectTypeId: null,
+      projectTypeId: this.$route.query.projectTypeId || null,
       packageName: '',
       tags: '',
       addedProposal: null,
