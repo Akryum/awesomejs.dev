@@ -34,6 +34,8 @@ export const cache = new InMemoryCache({
       projectType: (_, { id }) => toIdValue(cache.config.dataIdFromObject({ __typename: 'ProjectType', id })),
 
       package: (_, { id }) => toIdValue(cache.config.dataIdFromObject({ __typename: 'Package', id })),
+
+      packageProposal: (_, { id }) => toIdValue(cache.config.dataIdFromObject({ __typename: 'PackageProposal', id })),
     },
   },
 })
