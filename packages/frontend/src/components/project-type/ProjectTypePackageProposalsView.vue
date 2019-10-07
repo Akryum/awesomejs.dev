@@ -5,19 +5,13 @@
       :back-to="{ name: 'home' }"
       class="mb-8"
     >
-      Awesome {{ projectType.name }} packages
+      Proposed {{ projectType.name }} packages
     </PageTitle>
 
     <div class="flex">
       <div class="w-full lg:w-1/3 lg:pb-64">
-        <ProjectTypePackageProposalsButton
+        <PackageProposalList
           :project-type-id="projectType.id"
-          class="w-full mb-6"
-        />
-
-        <PackageList
-          v-if="!$responsive.md || !packageId"
-          :project-type-slug="projectType.slug"
         />
       </div>
 
@@ -33,16 +27,14 @@
 
 <script>
 import PageTitle from '../PageTitle.vue'
-import PackageList from '../pkg/PackageList.vue'
-import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
+import PackageProposalList from '../pkg/PackageProposalList.vue'
 import gql from 'graphql-tag'
 import { projectType } from './fragments'
 
 export default {
   components: {
     PageTitle,
-    PackageList,
-    ProjectTypePackageProposalsButton,
+    PackageProposalList,
   },
 
   props: {

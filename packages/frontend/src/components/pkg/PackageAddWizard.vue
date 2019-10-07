@@ -98,7 +98,7 @@ export default {
     proposal: {
       query: gql`
         query PackageProposal ($name: String!) {
-          proposal: packageProposal (name: $name) {
+          proposal: packageProposalByName (name: $name) {
             id
           }
         }
@@ -111,6 +111,7 @@ export default {
       skip () {
         return !this.packageName
       },
+      debounce: 2000,
     },
 
     pkg: {
@@ -129,6 +130,7 @@ export default {
       skip () {
         return !this.packageName
       },
+      debounce: 2000,
     },
   },
 

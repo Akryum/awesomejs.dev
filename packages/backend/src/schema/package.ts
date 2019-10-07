@@ -2,7 +2,10 @@ import gql from 'graphql-tag'
 import { IResolvers } from 'graphql-tools'
 import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
-import { getGithubMetadata, getNpmMetadata } from './metadata'
+import * as Metadata from './metadata'
+
+const getNpmMetadata = Metadata.getNpmMetadata('Packages')
+const getGithubMetadata = Metadata.getGithubMetadata('Packages')
 
 export const typeDefs = gql`
 type Package {
@@ -18,12 +21,17 @@ type Package {
   defaultLogo: String
   bookmarked: Boolean
   readme: String
+  info: PackageInfo!
 }
 
 type PackageMaintainer {
   name: String
   email: String
   avatar: String
+}
+
+type PackageInfo {
+  tags: [String!]!
 }
 
 extend type User {
@@ -122,13 +130,15 @@ export const resolvers: IResolvers<any, Context> = {
 
   Mutation: {
     togglePackageBookmark: async (root, { input }, ctx) => {
+      const ref = q.Ref(q.Collection('Packages'), input.packageId)
+      const userRef = q.Ref(q.Collection('Users'), ctx.user.id)
       const pkg: values.Document<any> = await ctx.db.query(
-        q.Get(q.Ref(q.Collection('Packages'), input.packageId)),
+        q.Get(ref),
       )
       const match = q.Match(
         q.Index('packagebookmarks_by_package_and_user'),
-        q.Ref(q.Collection('Users'), ctx.user.id),
-        q.Ref(q.Collection('Packages'), input.packageId)
+        userRef,
+        ref,
       )
       if (await ctx.db.query(q.Exists(match))) {
         await ctx.db.query(
@@ -141,7 +151,7 @@ export const resolvers: IResolvers<any, Context> = {
             {
               data: {
                 packageRef: pkg.ref,
-                userRef: q.Ref(q.Collection('Users'), ctx.user.id),
+                userRef,
                 projectTypeRef: q.Ref(q.Collection('ProjectTypes'), pkg.data.projectTypeId)
               }
             }

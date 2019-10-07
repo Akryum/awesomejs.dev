@@ -1,5 +1,4 @@
 import gql from 'graphql-tag'
-import { projectType } from '../project-type/fragments'
 
 export const pkg = gql`
 fragment pkg on Package {
@@ -15,6 +14,9 @@ fragment pkg on Package {
     email
     avatar
   }
+  info {
+    tags
+  }
 }
 `
 
@@ -22,10 +24,19 @@ export const pkgProposal = gql`
 fragment pkgProposal on PackageProposal {
   id
   name
-  tags
-  projectType {
-    ...projectType
+  description
+  upvotes
+  stars
+  defaultLogo
+  homepage
+  repo
+  maintainers {
+    name
+    email
+    avatar
+  }
+  info {
+    tags
   }
 }
-${projectType}
 `

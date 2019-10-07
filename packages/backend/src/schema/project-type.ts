@@ -14,7 +14,8 @@ type ProjectType {
 
 extend type Query {
   projectTypes: [ProjectType!]!
-  projectType (slug: String!): ProjectType
+  projectType (id: ID!): ProjectType
+  projectTypeBySlug (slug: String!): ProjectType
 }
 `
 
@@ -52,7 +53,19 @@ export const resolvers: IResolvers<any, Context> = {
       }))
     },
 
-    projectType: async (root, { slug }, ctx) => {
+    projectType: async (root, { id }, ctx) => {
+      const { data } = await ctx.db.query(
+        q.Get(q.Ref(q.Collection('ProjectTypes'), id)),
+      )
+      if (data) {
+        return {
+          id,
+          ...data,
+        }
+      }
+    },
+
+    projectTypeBySlug: async (root, { slug }, ctx) => {
       const { ref: { id }, data } = await ctx.db.query(
         q.Get(q.Match(q.Index('projecttypes_by_slug'), slug)),
       )

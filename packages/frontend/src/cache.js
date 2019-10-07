@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 export const cache = new InMemoryCache({
   cacheRedirects: {
     Query: {
-      projectType: (_, { slug }) => {
+      projectTypeBySlug: (_, { slug }) => {
         try {
           // If we already have loaded the list of project types
           // we want to redirect to the corresponding project type
@@ -30,6 +30,8 @@ export const cache = new InMemoryCache({
           // https://github.com/apollographql/apollo-client/issues/1542
         }
       },
+
+      projectType: (_, { id }) => toIdValue(cache.config.dataIdFromObject({ __typename: 'ProjectType', id })),
 
       package: (_, { id }) => toIdValue(cache.config.dataIdFromObject({ __typename: 'Package', id })),
     },

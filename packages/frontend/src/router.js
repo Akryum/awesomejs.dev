@@ -69,6 +69,30 @@ export default new Router({
       ],
     },
     {
+      path: '/proposed/:projectTypeSlug',
+      component: () => import(/* webpackChunkName: "project-type-package-proposals" */ './components/project-type/ProjectTypePackageProposalsView.vue'),
+      props: true,
+      children: [
+        {
+          path: '',
+          name: 'project-type-proposals',
+          component: () => import(/* webpackChunkName: "no-package-selected" */ './components/pkg/NoPackageSelected.vue'),
+        },
+        {
+          path: 'pkg/:packageId',
+          component: () => import(/* webpackChunkName: "package-proposal-view" */ './components/pkg/PackageProposalView.vue'),
+          props: true,
+          children: [
+            {
+              path: '',
+              name: `package-proposal`,
+              component: () => import(/* webpackChunkName: "package-proposal-tab-general" */ './components/pkg/PackageProposalTabGeneral.vue'),
+            },
+          ],
+        },
+      ],
+    },
+    {
       path: '/pkg/add',
       name: 'add-package',
       component: () => import(/* webpackChunkName: "package-add-wizard" */ './components/pkg/PackageAddWizard.vue'),

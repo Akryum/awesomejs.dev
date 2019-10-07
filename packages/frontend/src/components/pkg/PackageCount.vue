@@ -1,9 +1,9 @@
 <template>
   <div class="flex text-purple-500">
-    <div class="mr-1">
+    <div class="mr-2">
       {{ formatted }}
     </div>
-    <i class="material-icons">star</i>
+    <i class="material-icons">{{ icon }}</i>
   </div>
 </template>
 
@@ -13,14 +13,19 @@ import millify from 'millify'
 export default {
   props: {
     count: {
-      type: Number,
+      type: [Number, String],
       required: true,
+    },
+
+    icon: {
+      type: String,
+      default: 'star',
     },
   },
 
   computed: {
     formatted () {
-      return millify(this.count, {
+      return millify(parseInt(this.count) || 0, {
         precision: 1,
       })
     },

@@ -43,8 +43,8 @@
       </div>
 
       <div class="mb-4">
-        <PackageBookmarkButton
-          :package-id="pkg.id"
+        <PackageProposalUpvoteButton
+          :pkg="pkg"
         />
       </div>
 
@@ -59,17 +59,17 @@
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageLogo from './PackageLogo.vue'
 import PackageCount from './PackageCount.vue'
-import PackageBookmarkButton from './PackageBookmarkButton.vue'
+import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 
 import gql from 'graphql-tag'
-import { pkg } from './fragments'
+import { pkgProposal } from './fragments'
 
 export default {
   components: {
     LoadingIndicator,
     PackageLogo,
     PackageCount,
-    PackageBookmarkButton,
+    PackageProposalUpvoteButton,
   },
 
   props: {
@@ -82,12 +82,12 @@ export default {
   apollo: {
     pkg: {
       query: gql`
-        query Package ($id: ID!) {
-          pkg: package (id: $id) {
-            ...pkg
+        query PackageProposal ($id: ID!) {
+          pkg: packageProposal (id: $id) {
+            ...pkgProposal
           }
         }
-        ${pkg}
+        ${pkgProposal}
       `,
       variables () {
         return {

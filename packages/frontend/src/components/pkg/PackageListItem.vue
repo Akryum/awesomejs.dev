@@ -26,21 +26,28 @@
       </div>
     </div>
 
-    <PackageStars
-      :count="pkg.stars"
-      class="stars"
+    <PackageCount
+      v-if="pkg.upvotes != null"
+      :count="pkg.upvotes || 0"
+      icon="thumb_up"
+      class="package-count"
+    />
+    <PackageCount
+      v-else
+      :count="pkg.stars || 0"
+      class="package-count"
     />
   </router-link>
 </template>
 
 <script>
 import PackageLogo from './PackageLogo.vue'
-import PackageStars from './PackageStars.vue'
+import PackageCount from './PackageCount.vue'
 
 export default {
   components: {
     PackageLogo,
-    PackageStars,
+    PackageCount,
   },
 
   inheritAttrs: false,
@@ -74,7 +81,7 @@ export default {
     @apply text-purple-500;
   }
 
-  .stars {
+  .package-count {
     @apply text-purple-400;
   }
 }

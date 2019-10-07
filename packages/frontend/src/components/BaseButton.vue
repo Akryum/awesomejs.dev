@@ -21,12 +21,12 @@
     >
       <i
         v-if="iconLeft"
-        class="material-icons text-lg mr-1"
+        class="material-icons text-lg mr-2"
       >{{ iconLeft }}</i>
       <slot />
       <i
         v-if="iconRight"
-        class="material-icons text-lg ml-1"
+        class="material-icons text-lg ml-2"
       >{{ iconRight }}</i>
     </div>
 

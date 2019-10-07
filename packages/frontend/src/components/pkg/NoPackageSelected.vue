@@ -27,7 +27,7 @@ export default {
     projectType: {
       query: gql`
         query ProjectType ($slug: String!) {
-          projectType (slug: $slug) {
+          projectType: projectTypeBySlug (slug: $slug) {
             ...projectType
           }
         }

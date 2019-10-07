@@ -4,20 +4,20 @@
       v-if="$apollo.loading"
       class="py-8"
     />
-    <template v-else-if="packages.length">
+    <template v-else-if="proposals.length">
       <PackageListItem
-        v-for="pkg of packages"
+        v-for="pkg of proposals"
         :key="pkg.id"
+        :pkg="pkg"
         :to="{
-          name: 'package',
+          name: 'package-proposal',
           params: { packageId: pkg.id },
         }"
-        :pkg="pkg"
         class="mb-6"
       />
     </template>
     <EmptyMessage v-else>
-      No package yet
+      No proposal yet
 
       <template #cta>
         <PackageAddButton
@@ -30,7 +30,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import { pkg } from './fragments'
+import { pkgProposal } from './fragments'
 import EmptyMessage from '../EmptyMessage.vue'
 import PackageAddButton from './PackageAddButton.vue'
 import PackageListItem from './PackageListItem.vue'
@@ -45,7 +45,7 @@ export default {
   },
 
   props: {
-    projectTypeSlug: {
+    projectTypeId: {
       type: String,
       required: true,
     },
@@ -53,29 +53,29 @@ export default {
 
   data () {
     return {
-      packages: [],
+      proposals: [],
     }
   },
 
   apollo: {
-    packages: {
+    proposals: {
       query: gql`
-        query ProjectTypePackages ($slug: String!) {
-          projectType: projectTypeBySlug (slug: $slug) {
+        query ProjectTypePackages ($id: ID!) {
+          projectType (id: $id) {
             id
-            packages {
-              ...pkg
+            packageProposals {
+              ...pkgProposal
             }
           }
         }
-        ${pkg}
+        ${pkgProposal}
       `,
       variables () {
         return {
-          slug: this.projectTypeSlug,
+          id: this.projectTypeId,
         }
       },
-      update: data => data.projectType.packages,
+      update: data => data.projectType.packageProposals,
     },
   },
 }
