@@ -49,7 +49,7 @@ export const getNpmMetadata = mem(async (pkg: any, ctx: Context): Promise<any> =
   cacheKey: pkg => pkg.id,
 })
 
-const GITHUB_METADATA_VERSION = 4
+const GITHUB_METADATA_VERSION = 5
 
 export const getGithubMetadata = mem(async (pkg: any, ctx: Context): Promise<any> => {
   let result = pkg.metadata.github
@@ -79,6 +79,10 @@ export const getGithubMetadata = mem(async (pkg: any, ctx: Context): Promise<any
       // Add new data props to be saved here
       // and increment GITHUB_METADATA_VERSION
       data = {
+        slug: {
+          owner,
+          repo,
+        },
         stars: githubData.stargazers_count,
         htmlUrl: githubData.html_url,
         owner: {

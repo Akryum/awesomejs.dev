@@ -17,6 +17,7 @@ type Package {
   license: String
   defaultLogo: String
   bookmarked: Boolean
+  readme: String
 }
 
 type PackageMaintainer {
@@ -62,6 +63,19 @@ export const resolvers: IResolvers<any, Context> = {
           q.Ref(q.Collection('Packages'), pkg.id)
         ))
       )
+    },
+    readme: async (pkg, args, ctx) => {
+      const { slug } = await getGithubMetadata(pkg, ctx)
+      if (slug) {
+        const { data } = await ctx.github.repos.getReadme({
+          owner: slug.owner,
+          repo: slug.repo,
+          headers: {
+            accept: 'application/vnd.github.3.html'
+          }
+        })
+        return data
+      }
     }
   },
 

@@ -13,11 +13,21 @@
         <i class="material-icons text-lg">open_in_new</i>
       </a>
     </div>
+
+    <PackageReadme
+      :package-id="pkg.id"
+    />
   </div>
 </template>
 
 <script>
+import PackageReadme from './PackageReadme.vue'
+
 export default {
+  components: {
+    PackageReadme,
+  },
+
   props: {
     pkg: {
       type: Object,
