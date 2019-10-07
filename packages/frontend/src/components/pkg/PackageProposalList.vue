@@ -1,7 +1,7 @@
 <template>
   <div>
     <LoadingIndicator
-      v-if="$apollo.loading"
+      v-if="$apollo.loading && !proposals.length"
       class="py-8"
     />
     <template v-else-if="proposals.length">
@@ -76,6 +76,7 @@ export default {
         }
       },
       update: data => data.projectType.packageProposals,
+      fetchPolicy: 'cache-and-network',
     },
   },
 }

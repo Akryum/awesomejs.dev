@@ -9,7 +9,7 @@
     icon-left="thumb_up"
     class="flex items-center bg-gray-800 text-purple-300 rounded px-6 py-4 hover:bg-gray-700"
   >
-    <template v-if="$apollo.loading">
+    <template v-if="$apollo.loading && !projectType">
       Counting proposed packages
     </template>
     <template v-else-if="projectType.packageProposalCount">
@@ -49,6 +49,7 @@ export default {
           id: this.projectTypeId,
         }
       },
+      fetchPolicy: 'cache-and-network',
     },
   },
 }
