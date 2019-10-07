@@ -1,5 +1,6 @@
 <template>
   <BaseButton
+    :disabled="$apollo.loading"
     class="bg-gray-800 hover:bg-gray-700 px-8 py-4"
     :icon-left="upvoted ? 'check_box' : 'check_box_outline_blank'"
     @click="toggle()"
@@ -55,15 +56,16 @@ export default {
           `,
           variables: {
             input: {
-              packageId: this.packageId,
+              proposalId: this.pkg.id,
             },
           },
           optimisticResponse: {
             __typename: 'Mutation',
-            togglePackageBookmark: {
-              __typename: 'Package',
-              id: this.packageId,
-              bookmarked: !this.pkg.bookmarked,
+            togglePackageProposalUpvote: {
+              __typename: 'PackageProposal',
+              id: this.pkg.id,
+              upvoted: !this.upvoted,
+              upvotes: this.upvoted ? this.pkg.upvotes - 1 : this.pkg.upvotes + 1,
             },
           },
         })
