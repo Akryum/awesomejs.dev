@@ -3,6 +3,7 @@
 html,
 body {
   @apply bg-gray-900 text-gray-300;
+  scrollbar-color: theme('colors.gray.800') theme('colors.gray.900');
 }
 
 .material-icons {
@@ -12,4 +13,18 @@ body {
 [type="button"],
 [type="submit"] {
   -webkit-appearance: none !important;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: theme('colors.gray.900');
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: theme('colors.gray.800');
+  border: theme('colors.gray.900') 1px solid;
+  border-radius: 2px;
 }
