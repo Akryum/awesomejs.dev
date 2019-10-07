@@ -171,6 +171,7 @@ export default {
                 projectType {
                   id
                   name
+                  slug
                 }
               }
             }

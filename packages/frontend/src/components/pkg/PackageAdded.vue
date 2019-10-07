@@ -8,7 +8,20 @@
       <i class="material-icons text-4xl text-purple-500 mr-4">check_circle_outline</i>
       <div>
         Thanks for submitting this package!<br>
-        It will appear very soon when it's approved.
+        It will appear in the list when it's approved.<br>
+        Meanwhile, people can upvote your proposal, so <router-link
+          :to="{
+            name: 'package-proposal',
+            params: {
+              projectTypeSlug: proposal.projectType.slug,
+              packageId: proposal.id,
+            }
+          }"
+          target="_blank"
+          class="text-purple-500 hover:text-purple-400"
+        >
+          share it
+        </router-link>!
       </div>
     </div>
 
@@ -33,10 +46,16 @@
       </BaseButton>
 
       <BaseButton
-        :to="{ name: 'home' }"
+        :to="{
+          name: 'package-proposal',
+          params: {
+            projectTypeSlug: proposal.projectType.slug,
+            packageId: proposal.id,
+          }
+        }"
         class="px-8 py-4 bg-purple-800 hover:bg-purple-700"
       >
-        Continue
+        View proposal
       </BaseButton>
     </div>
   </div>
