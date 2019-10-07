@@ -20,5 +20,5 @@ export const schemaDirectives = {
         return resolve(root, args, context, info)
       }
     }
-  }
+  },
 }

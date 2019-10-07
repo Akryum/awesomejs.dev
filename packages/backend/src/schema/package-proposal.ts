@@ -51,11 +51,11 @@ input TogglePackageProposalUpvoteInput {
   proposalId: ID!
 }
 `
-export const resolvers:IResolvers<any, Context> = {
+export const resolvers: IResolvers<any, Context> = {
   PackageProposal: {
     projectType: async (proposal, args, ctx) => {
       const { ref: { id }, data } = await ctx.db.query(
-        q.Get(proposal.projectTypeRef)
+        q.Get(proposal.projectTypeRef),
       )
       return {
         id,
@@ -66,13 +66,15 @@ export const resolvers:IResolvers<any, Context> = {
     user: async (proposal, args, ctx) => {
       try {
         const { ref: { id }, data } = await ctx.db.query(
-          q.Get(proposal.userRef)
+          q.Get(proposal.userRef),
         )
         return {
           id,
           ...data,
         }
-      } catch (e) {}
+      } catch (e) {
+        // Nothing
+      }
     },
 
     stars: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).stars,
@@ -85,13 +87,13 @@ export const resolvers:IResolvers<any, Context> = {
       (await getNpmMetadata(pkg, ctx)).description,
 
     upvoted: async (pkg, args, ctx) => {
-      if (!ctx.user) return false
+      if (!ctx.user) { return false }
       return ctx.db.query(
         q.Exists(q.Match(
           q.Index('packageproposalupvotes_by_proposal_and_user'),
           q.Ref(q.Collection('Users'), ctx.user.id),
-          q.Ref(q.Collection('PackageProposals'), pkg.id)
-        ))
+          q.Ref(q.Collection('PackageProposals'), pkg.id),
+        )),
       )
     },
   },
@@ -103,11 +105,11 @@ export const resolvers:IResolvers<any, Context> = {
           q.Paginate(
             q.Match(
               q.Index('packageproposals_by_projecttyperef_sort_by_upvote'),
-              q.Ref(q.Collection('ProjectTypes'), projectType.id)
-            )
+              q.Ref(q.Collection('ProjectTypes'), projectType.id),
+            ),
           ),
           q.Lambda(['upvotes', 'ref'], q.Get(q.Var('ref'))),
-        )
+        ),
       )
       return data.map((doc: values.Document) => ({
         id: doc.ref.id,
@@ -120,9 +122,9 @@ export const resolvers:IResolvers<any, Context> = {
         q.Paginate(
           q.Match(
             q.Index('packageproposals_by_projecttyperef_sort_by_upvote'),
-            q.Ref(q.Collection('ProjectTypes'), projectType.id)
-          )
-        )
+            q.Ref(q.Collection('ProjectTypes'), projectType.id),
+          ),
+        ),
       )
       return data.length
     },
@@ -131,7 +133,7 @@ export const resolvers:IResolvers<any, Context> = {
   Query: {
     packageProposal: async (root, { id }, ctx) => {
       const { data } = await ctx.db.query(
-        q.Get(q.Ref(q.Collection('PackageProposals'), id))
+        q.Get(q.Ref(q.Collection('PackageProposals'), id)),
       )
       return {
         id,
@@ -142,26 +144,28 @@ export const resolvers:IResolvers<any, Context> = {
     packageProposalByName: async (root, { name }, ctx) => {
       try {
         const { ref: { id }, data } = await ctx.db.query(
-          q.Get(q.Match(q.Index('packageproposal_by_name'), name))
+          q.Get(q.Match(q.Index('packageproposal_by_name'), name)),
         )
         return {
           id,
           ...data,
         }
-      } catch (e) {}
-    }
+      } catch (e) {
+        // Nothing
+      }
+    },
   },
 
   Mutation: {
     proposePackage: async (root, { input }, ctx) => {
       if (await ctx.db.query(
-        q.Exists(q.Match(q.Index('packageproposal_by_name'), input.packageName))
+        q.Exists(q.Match(q.Index('packageproposal_by_name'), input.packageName)),
       )) {
         throw new ApolloError('Package proposal already exists')
       }
 
       if (await ctx.db.query(
-        q.Exists(q.Match(q.Index('packages_by_name'), input.packageName))
+        q.Exists(q.Match(q.Index('packages_by_name'), input.packageName)),
       )) {
         throw new ApolloError('Package was already added')
       }
@@ -184,10 +188,10 @@ export const resolvers:IResolvers<any, Context> = {
               upvotes: 0,
               info: {
                 tags: input.tags,
-              }
-            }
-          }
-        )
+              },
+            },
+          },
+        ),
       )
       return {
         id,
@@ -204,7 +208,7 @@ export const resolvers:IResolvers<any, Context> = {
         ref,
       )
       const { data } = await ctx.db.query(
-        q.Get(ref)
+        q.Get(ref),
       )
       if (await ctx.db.query(q.Exists(match))) {
         await ctx.db.query(
@@ -214,8 +218,8 @@ export const resolvers:IResolvers<any, Context> = {
               data: {
                 upvotes: --data.upvotes,
               },
-            })
-          )
+            }),
+          ),
         )
       } else {
         await ctx.db.query(
@@ -226,22 +230,22 @@ export const resolvers:IResolvers<any, Context> = {
                 data: {
                   proposalRef: ref,
                   userRef,
-                }
-              }
+                },
+              },
             ),
             q.Update(ref, {
               data: {
                 upvotes: ++data.upvotes,
               },
-            })
-          )
+            }),
+          ),
         )
       }
       return {
         id: input.proposalId,
         ...data,
       }
-    }
-  }
+    },
+  },
 }
 

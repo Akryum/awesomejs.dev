@@ -6,6 +6,6 @@ import ms from 'ms'
 
 hook('create', async (context: Context) => {
   context.npm = mem(npmFetch.json, {
-    maxAge: ms('1s')
+    maxAge: ms('1s'),
   })
 })

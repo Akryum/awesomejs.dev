@@ -1,3 +1,3 @@
 export enum ErrorCode {
-  ERROR_UNAUTHORIZED = 'unauthorized'
+  ERROR_UNAUTHORIZED = 'unauthorized',
 }

@@ -63,13 +63,13 @@ export const resolvers: IResolvers<any, Context> = {
     description: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).description ||
       (await getNpmMetadata(pkg, ctx)).description,
     bookmarked: async (pkg, args, ctx) => {
-      if (!ctx.user) return false
+      if (!ctx.user) { return false }
       return ctx.db.query(
         q.Exists(q.Match(
           q.Index('packagebookmarks_by_package_and_user'),
           q.Ref(q.Collection('Users'), ctx.user.id),
-          q.Ref(q.Collection('Packages'), pkg.id)
-        ))
+          q.Ref(q.Collection('Packages'), pkg.id),
+        )),
       )
     },
     readme: async (pkg, args, ctx) => {
@@ -79,12 +79,12 @@ export const resolvers: IResolvers<any, Context> = {
           owner: slug.owner,
           repo: slug.repo,
           headers: {
-            accept: 'application/vnd.github.3.html'
-          }
+            accept: 'application/vnd.github.3.html',
+          },
         })
         return data
       }
-    }
+    },
   },
 
   User: {
@@ -92,14 +92,14 @@ export const resolvers: IResolvers<any, Context> = {
       const { data } = await ctx.db.query(
         q.Map(
           q.Paginate(q.Match(q.Index('packagebookmarks_by_userref'), q.Ref(q.Collection('Users'), user.id))),
-          q.Lambda(['ref'], q.Get(q.Select(['data', 'packageRef'], q.Get(q.Var('ref')))))
-        )
+          q.Lambda(['ref'], q.Get(q.Select(['data', 'packageRef'], q.Get(q.Var('ref'))))),
+        ),
       )
       return data.map((doc: values.Document) => ({
         id: doc.ref.id,
         ...doc.data,
       }))
-    }
+    },
   },
 
   Query: {
@@ -118,14 +118,16 @@ export const resolvers: IResolvers<any, Context> = {
     packageByName: async (root, { name } , ctx) => {
       try {
         const { ref: { id }, data } = await ctx.db.query(
-          q.Get(q.Match(q.Index('packages_by_name'), name))
+          q.Get(q.Match(q.Index('packages_by_name'), name)),
         )
         return {
           id,
           ...data,
         }
-      } catch (e) {}
-    }
+      } catch (e) {
+        // Nothing
+      }
+    },
   },
 
   Mutation: {
@@ -142,7 +144,7 @@ export const resolvers: IResolvers<any, Context> = {
       )
       if (await ctx.db.query(q.Exists(match))) {
         await ctx.db.query(
-          q.Delete(q.Select(['ref'], q.Get(match)))
+          q.Delete(q.Select(['ref'], q.Get(match))),
         )
       } else {
         await ctx.db.query(
@@ -152,16 +154,16 @@ export const resolvers: IResolvers<any, Context> = {
               data: {
                 packageRef: pkg.ref,
                 userRef,
-                projectTypeRef: q.Ref(q.Collection('ProjectTypes'), pkg.data.projectTypeId)
-              }
-            }
-          )
+                projectTypeRef: q.Ref(q.Collection('ProjectTypes'), pkg.data.projectTypeId),
+              },
+            },
+          ),
         )
       }
       return {
         id: pkg.ref.id,
         ...pkg.data,
       }
-    }
-  }
+    },
+  },
 }

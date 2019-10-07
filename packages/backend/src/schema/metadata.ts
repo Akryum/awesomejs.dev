@@ -5,7 +5,14 @@ import { query as q } from 'faunadb'
 
 const METADATA_MAX_AGE = ms('2h')
 
-export async function updateMetadata (ctx: Context, id: string, collection: string, type: string, data: any, version: number) {
+export async function updateMetadata (
+  ctx: Context,
+  id: string,
+  collection: string,
+  type: string,
+  data: any,
+  version: number,
+) {
   const result = {
     version,
     ts: Date.now(),
@@ -17,11 +24,11 @@ export async function updateMetadata (ctx: Context, id: string, collection: stri
       {
         data: {
           metadata: {
-            [type]: result
-          }
-        }
-      }
-    )
+            [type]: result,
+          },
+        },
+      },
+    ),
   )
   return result
 }
@@ -53,7 +60,7 @@ export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: 
   }
 }, {
   maxAge: ms('1s'),
-  cacheKey: pkg => pkg.id,
+  cacheKey: (pkg) => pkg.id,
 })
 
 const GITHUB_METADATA_VERSION = 5
@@ -62,13 +69,15 @@ export const getGithubMetadata = (collection: string) => mem(async (pkg: any, ct
   try {
     let result = pkg.metadata && pkg.metadata.github
     if (!result || result.version !== GITHUB_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
-      let data, owner, repo
+      let data
+      let owner: string
+      let repo: string
 
       if (pkg.github) {
         owner = pkg.github.owner
         repo = pkg.github.repo
       } else {
-        let npmData = await getNpmMetadata(collection)(pkg, ctx)
+        const npmData = await getNpmMetadata(collection)(pkg, ctx)
         let githubUrl
 
         if (npmData.repository && npmData.repository.type === 'git' && npmData.repository.url.includes('github.com')) {
@@ -90,7 +99,7 @@ export const getGithubMetadata = (collection: string) => mem(async (pkg: any, ct
           }
         }
       }
-      
+
       if (!data) {
         const { data: githubData } = await ctx.github.repos.get({
           owner,
@@ -124,5 +133,5 @@ export const getGithubMetadata = (collection: string) => mem(async (pkg: any, ct
   }
 }, {
   maxAge: ms('1s'),
-  cacheKey: pkg => pkg.id,
+  cacheKey: (pkg) => pkg.id,
 })

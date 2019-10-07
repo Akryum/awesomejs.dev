@@ -22,31 +22,35 @@ export interface OAuthProfile {
   username?: string
   displayName?: string
   email?: string
-  emails?: ({ value: string })[]
-  photos?: ({ value: string })[]
+  emails?: Array<{ value: string }>
+  photos?: Array<{ value: string }>
   profileUrl?: string
 }
 
 const basePath = process.env.BASE_API_PATH || ''
 const clientBaseUrl = process.env.CLIENT_BASE_URL || ''
 
-export function use (provider: string, factory: (verify: VerifyFunction) => Strategy, authenticateOptions: AuthenticateOptions) {
+export function use (
+  provider: string,
+  factory: (verify: VerifyFunction) => Strategy,
+  authenticateOptions: AuthenticateOptions,
+) {
   hook('expressCreate', (ctx: Context) => {
     const strategy = factory(verifyOAuth(provider, ctx))
-    useStrategy(strategy, (ctx: Context) => {
-      ctx.express.get(
+    useStrategy(strategy, (context: Context) => {
+      context.express.get(
         `${basePath}/auth/${provider}`,
-        passport.authenticate(provider, authenticateOptions)
+        passport.authenticate(provider, authenticateOptions),
       )
-  
-      ctx.express.get(
+
+      context.express.get(
         `${basePath}/auth/${provider}/callback`,
         passport.authenticate(provider, {
-          failureRedirect: `${clientBaseUrl}/login?error=1`
+          failureRedirect: `${clientBaseUrl}/login?error=1`,
         }),
         (req, res) => {
           res.redirect(`${clientBaseUrl}/`)
-        }
+        },
       )
     })
   })
@@ -56,7 +60,7 @@ deserializeUser(async (passportCtx, { serialized }) => {
   try {
     const ctx = passportCtx as Context
     const { ref: { id }, data } = await ctx.db.query(
-      q.Get(q.Ref(q.Collection('Users'), serialized))
+      q.Get(q.Ref(q.Collection('Users'), serialized)),
     )
     return {
       id,
@@ -68,7 +72,7 @@ deserializeUser(async (passportCtx, { serialized }) => {
   }
 })
 
-export function verifyOAuth (provider: String, ctx: Context) {
+export function verifyOAuth (provider: string, ctx: Context) {
   return async (accessToken: string, refreshToken: string, profile: OAuthProfile, done: VerifyCallback) => {
     try {
       let user: values.Document
@@ -80,9 +84,9 @@ export function verifyOAuth (provider: String, ctx: Context) {
           q.If(
             q.Exists(q.Var('ref')),
             q.Get(q.Var('ref')),
-            null
-          )
-        )
+            null,
+          ),
+        ),
       )
       if (!account) {
         // Create User
@@ -92,8 +96,8 @@ export function verifyOAuth (provider: String, ctx: Context) {
           // we need to fetch the private ones
           const data = await fetch(`https://api.github.com/user/emails`, {
             headers: {
-              authorization: `token ${accessToken}`
-            }
+              authorization: `token ${accessToken}`,
+            },
           })
           const json = await data.json()
           email = json.find((item: any) => item.primary).email
@@ -102,7 +106,7 @@ export function verifyOAuth (provider: String, ctx: Context) {
         }
         const avatar = profile.photos.length ? profile.photos[0].value : null
         const nickname = profile.displayName || profile.username
-        
+
         user = await ctx.db.query(
           q.Create(
             q.Collection('Users'),
@@ -111,11 +115,11 @@ export function verifyOAuth (provider: String, ctx: Context) {
                 email,
                 avatar,
                 nickname,
-              }
-            }
-          )
+              },
+            },
+          ),
         )
-  
+
         account = await ctx.db.query(
           q.Create(
             q.Collection('UserAccounts'),
@@ -128,13 +132,13 @@ export function verifyOAuth (provider: String, ctx: Context) {
                 profileUrl: profile.profileUrl,
                 accessToken,
                 refreshToken,
-              } as UserAccount
-            }
-          )
+              } as UserAccount,
+            },
+          ),
         )
       } else {
         user = await ctx.db.query(
-          q.Get(account.data.userRef)
+          q.Get(account.data.userRef),
         )
       }
       done(null, user ? {
