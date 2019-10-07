@@ -9,14 +9,16 @@
     </PageTitle>
 
     <div class="flex">
-      <div class="w-full lg:w-1/3 lg:pb-64">
+      <div
+        v-if="!$responsive.md || !packageId"
+        class="w-full lg:w-1/3 lg:pb-64"
+      >
         <ProjectTypePackageProposalsButton
           :project-type-id="projectType.id"
           class="w-full mb-6"
         />
 
         <PackageList
-          v-if="!$responsive.md || !packageId"
           :project-type-slug="projectType.slug"
         />
       </div>

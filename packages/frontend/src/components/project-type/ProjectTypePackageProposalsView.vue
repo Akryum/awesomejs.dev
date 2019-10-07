@@ -9,7 +9,10 @@
     </PageTitle>
 
     <div class="flex">
-      <div class="w-full lg:w-1/3 lg:pb-64">
+      <div
+        v-if="!$responsive.md || !packageId"
+        class="w-full lg:w-1/3 lg:pb-64"
+      >
         <PackageProposalList
           :project-type-id="projectType.id"
         />
