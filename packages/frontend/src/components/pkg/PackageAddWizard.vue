@@ -168,6 +168,10 @@ export default {
             mutation ProposePackage ($input: ProposePackageInput!) {
               proposePackage (input: $input) {
                 ...pkgProposal
+                projectType {
+                  id
+                  name
+                }
               }
             }
             ${pkgProposal}

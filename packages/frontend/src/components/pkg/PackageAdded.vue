@@ -19,7 +19,7 @@
       </div>
       <div>
         Tags:
-        <span class="text-white">{{ proposal.tags.join(', ') }}</span>
+        <span class="text-white">{{ proposal.info.tags.join(', ') }}</span>
       </div>
     </div>
 
