@@ -9,7 +9,7 @@
         class="flex items-center pb-4 lg:py-4"
       >
         <PackageLogo
-          v-if="!$responsive.md"
+          v-if="!$responsive.sm"
           :pkg="pkg"
           class="mr-6"
         />
