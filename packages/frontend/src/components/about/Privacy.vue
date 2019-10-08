@@ -1,5 +1,5 @@
 <template>
-  <div class="document">
+  <div class="about-document">
     <div class="flex justify-center text-purple-500 mb-4">
       <i class="material-icons text-6xl">verified_user</i>
     </div>
