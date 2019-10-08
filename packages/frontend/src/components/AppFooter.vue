@@ -4,6 +4,13 @@
   >
     <div>
       <span class="inline-block mr-4">
+        <router-link
+          :to="{ name: 'about-privacy' }"
+          class="underline"
+        >Privacy &amp; Cookies</router-link>
+      </span>
+
+      <span class="inline-block mr-4">
         Follow us on
         <a
           href="https://twitter.com/awesomejsapp"
@@ -21,7 +28,7 @@
         >Github</a>
       </span>
 
-      <span class="inline-block ">
+      <span class="inline-block">
         Some icons from
         <a
           href="https://icons8.com"

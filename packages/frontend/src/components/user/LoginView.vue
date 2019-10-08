@@ -7,6 +7,14 @@
     <div class="text-gray-300 mt-8">
       How do you want to sign in?
     </div>
+    <div class="text-gray-300 mt-8">
+      <span class="inline-block mr-4">
+        <router-link
+          :to="{ name: 'about-privacy' }"
+          class="underline"
+        >Privacy &amp; Cookies</router-link>
+      </span>
+    </div>
     <div class="mt-4">
       <BaseButton
         :href="`${baseUrl}/auth/github`"
