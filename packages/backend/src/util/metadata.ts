@@ -63,7 +63,7 @@ export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: 
   cacheKey: (pkg) => pkg.id,
 })
 
-const GITHUB_METADATA_VERSION = 5
+const GITHUB_METADATA_VERSION = 6
 
 export const getGithubMetadata = (
   collection: string,
@@ -122,6 +122,7 @@ export const getGithubMetadata = (
             avatar: githubData.owner.avatar_url,
           },
           description: githubData.description,
+          defaultBranch: githubData.default_branch,
         }
 
         if (updateAlgoliaIndex) {

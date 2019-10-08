@@ -76,14 +76,32 @@ export const resolvers: IResolvers<any, Context> = {
       )
     },
     readme: async (pkg, args, ctx) => {
-      const { slug } = await getGithubMetadata(pkg, ctx)
+      const { slug, defaultBranch } = await getGithubMetadata(pkg, ctx)
       if (slug) {
-        const { data } = await ctx.github.repos.getReadme({
+        let { data }: { data: string } = await ctx.github.repos.getReadme({
           owner: slug.owner,
           repo: slug.repo,
           headers: {
             accept: 'application/vnd.github.3.html',
           },
+        }) as any
+        // Fix image urls
+        data = data.replace(/src="([^"]+)/g, (result, group1) => {
+          if (group1.startsWith('http')) {
+            return result
+          } else if (group1.startsWith('/')) {
+            return `src="https://github.com/${
+              encodeURIComponent(slug.owner)
+            }/${
+              encodeURIComponent(slug.repo)
+            }/raw/${defaultBranch}${group1}`
+          } else {
+            return `src="https://raw.githubusercontent.com/${
+              encodeURIComponent(slug.owner)
+            }/${
+              encodeURIComponent(slug.repo)
+            }/${defaultBranch}/${group1}?sanitize=true`
+          }
         })
         return data
       }
