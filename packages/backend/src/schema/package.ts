@@ -2,11 +2,11 @@ import gql from 'graphql-tag'
 import { IResolvers } from 'graphql-tools'
 import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
-import * as Metadata from './metadata'
-import { getIndexObject } from './package-index'
+import * as Metadata from '../util/metadata'
+import { getIndexObject, indexPackage } from '../util/package-index'
 
 const getNpmMetadata = Metadata.getNpmMetadata('Packages')
-const getGithubMetadata = Metadata.getGithubMetadata('Packages')
+const getGithubMetadata = Metadata.getGithubMetadata('Packages', 'packages')
 
 export const typeDefs = gql`
 type Package {
@@ -47,6 +47,7 @@ extend type Query {
 type Mutation {
   togglePackageBookmark (input: TogglePackageBookmarkInput!): Package @auth
   indexPackages: Boolean @admin @auth
+  indexPackage (id: ID!): Boolean @admin @auth
 }
 
 input TogglePackageBookmarkInput {
@@ -198,6 +199,28 @@ export const resolvers: IResolvers<any, Context> = {
           doc.projectType,
         ))),
       )
+      return true
+    },
+
+    indexPackage: async (root, { id }, ctx) => {
+      const pkg: any = await ctx.db.query(
+        q.Let({
+          doc: q.Get(q.Ref(
+            q.Collection('Packages'),
+            id,
+          )),
+        },
+        q.Merge(
+          q.Var('doc'),
+          {
+            projectType: q.Get(q.Ref(
+              q.Collection('ProjectTypes'),
+              q.Select(['data', 'projectTypeId'], q.Var('doc')),
+            )),
+          },
+        )),
+      )
+      await indexPackage(ctx, pkg, pkg.projectType)
       return true
     },
   },

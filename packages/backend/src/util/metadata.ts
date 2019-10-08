@@ -3,7 +3,7 @@ import ms from 'ms'
 import { Context } from '@/context'
 import { query as q } from 'faunadb'
 
-const METADATA_MAX_AGE = ms('2h')
+const METADATA_MAX_AGE = ms('6h')
 
 export async function updateMetadata (
   ctx: Context,
@@ -65,7 +65,10 @@ export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: 
 
 const GITHUB_METADATA_VERSION = 5
 
-export const getGithubMetadata = (collection: string) => mem(async (pkg: any, ctx: Context): Promise<any> => {
+export const getGithubMetadata = (
+  collection: string,
+  updateAlgoliaIndex: string = null,
+) => mem(async (pkg: any, ctx: Context): Promise<any> => {
   try {
     let result = pkg.metadata && pkg.metadata.github
     if (!result || result.version !== GITHUB_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
@@ -119,6 +122,18 @@ export const getGithubMetadata = (collection: string) => mem(async (pkg: any, ct
             avatar: githubData.owner.avatar_url,
           },
           description: githubData.description,
+        }
+
+        if (updateAlgoliaIndex) {
+          const index = ctx.algolia.initIndex(updateAlgoliaIndex)
+          await index.partialUpdateObject({
+            objectID: pkg.id,
+            stars: githubData.stargazers_count,
+            defaultLogo: githubData.owner.avatar_url,
+            ...(githubData.description ? {
+              description: githubData.description,
+            } : {}),
+          })
         }
       }
       result = await updateMetadata(ctx, pkg.id, collection, 'github', data, GITHUB_METADATA_VERSION)

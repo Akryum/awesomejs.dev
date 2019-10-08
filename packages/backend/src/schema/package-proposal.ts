@@ -3,8 +3,8 @@ import { IResolvers } from 'graphql-tools'
 import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
 import { ApolloError } from 'apollo-server-core'
-import * as Metadata from './metadata'
-import { indexPackage } from './package-index'
+import * as Metadata from '../util/metadata'
+import { indexPackage } from '../util/package-index'
 
 const getNpmMetadata = Metadata.getNpmMetadata('PackageProposals')
 const getGithubMetadata = Metadata.getGithubMetadata('PackageProposals')

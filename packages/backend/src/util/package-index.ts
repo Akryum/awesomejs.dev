@@ -15,7 +15,9 @@ export async function getIndexObject (
     })
     githubData = data
   } else {
-    githubData = {}
+    githubData = {
+      owner: {},
+    }
   }
   return {
     objectID: pkg.ref.id,
@@ -24,6 +26,9 @@ export async function getIndexObject (
     description: githubData.description || npmData.description,
     keywords: npmData.keywords,
     license: npmData.license,
+    maintainers: npmData.maintainers,
+    stars: githubData.stargazers_count || 0,
+    defaultLogo: githubData.owner.avatar_url,
     projectType: {
       id: projectType.ref.id,
       name: projectType.data.name,
