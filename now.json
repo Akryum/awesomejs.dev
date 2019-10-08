@@ -2,18 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "./packages/frontend/package.json",
+      "src": "packages/frontend/package.json",
       "use": "@now/static-build",
       "config": {
         "distDir": "dist"
       }
     },
     {
-      "src": "./packages/backend/dist/app.js",
+      "src": "packages/backend/dist/app.js",
       "use": "@now/node",
       "config": {
         "includeFiles": [
-          "./packages/backend/dist/**"
+          "packages/backend/dist/**"
         ]
       }
     }
