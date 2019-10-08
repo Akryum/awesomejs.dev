@@ -14,6 +14,10 @@ export default {
         console.log(chalk.red('Related exception:'), error.extensions.exception)
       }
       return error
-    }
-  }
+    },
+    engine: {
+      apiKey: process.env.APOLLO_ENGINE_KEY,
+      schemaTag: process.env.APOLLO_ENGINE_SCHEMA_TAG,
+    },
+  },
 } as ApolloConfig

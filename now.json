@@ -53,6 +53,8 @@
     "COOKIE_SECRET": "@awesomejs_cookie_secret",
     "ALGOLIA_ID": "@awesomejs_algolia_id",
     "ALGOLIA_KEY": "@awesomejs_algolia_key",
+    "APOLLO_ENGINE_KEY": "@awesomejs_apollo_engine_key",
+    "APOLLO_ENGINE_SCHEMA_TAG": "prod",
     "OAUTH_GITHUB_ID": "@awesomejs_oauth_github_id",
     "OAUTH_GITHUB_SECRET": "@awesomejs_oauth_github_secret",
     "OAUTH_GITHUB_CALLBACK": "https://awesomejs.dev/api/auth/github/callback"
