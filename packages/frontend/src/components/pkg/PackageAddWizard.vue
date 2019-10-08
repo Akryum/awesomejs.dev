@@ -18,6 +18,7 @@
 
       <input
         v-model="packageName"
+        v-focus.lazy="true"
         placeholder="Enter package name on npm"
         maxlength="80"
         class="mt-8 bg-black px-8 py-4 rounded w-full"

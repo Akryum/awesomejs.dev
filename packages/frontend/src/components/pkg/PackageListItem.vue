@@ -14,7 +14,7 @@
           {{ pkg.name }}
         </span>
 
-        <span>
+        <span v-if="pkg.maintainers">
           by {{ pkg.maintainers.map(m => m.name).join(', ') }}
         </span>
       </div>

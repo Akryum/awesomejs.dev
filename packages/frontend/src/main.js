@@ -5,6 +5,8 @@ import './registerServiceWorker'
 import { createProvider } from './vue-apollo'
 import './components'
 import Responsive from './util/responsive'
+import { focus } from 'vue-focus'
+import VueCompositionApi from '@vue/composition-api'
 
 Vue.use(Responsive, {
   computed: {
@@ -22,6 +24,10 @@ Vue.use(Responsive, {
     },
   },
 })
+
+Vue.directive('focus', focus)
+
+Vue.use(VueCompositionApi)
 
 Vue.config.productionTip = false
 
