@@ -6,5 +6,6 @@ fragment user on User {
   email
   nickname
   avatar
+  admin
 }
 `

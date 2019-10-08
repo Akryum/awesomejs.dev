@@ -4,6 +4,7 @@ import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
 import { ApolloError } from 'apollo-server-core'
 import * as Metadata from './metadata'
+import { indexPackage } from './package-index'
 
 const getNpmMetadata = Metadata.getNpmMetadata('PackageProposals')
 const getGithubMetadata = Metadata.getGithubMetadata('PackageProposals')
@@ -39,6 +40,7 @@ extend type Query {
 extend type Mutation {
   proposePackage (input: ProposePackageInput!): PackageProposal @auth
   togglePackageProposalUpvote (input: TogglePackageProposalUpvoteInput!): PackageProposal @auth
+  approvePackageProposal (input: ApprovePackageProposalInput!): Package @admin @auth
 }
 
 input ProposePackageInput {
@@ -48,6 +50,10 @@ input ProposePackageInput {
 }
 
 input TogglePackageProposalUpvoteInput {
+  proposalId: ID!
+}
+
+input ApprovePackageProposalInput {
   proposalId: ID!
 }
 `
@@ -244,6 +250,36 @@ export const resolvers: IResolvers<any, Context> = {
       return {
         id: input.proposalId,
         ...data,
+      }
+    },
+
+    approvePackageProposal: async (root, { input }, ctx) => {
+      const pkgProposal: any = await ctx.db.query(
+        q.Get(q.Ref(q.Collection('PackageProposals'), input.proposalId)),
+      )
+      const projectType: any = await ctx.db.query(
+        q.Get(pkgProposal.data.projectTypeRef),
+      )
+      const pkg: any = await ctx.db.query(
+        q.Do(
+          q.Delete(pkgProposal.ref),
+          q.Create(
+            q.Collection('Packages'),
+            {
+              data: {
+                name: pkgProposal.data.name,
+                projectTypeId: projectType.ref.id,
+                info: pkgProposal.data.info,
+                metadata: pkgProposal.data.metadata,
+              },
+            },
+          ),
+        ),
+      )
+      await indexPackage(ctx, pkg, projectType)
+      return {
+        id: pkg.ref.id,
+        ...pkg.data,
       }
     },
   },

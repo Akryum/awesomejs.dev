@@ -9,6 +9,7 @@ type User {
   email: String!
   accounts: [UserAccount!]!
   avatar: String
+  admin: Boolean
 }
 
 type UserAccount {

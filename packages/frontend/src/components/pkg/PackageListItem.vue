@@ -37,6 +37,8 @@
       :count="pkg.stars || 0"
       class="package-count"
     />
+
+    <slot />
   </router-link>
 </template>
 

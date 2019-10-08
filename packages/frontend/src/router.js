@@ -97,5 +97,10 @@ export default new Router({
       name: 'add-package',
       component: () => import(/* webpackChunkName: "package-add-wizard" */ './components/pkg/PackageAddWizard.vue'),
     },
+    {
+      path: '/about/privacy',
+      name: 'about-privacy',
+      component: () => import(/* webpackChunkName: "about-privacy" */ './components/about/Privacy.vue'),
+    },
   ],
 })

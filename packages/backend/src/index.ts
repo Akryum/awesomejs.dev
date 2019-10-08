@@ -1,6 +1,7 @@
 import './context/fauna'
 import './context/npm'
 import './context/github'
+import './context/algolia'
 import './passport'
 import { bootstrap, printReady } from '@nodepack/app'
 import { Context } from './context'

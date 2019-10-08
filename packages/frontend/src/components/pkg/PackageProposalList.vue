@@ -14,7 +14,14 @@
           params: { packageId: pkg.id },
         }"
         class="mb-6"
-      />
+      >
+        <PackageProposalApproveButton
+          v-if="currentUser && currentUser.admin"
+          :project-type-id="projectTypeId"
+          :proposal="pkg"
+          :proposals="proposals"
+        />
+      </PackageListItem>
     </template>
     <EmptyMessage v-else>
       No proposal yet
@@ -31,16 +38,22 @@
 <script>
 import gql from 'graphql-tag'
 import { pkgProposal } from './fragments'
+import { user } from '../user/fragments'
 import EmptyMessage from '../EmptyMessage.vue'
 import PackageAddButton from './PackageAddButton.vue'
 import PackageListItem from './PackageListItem.vue'
 import LoadingIndicator from '../LoadingIndicator.vue'
+const PackageProposalApproveButton = () => import(
+  /* webpackChunkName: "PackageProposalApproveButton.vue" */
+  './PackageProposalApproveButton.vue'
+)
 
 export default {
   components: {
     EmptyMessage,
     PackageAddButton,
     PackageListItem,
+    PackageProposalApproveButton,
     LoadingIndicator,
   },
 
@@ -78,6 +91,15 @@ export default {
       update: data => data.projectType.packageProposals,
       fetchPolicy: 'cache-and-network',
     },
+
+    currentUser: gql`
+      query CurrentUser {
+        currentUser {
+          ...user
+        }
+      }
+      ${user}
+    `,
   },
 }
 </script>

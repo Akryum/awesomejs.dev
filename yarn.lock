@@ -2216,6 +2216,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/algoliasearch@^3.34.3":
+  version "3.34.3"
+  resolved "https://registry.yarnpkg.com/@types/algoliasearch/-/algoliasearch-3.34.3.tgz#877461423c49e3b69cdf220f8173c5ccb831a013"
+  integrity sha512-lz2Br3LZ0iS3wf1R2+52LIAscJTdYvJ2ITL7S/jYsQfbf1m/788P4m4Dy6WvbZmA88ZdU53zmm5UOURXhfMFYw==
+
 "@types/body-parser@*", "@types/body-parser@1.17.1":
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.1.tgz#18fcf61768fb5c30ccc508c21d6fd2e8b3bf7897"
