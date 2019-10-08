@@ -31,7 +31,7 @@
     <h2>Privacy Policy</h2>
 
     <p class="text-gray-500">
-      Last updated: 8th October 2019
+      Last updated: 9th October 2019
     </p>
 
     <p>Guillaume Chau - Akryum ("us", "we", or "our") operates https://awesomesj.dev (the "Site"). This page informs you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of the Site.</p>
