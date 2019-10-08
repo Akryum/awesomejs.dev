@@ -1856,9 +1856,9 @@
     babel-loader "^8.0.6"
 
 "@nodepack/plugin-express@^0.4.19":
-  version "0.4.20"
-  resolved "https://registry.yarnpkg.com/@nodepack/plugin-express/-/plugin-express-0.4.20.tgz#b9495f67989d77731e2142e05708ee8531b4554c"
-  integrity sha512-f0flioub0DRVBAZNsQa/EjQ7fxdkq1qTyCdE2QmXNziIv4dtb08oSZiydE5ZiORoN6WZr2ZZpxH47YN1V20yuA==
+  version "0.4.23"
+  resolved "https://registry.yarnpkg.com/@nodepack/plugin-express/-/plugin-express-0.4.23.tgz#792cf7598e280458016ea4a08479bbb2fc5ec060"
+  integrity sha512-1ImEM+CZfPosJAiRDytZcWbKgNZyhDvIDMjpHq8Tx7HHXNOkmWjr9bElScLj+BVC2lwRlq2kIUqHBjYi5aGr3Q==
   dependencies:
     "@types/express" "^4.11.1"
     cookie-parser "1.4.4"
@@ -5795,9 +5795,9 @@ deepmerge@^1.5.2:
   integrity sha512-95k0GDqvBjZavkuvzx/YqVLv/6YYa17fz6ILMSf7neqQITCPbnfEnQvEgMPNjH4kgobe7+WIL0yJEHku+H3qtQ==
 
 deepmerge@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.0.0.tgz#3e3110ca29205f120d7cb064960a39c3d2087c09"
-  integrity sha512-YZ1rOP5+kHor4hMAH+HRQnBQHg+wvS1un1hAOuIcxcBy0hzcUf6Jg2a1w65kpoOUnurOfZbERwjI1TfZxNjcww==
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.1.0.tgz#f4647b378c0a9d32965470e477c01ae55451b19a"
+  integrity sha512-tJlmKE535XRVBrzMRMqlm4V2S/l3yO/qr9Ad0MUqgR5jh9epGrALs8Q6+pROMa6ntDieAlnmYM/cDFCtNjp4+Q==
 
 default-gateway@^4.2.0:
   version "4.2.0"
@@ -6150,9 +6150,9 @@ ejs@^2.0.0, ejs@^2.6.1, ejs@^2.6.2:
   integrity sha512-kS/gEPzZs3Y1rRsbGX4UOSjtP/CeJP0CxSNZHYxGfVM/VgLcv0ZqM7C45YyTj2DI2g7+P9Dd24C+IMIg6D0nYQ==
 
 electron-to-chromium@^1.3.247:
-  version "1.3.276"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.276.tgz#1cca47c31b6e852ce43ab62ae4f31608db8b95d4"
-  integrity sha512-J7bVRAW2fHJVOGZqxSvmMcbBAWPiueHsKwSq+TjaNq1wQ71Za0uBExC1ECuMmAAQioDA2//auhI/glFINnUGPw==
+  version "1.3.277"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.277.tgz#38b7b297f9b3f67ea900a965c1b11a555de526ec"
+  integrity sha512-Czmsrgng89DOgJlIknnw9bn5431QdtnUwGp5YYiPwU1DbZQUxCLF+rc1ZC09VNAdalOPcvH6AE8BaA0H5HjI/w==
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -14649,9 +14649,9 @@ webpack@^4.0.0:
     webpack-sources "^1.4.1"
 
 webpack@^5.0.0-alpha.20:
-  version "5.0.0-alpha.29"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.0.0-alpha.29.tgz#c51f575e8c40e91a3756321160d4202f25a423d7"
-  integrity sha512-kcnbh0isW+admTv7ihdx2kWCurUe/BzwHFi5zv6xg8xdwQSf4pdfjrLBxH/Yt2Loi+kq2J4ydGOgAaX1Snst1A==
+  version "5.0.0-alpha.30"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.0.0-alpha.30.tgz#1d4d120d64a37a7e6b4ffe10e5c4e4ec45566c97"
+  integrity sha512-PimaiFbnUsJE5Pks/1qZvzMdlZlH912bD8SqYiv8hhwVPf6bdg+HVaGQ4chiStAyk2e8NlvX3yPXXE6jFiun4A==
   dependencies:
     "@webassemblyjs/ast" "1.8.5"
     "@webassemblyjs/helper-module-context" "1.8.5"
@@ -15042,6 +15042,14 @@ yargs-parser@^13.1.1:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+yargs-parser@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-15.0.0.tgz#cdd7a97490ec836195f59f3f4dbe5ea9e8f75f08"
+  integrity sha512-xLTUnCMc4JhxrPEPUYD5IBR1mWCK/aT6+RJ/K29JY2y1vD+FhtgKK0AXRWvI262q3QSffAQuTouFIKUuHX89wQ==
+  dependencies:
+    camelcase "^5.0.0"
+    decamelize "^1.2.0"
+
 yargs@12.0.5, yargs@^12.0.1:
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-12.0.5.tgz#05f5997b609647b64f66b81e3b4b10a368e7ad13"
@@ -15077,9 +15085,9 @@ yargs@^13.0.0:
     yargs-parser "^13.1.1"
 
 yargs@^14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-14.0.0.tgz#ba4cacc802b3c0b3e36a9e791723763d57a85066"
-  integrity sha512-ssa5JuRjMeZEUjg7bEL99AwpitxU/zWGAGpdj0di41pOEmJti8NR6kyUIJBkR78DTYNPZOU08luUo0GTHuB+ow==
+  version "14.2.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-14.2.0.tgz#f116a9242c4ed8668790b40759b4906c276e76c3"
+  integrity sha512-/is78VKbKs70bVZH7w4YaZea6xcJWOAwkhbR0CFuZBmYtfTYF0xjGJF43AYd8g2Uii1yJwmS5GR2vBmrc32sbg==
   dependencies:
     cliui "^5.0.0"
     decamelize "^1.2.0"
@@ -15091,7 +15099,7 @@ yargs@^14.0.0:
     string-width "^3.0.0"
     which-module "^2.0.0"
     y18n "^4.0.0"
-    yargs-parser "^13.1.1"
+    yargs-parser "^15.0.0"
 
 yargs@~3.10.0:
   version "3.10.0"
