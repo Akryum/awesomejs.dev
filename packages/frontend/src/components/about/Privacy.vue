@@ -56,7 +56,7 @@
 
     <p>We don't collect any sensitive data about you. Sensitive data: racial or ethnical origin, political positions, religious or philosophical beliefs, work union membership, data related to health or sexual orientation. If any sensitive data about you would be sent to us or the Site, they will be deleted.</p>
 
-    <p>This Personal Information may be stored indefinitely. You can ask us anytime to delete your user account and all associated Personal Information by contacting us (see "Contact Us" section below).</p>
+    <p>This Personal Information will be stored as long as you have a user account registered on the Site. You can ask us anytime to delete your user account and all associated Personal Information by contacting us (see "Contact Us" section below).</p>
 
     <h3>Communications</h3>
 
