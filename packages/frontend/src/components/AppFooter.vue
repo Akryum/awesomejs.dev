@@ -37,5 +37,18 @@
         >icons8</a>
       </span>
     </div>
+
+    <div class="flex justify-center mt-4">
+      <a
+        href="https://algolia.com"
+        target="_blank"
+      >
+        <img
+          src="~@/assets/search-by-algolia-dark-background.svg"
+          alt="Search by Algolia"
+          class="opacity-50"
+        >
+      </a>
+    </div>
   </footer>
 </template>
