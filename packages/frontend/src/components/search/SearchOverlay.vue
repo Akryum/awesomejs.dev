@@ -9,7 +9,7 @@
       />
 
       <div
-        class="relative m-8 flex-auto max-w-xl max-h-screen box flex flex-col items-center"
+        class="relative m-2 sm:m-8 flex-auto max-w-xl max-h-screen box flex flex-col items-center"
       >
         <BaseButton
           icon-left="close"
@@ -24,7 +24,7 @@
           v-focus.lazy="true"
           placeholder="Search..."
           maxlength="80"
-          class="mt-8 bg-black px-8 py-4 rounded w-full"
+          class="mt-2 sm:mt-8 bg-black px-8 py-4 rounded w-full"
         >
 
         <LoadingIndicator
