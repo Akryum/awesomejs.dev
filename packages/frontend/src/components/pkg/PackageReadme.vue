@@ -5,7 +5,7 @@
   />
   <div
     v-else
-    class="readme overflow-hidden relative pb-8"
+    class="readme overflow-hidden relative pb-8 mt-4 border-t-2 border-gray-800"
     :class="{
       expand: expand || $responsive.sm
     }"
