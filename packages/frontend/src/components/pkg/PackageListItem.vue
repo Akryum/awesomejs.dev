@@ -21,7 +21,7 @@
 
       <div class="w-full truncate text-gray-500">
         <span>
-          {{ pkg.description }}
+          {{ parseEmoji(pkg.description) }}
         </span>
       </div>
     </div>
@@ -45,6 +45,7 @@
 <script>
 import PackageLogo from './PackageLogo.vue'
 import PackageCount from './PackageCount.vue'
+import { parseEmoji } from '@/util/emoji'
 
 export default {
   components: {
@@ -59,6 +60,10 @@ export default {
       type: Object,
       required: true,
     },
+  },
+
+  methods: {
+    parseEmoji,
   },
 }
 </script>

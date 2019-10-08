@@ -27,7 +27,7 @@
 
           <div class="w-full truncate text-gray-500">
             <span>
-              {{ pkg.description }}
+              {{ parseEmoji(pkg.description) }}
             </span>
           </div>
         </div>
@@ -63,6 +63,7 @@ import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 
 import gql from 'graphql-tag'
 import { pkgProposal } from './fragments'
+import { parseEmoji } from '@/util/emoji'
 
 export default {
   components: {
@@ -95,6 +96,10 @@ export default {
         }
       },
     },
+  },
+
+  methods: {
+    parseEmoji,
   },
 }
 </script>

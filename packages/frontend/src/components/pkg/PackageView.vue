@@ -27,7 +27,7 @@
 
           <div class="w-full truncate text-gray-500">
             <span>
-              {{ pkg.description }}
+              {{ parseEmoji(pkg.description) }}
             </span>
           </div>
         </div>
@@ -60,6 +60,7 @@ import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageLogo from './PackageLogo.vue'
 import PackageCount from './PackageCount.vue'
 import PackageBookmarkButton from './PackageBookmarkButton.vue'
+import { parseEmoji } from '@/util/emoji'
 
 import gql from 'graphql-tag'
 import { pkg } from './fragments'
@@ -95,6 +96,10 @@ export default {
         }
       },
     },
+  },
+
+  methods: {
+    parseEmoji,
   },
 }
 </script>
