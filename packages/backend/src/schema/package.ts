@@ -3,7 +3,6 @@ import { IResolvers } from 'graphql-tools'
 import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
 import * as Metadata from '../util/metadata'
-import { getIndexObject, indexPackage } from '../util/package-index'
 
 const getNpmMetadata = Metadata.getNpmMetadata('Packages')
 const getGithubMetadata = Metadata.getGithubMetadata('Packages', 'packages')
@@ -50,8 +49,6 @@ extend type Query {
 
 type Mutation {
   togglePackageBookmark (input: TogglePackageBookmarkInput!): Package @auth
-  indexPackages: Boolean @admin @auth
-  indexPackage (id: ID!): Boolean @admin @auth
 }
 
 input TogglePackageBookmarkInput {
@@ -216,61 +213,6 @@ export const resolvers: IResolvers<any, Context> = {
         id: pkg.ref.id,
         ...pkg.data,
       }
-    },
-
-    // Used to index all packages by admin
-    indexPackages: async (root, args, ctx) => {
-      const { data: allPackages } = await ctx.db.query(
-        q.Map(
-          q.Map(
-            q.Paginate(q.Match(q.Index('all_packages')), { size: 100000 }),
-            q.Lambda('ref', q.Get(q.Var('ref'))),
-          ),
-          q.Lambda('doc',
-            q.Merge(
-              q.Var('doc'),
-              {
-                projectType: q.Get(q.Ref(
-                  q.Collection('ProjectTypes'),
-                  q.Select(['data', 'projectTypeId'], q.Var('doc')),
-                )),
-              },
-            ),
-          ),
-        ),
-      )
-
-      const index = ctx.algolia.initIndex('packages')
-      await index.addObjects(
-        await Promise.all(allPackages.map((doc: any) => getIndexObject(
-          ctx,
-          doc,
-          doc.projectType,
-        ))),
-      )
-      return true
-    },
-
-    indexPackage: async (root, { id }, ctx) => {
-      const pkg: any = await ctx.db.query(
-        q.Let({
-          doc: q.Get(q.Ref(
-            q.Collection('Packages'),
-            id,
-          )),
-        },
-        q.Merge(
-          q.Var('doc'),
-          {
-            projectType: q.Get(q.Ref(
-              q.Collection('ProjectTypes'),
-              q.Select(['data', 'projectTypeId'], q.Var('doc')),
-            )),
-          },
-        )),
-      )
-      await indexPackage(ctx, pkg, pkg.projectType)
-      return true
     },
   },
 }
