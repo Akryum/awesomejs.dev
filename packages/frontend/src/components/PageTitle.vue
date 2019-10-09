@@ -1,6 +1,18 @@
 <template>
-  <h1 class="flex flex-col xl:flex-row items-baseline">
-    <div class="flex-none mr-4 flex">
+  <h1
+    class="flex flex-col xl:flex-row"
+    :class="{
+      'items-center justify-center': center,
+      'items-baseline': !center,
+    }"
+  >
+    <div
+      class="flex-none flex"
+      :class="{
+        'justify-center': center,
+        'mr-4': !center,
+      }"
+    >
       <router-link
         v-if="backTo"
         :to="backTo"
@@ -24,6 +36,11 @@ export default {
     backTo: {
       type: [String, Object],
       default: null,
+    },
+
+    center: {
+      type: Boolean,
+      default: false,
     },
   },
 }

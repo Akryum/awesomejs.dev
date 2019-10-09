@@ -4,7 +4,7 @@
       <i class="material-icons text-6xl">verified_user</i>
     </div>
 
-    <PageTitle class="mb-12 justify-center">
+    <PageTitle center>
       Privacy &amp; Security
     </PageTitle>
 
