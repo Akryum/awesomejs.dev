@@ -36,6 +36,11 @@
       "dest": "/packages/backend/dist/app.js"
     },
     {
+      "src": "^/service-worker.js",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "/packages/frontend/service-worker.js"
+    },
+    {
       "src": "/(.*\\.(ico|js|json|css|svg|png|jpg|txt))",
       "dest": "/packages/frontend/$1"
     },
