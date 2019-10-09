@@ -7,17 +7,21 @@
     </div>
 
     <AppFooter />
+
+    <AppServiceWorkerManager />
   </div>
 </template>
 
 <script>
 import AppHeader from './app/AppHeader.vue'
 import AppFooter from './app/AppFooter.vue'
+import AppServiceWorkerManager from './app/AppServiceWorkerManager.vue'
 
 export default {
   components: {
     AppHeader,
     AppFooter,
+    AppServiceWorkerManager,
   },
 }
 </script>
