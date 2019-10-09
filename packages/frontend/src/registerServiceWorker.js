@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
-import { updateAvailable } from './util/service-worker'
+import { updateAvailable, updateRegistration } from './util/service-worker'
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -20,8 +20,9 @@ if (process.env.NODE_ENV === 'production') {
     updatefound () {
       console.log('New content is downloading.')
     },
-    updated () {
+    updated (registration) {
       console.log('New content is available; please refresh.')
+      updateRegistration.value = registration
       updateAvailable.value = true
     },
     offline () {
