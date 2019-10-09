@@ -46,11 +46,11 @@
 
 <script>
 import AppHeaderLogo from './AppHeaderLogo.vue'
-import PackageAddButton from './pkg/PackageAddButton.vue'
-import UserMenu from './user/UserMenu.vue'
+import PackageAddButton from '../pkg/PackageAddButton.vue'
+import UserMenu from '../user/UserMenu.vue'
 const SearchOverlay = () => import(
   /* webpackChunkName: "SearchOverlay.vue" */
-  './search/SearchOverlay.vue'
+  '../search/SearchOverlay.vue'
 )
 
 export default {

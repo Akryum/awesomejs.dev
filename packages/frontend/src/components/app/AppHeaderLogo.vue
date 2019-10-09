@@ -10,7 +10,7 @@
 
 <script>
 import gql from 'graphql-tag'
-import { projectType } from './project-type/fragments'
+import { projectType } from '../project-type/fragments'
 
 export default {
   computed: {
