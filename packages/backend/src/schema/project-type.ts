@@ -86,7 +86,7 @@ export const resolvers: IResolvers<any, Context> = {
     resetProjectTypeTagCounters: async (root, args, ctx) => {
       const projectTypeMap = new Map<string, Map<string, number>>()
       const { data: packages } = await ctx.db.query(q.Map(
-        q.Paginate(q.Match(q.Index('all_packages'))),
+        q.Paginate(q.Match(q.Index('all_packages')), { size: 100000 }),
         q.Lambda('ref', q.Get(q.Var('ref'))),
       ))
       for (const pkg of packages) {

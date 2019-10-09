@@ -192,7 +192,7 @@ export const resolvers: IResolvers<any, Context> = {
       const { data: allPackages } = await ctx.db.query(
         q.Map(
           q.Map(
-            q.Paginate(q.Match(q.Index('all_packages'))),
+            q.Paginate(q.Match(q.Index('all_packages')), { size: 100000 }),
             q.Lambda('ref', q.Get(q.Var('ref'))),
           ),
           q.Lambda('doc',
