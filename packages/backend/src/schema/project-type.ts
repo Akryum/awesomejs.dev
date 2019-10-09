@@ -9,7 +9,7 @@ type ProjectType {
   name: String!
   slug: String!
   logo: String!
-  packages: [Package!]!
+  popularTags: [String!]!
 }
 
 extend type Query {
@@ -25,19 +25,12 @@ extend type Mutation {
 
 export const resolvers: IResolvers<any, Context> = {
   ProjectType: {
-    packages: async (projectType, args, ctx) => {
-      const { data } = await ctx.db.query(
-        q.Map(
-          q.Paginate(
-            q.Match(q.Index('packages_sort_by_stars_desc'), projectType.id),
-          ),
-          q.Lambda(['stars', 'ref'], q.Get(q.Var('ref'))),
-        ),
-      )
-      return data.map((doc: values.Document) => ({
-        id: doc.ref.id,
-        ...doc.data,
-      }))
+    popularTags: (projectType) => {
+      return Object.keys(projectType.tagMap).filter(
+        (key) => key !== projectType.name.toLowerCase(),
+      ).sort(
+        (a, b) => projectType.tagMap[b] - projectType.tagMap[a],
+      ).slice(0, 8)
     },
   },
 

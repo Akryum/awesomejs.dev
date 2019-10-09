@@ -1,7 +1,7 @@
 <template>
   <div>
     <LoadingIndicator
-      v-if="$apollo.loading"
+      v-if="$apollo.loading && !packages.length"
       class="py-8"
     />
     <template v-else-if="packages.length">
@@ -49,6 +49,11 @@ export default {
       type: String,
       required: true,
     },
+
+    tags: {
+      type: Array,
+      default: null,
+    },
   },
 
   data () {
@@ -60,10 +65,10 @@ export default {
   apollo: {
     packages: {
       query: gql`
-        query ProjectTypePackages ($slug: String!) {
+        query ProjectTypePackages ($slug: String!, $tags: [String!]) {
           projectType: projectTypeBySlug (slug: $slug) {
             id
-            packages {
+            packages (tags: $tags) {
               ...pkg
             }
           }
@@ -73,6 +78,7 @@ export default {
       variables () {
         return {
           slug: this.projectTypeSlug,
+          tags: this.tags,
         }
       },
       update: data => data.projectType.packages,

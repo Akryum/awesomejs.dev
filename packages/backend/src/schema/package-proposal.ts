@@ -260,9 +260,22 @@ export const resolvers: IResolvers<any, Context> = {
       const projectType: any = await ctx.db.query(
         q.Get(pkgProposal.data.projectTypeRef),
       )
+      const tagMap = projectType.data.tagMap
+      for (const tag of pkgProposal.data.info.tags) {
+        tagMap[tag] = tagMap[tag] || 0
+        tagMap[tag]++
+      }
       const pkg: any = await ctx.db.query(
         q.Do(
           q.Delete(pkgProposal.ref),
+          q.Update(
+            projectType.ref,
+            {
+              data: {
+                tagMap,
+              },
+            },
+          ),
           q.Create(
             q.Collection('Packages'),
             {
