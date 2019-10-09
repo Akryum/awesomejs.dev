@@ -21,7 +21,7 @@ export async function getIndexObject (
   }
   return {
     objectID: pkg.ref.id,
-    _tags: [...(pkg.data.info.tags || []), ...(npmData.keywords || [])],
+    _tags: pkg.data.info.tags || [],
     name: pkg.data.name,
     description: githubData.description || npmData.description,
     keywords: npmData.keywords,
