@@ -17,6 +17,10 @@ extend type Query {
   projectType (id: ID!): ProjectType
   projectTypeBySlug (slug: String!): ProjectType
 }
+
+extend type Mutation {
+  resetProjectTypeTagCounters: Boolean @admin @auth
+}
 `
 
 export const resolvers: IResolvers<any, Context> = {
@@ -75,6 +79,49 @@ export const resolvers: IResolvers<any, Context> = {
           ...data,
         }
       }
+    },
+  },
+
+  Mutation: {
+    resetProjectTypeTagCounters: async (root, args, ctx) => {
+      const projectTypeMap = new Map<string, Map<string, number>>()
+      const { data: packages } = await ctx.db.query(q.Map(
+        q.Paginate(q.Match(q.Index('all_packages'))),
+        q.Lambda('ref', q.Get(q.Var('ref'))),
+      ))
+      for (const pkg of packages) {
+        let counters = projectTypeMap.get(pkg.data.projectTypeId)
+        if (!counters) {
+          counters = new Map<string, number>()
+          projectTypeMap.set(pkg.data.projectTypeId, counters)
+        }
+        for (const tag of pkg.data.info.tags) {
+          let count = counters.get(tag)
+          if (!count) {
+            count = 0
+          }
+          count++
+          counters.set(tag, count)
+        }
+      }
+      await ctx.db.query(
+        q.Do(
+          ...Array.from(projectTypeMap.keys()).map((id) =>
+            q.Update(
+              q.Ref(q.Collection('ProjectTypes'), id),
+              {
+                data: {
+                  tagMap: Array.from(projectTypeMap.get(id).keys()).reduce((map, key) => {
+                    map[key] = projectTypeMap.get(id).get(key)
+                    return map
+                  }, {} as { [key: string]: number }),
+                },
+              },
+            ),
+          ),
+        ),
+      )
+      return true
     },
   },
 }
