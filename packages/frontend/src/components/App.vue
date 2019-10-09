@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import AppHeader from './components/app/AppHeader.vue'
-import AppFooter from './components/app/AppFooter.vue'
+import AppHeader from './app/AppHeader.vue'
+import AppFooter from './app/AppFooter.vue'
 
 export default {
   components: {
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="postcss">
-@import 'assets/styles/tailwind.postcss';
+@import '~@/assets/styles/tailwind.postcss';
 
 .main-view {
   min-height: calc(100vh - 280px);

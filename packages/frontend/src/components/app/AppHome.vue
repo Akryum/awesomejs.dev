@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import PageTitle from './PageTitle.vue'
-import ProjectTypes from './project-type/ProjectTypes.vue'
+import PageTitle from '../PageTitle.vue'
+import ProjectTypes from '../project-type/ProjectTypes.vue'
 
 export default {
   components: {
