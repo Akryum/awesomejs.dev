@@ -5,7 +5,7 @@
   />
   <div
     v-else
-    class="project-types-grid my-8"
+    class="project-types-grid my-4 sm:my-8"
   >
     <router-link
       v-for="projectType of projectTypes"
