@@ -29,13 +29,13 @@
 
     <PackageCount
       v-if="pkg.upvotes != null"
-      :count="pkg.upvotes || 0"
+      :count="pkg.upvotes"
       icon="thumb_up"
       class="package-count"
     />
     <PackageCount
-      v-else
-      :count="pkg.stars || 0"
+      v-else-if="pkg.stars != null"
+      :count="pkg.stars"
       class="package-count"
     />
 

@@ -5,43 +5,9 @@
       class="p-8"
     />
     <template v-else>
-      <div
-        class="flex items-center pb-4 lg:py-4"
-      >
-        <PackageLogo
-          v-if="!$responsive.sm"
-          :pkg="pkg"
-          class="mr-6"
-        />
-
-        <div class="flex-1 w-0 mr-6 overflow-hidden">
-          <div class="w-full truncate text-gray-600">
-            <span class="text-gray-100">
-              {{ pkg.name }}
-            </span>
-
-            <span>
-              by {{ pkg.maintainers.map(m => m.name).join(', ') }}
-            </span>
-          </div>
-
-          <div class="w-full truncate text-gray-500">
-            <span v-if="pkg.description">
-              {{ parseEmoji(pkg.description) }}
-            </span>
-            <span v-else>No description</span>
-          </div>
-        </div>
-
-        <a
-          :href="pkg.repo"
-          target="_blank"
-        >
-          <PackageCount
-            :count="pkg.stars || 0"
-          />
-        </a>
-      </div>
+      <PackageGeneralInfo
+        :pkg="pkg"
+      />
 
       <div class="mb-4">
         <PackageProposalUpvoteButton
@@ -58,19 +24,16 @@
 
 <script>
 import LoadingIndicator from '../LoadingIndicator.vue'
-import PackageLogo from './PackageLogo.vue'
-import PackageCount from './PackageCount.vue'
+import PackageGeneralInfo from './PackageGeneralInfo.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 
 import gql from 'graphql-tag'
 import { pkgProposal } from './fragments'
-import { parseEmoji } from '@/util/emoji'
 
 export default {
   components: {
     LoadingIndicator,
-    PackageLogo,
-    PackageCount,
+    PackageGeneralInfo,
     PackageProposalUpvoteButton,
   },
 
@@ -97,10 +60,6 @@ export default {
         }
       },
     },
-  },
-
-  methods: {
-    parseEmoji,
   },
 }
 </script>
