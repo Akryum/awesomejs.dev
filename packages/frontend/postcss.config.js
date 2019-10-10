@@ -21,6 +21,7 @@ module.exports = {
         /^markdown/,
         /^anchor/,
         /^ally-bg/,
+        /^avatar/,
       ],
     }),
     require('autoprefixer')(),

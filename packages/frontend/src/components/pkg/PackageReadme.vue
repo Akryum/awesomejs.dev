@@ -12,7 +12,7 @@
   >
     <div
       ref="render"
-      class="markdown"
+      class="markdown pb-32"
       v-html="pkg.readme"
     />
 
@@ -33,6 +33,8 @@
 <script>
 import LoadingIndicator from '../LoadingIndicator.vue'
 import { gql } from 'apollo-server-core'
+
+const GOOGLE_IMG_PROXY = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url='
 
 export default {
   components: {
@@ -81,16 +83,50 @@ export default {
 
       // Images
       const imgs = render.querySelectorAll('img')
-      for (const img of imgs) {
-        img.onload = this.onImgLoad
+      for (const el of imgs) {
+        const img = new Image()
+        img.crossOrigin = 'Anonymous'
+        img.onload = () => this.onImgLoad(img, el)
+        img.src = `${GOOGLE_IMG_PROXY}${el.src}`
       }
     },
 
-    onImgLoad (e) {
-      const img = e.currentTarget
-      // Badge
-      if (img.offsetHeight !== 20) {
-        img.classList.add('ally-bg')
+    onImgLoad (img, el) {
+      // Empty
+      if (img.width <= 1 || img.height <= 1) return
+
+      // Badges
+      if (img.height === 20) return
+
+      // Calculate brightness
+      const canvas = document.createElement('canvas')
+      canvas.width = img.width
+      canvas.height = img.height
+
+      const ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0)
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const data = imageData.data
+      let r, g, b, avg
+      let colorSum = 0
+
+      for (let x = 0, len = data.length; x < len; x += 4) {
+        r = data[x]
+        g = data[x + 1]
+        b = data[x + 2]
+
+        avg = Math.floor((r + g + b) / 3)
+        colorSum += avg
+      }
+
+      const brightness = Math.floor(colorSum / (img.width * img.height))
+      if (brightness < 40) {
+        el.classList.add('ally-bg')
+
+        if (img.width === img.height) {
+          el.classList.add('avatar')
+        }
       }
     },
   },
