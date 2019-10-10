@@ -14,7 +14,13 @@ module.exports = {
         // <router-link/>
         'a',
       ],
-      whitelistPatterns: [ /-(leave|enter|appear)(|-(to|from|active))$/, /^(?!(|.*?:)cursor-move).+-move$/, /^router-link(|-exact)-active$/ ],
+      whitelistPatterns: [
+        /-(leave|enter|appear)(|-(to|from|active))$/,
+        /^(?!(|.*?:)cursor-move).+-move$/,
+        /^router-link(|-exact)-active$/,
+        /^markdown/,
+        /^anchor/,
+      ],
     }),
     require('autoprefixer')(),
     require('postcss-nested')(),
