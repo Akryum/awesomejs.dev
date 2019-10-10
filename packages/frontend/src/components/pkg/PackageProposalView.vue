@@ -26,9 +26,10 @@
           </div>
 
           <div class="w-full truncate text-gray-500">
-            <span>
+            <span v-if="pkg.description">
               {{ parseEmoji(pkg.description) }}
             </span>
+            <span v-else>No description</span>
           </div>
         </div>
 
