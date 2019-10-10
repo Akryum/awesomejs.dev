@@ -112,6 +112,15 @@ export const resolvers: IResolvers<any, Context> = {
       }
       await ctx.db.query(
         q.Do(
+          // Reset counters to empty objects
+          q.Foreach(
+            q.Paginate(q.Match(q.Index('all_projecttypes')), { size: 100000 }),
+            q.Lambda('ref', q.Do(
+              q.Update(q.Var('ref'), { data: { tagMap: null } }),
+              q.Update(q.Var('ref'), { data: { tagMap: {} } }),
+            )),
+          ),
+          // Set counts
           ...Array.from(projectTypeMap.keys()).map((id) =>
             q.Update(
               q.Ref(q.Collection('ProjectTypes'), id),
