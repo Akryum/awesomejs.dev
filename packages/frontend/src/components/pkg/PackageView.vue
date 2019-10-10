@@ -9,9 +9,14 @@
         :pkg="pkg"
       />
 
-      <div class="mb-4">
+      <div class="mb-4 flex overflow-x-auto">
         <PackageBookmarkButton
           :package-id="pkg.id"
+          class="mr-4"
+        />
+
+        <PackageShareButton
+          :pkg="pkg"
         />
       </div>
 
@@ -26,6 +31,7 @@
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageGeneralInfo from './PackageGeneralInfo.vue'
 import PackageBookmarkButton from './PackageBookmarkButton.vue'
+import PackageShareButton from './PackageShareButton.vue'
 
 import gql from 'graphql-tag'
 import { pkg } from './fragments'
@@ -35,6 +41,7 @@ export default {
     LoadingIndicator,
     PackageGeneralInfo,
     PackageBookmarkButton,
+    PackageShareButton,
   },
 
   props: {

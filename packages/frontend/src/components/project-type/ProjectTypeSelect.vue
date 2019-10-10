@@ -63,8 +63,8 @@
 <script>
 import gql from 'graphql-tag'
 import { projectType } from './fragments'
-import PopupModal from '../PopupModal.vue'
 import ProjectTypesItem from './ProjectTypesItem.vue'
+import PopupModal from '../PopupModal.vue'
 
 export default {
   components: {

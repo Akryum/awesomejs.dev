@@ -5,7 +5,11 @@
   >
     <FocusTrap active>
       <div
-        class="overlay fixed z-10 inset-0 flex flex-col items-center justify-start bg-blur p-4 sm:p-24 "
+        class="overlay fixed z-10 inset-0 flex flex-col items-center bg-blur p-4 sm:p-24"
+        :class="{
+          'justify-start': size === 'full',
+          'justify-center': size === 'small',
+        }"
         @keyup.esc="close()"
       >
         <div
@@ -14,7 +18,11 @@
         />
 
         <div
-          class="zoomable relative bg-gray-800 shadow-lg rounded p-4 sm:p-8 sm:pt-4 flex-1 w-full max-w-6xl max-h-screen overflow-auto box"
+          class="zoomable relative bg-gray-800 shadow-lg rounded p-4 sm:p-8 sm:pt-4 overflow-auto box"
+          :class="{
+            'flex-1 w-full max-w-6xl max-h-screen': size === 'full',
+            'flex-none w-full max-w-2xl max-h-2xl': size === 'small',
+          }"
         >
           <div class="flex items-center mb-2 sm:mb-4 lg:mb-0">
             <div class="text-gray-600 flex-1 truncate">
@@ -43,6 +51,13 @@ import { FocusTrap } from 'focus-trap-vue'
 export default {
   components: {
     FocusTrap,
+  },
+
+  props: {
+    size: {
+      type: String,
+      default: 'full',
+    },
   },
 
   methods: {
