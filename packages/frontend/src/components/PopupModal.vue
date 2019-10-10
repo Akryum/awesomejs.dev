@@ -5,7 +5,7 @@
   >
     <FocusTrap active>
       <div
-        class="overlay fixed z-10 inset-0 flex flex-col items-center bg-blur p-4 sm:p-24"
+        class="overlay fixed z-20 inset-0 flex flex-col items-center bg-blur p-4 sm:p-24"
         :class="{
           'justify-start': size === 'full',
           'justify-center': size === 'small',
