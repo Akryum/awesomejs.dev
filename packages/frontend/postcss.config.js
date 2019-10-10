@@ -20,6 +20,7 @@ module.exports = {
         /^router-link(|-exact)-active$/,
         /^markdown/,
         /^anchor/,
+        /^ally-bg/,
       ],
     }),
     require('autoprefixer')(),

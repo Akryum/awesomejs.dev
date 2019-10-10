@@ -11,6 +11,7 @@
     }"
   >
     <div
+      ref="render"
       class="markdown"
       v-html="pkg.readme"
     />
@@ -66,6 +67,31 @@ export default {
           id: this.packageId,
         }
       },
+    },
+  },
+
+  watch: {
+    'pkg.readme': 'processRender',
+  },
+
+  methods: {
+    async processRender () {
+      await this.$nextTick()
+      const render = this.$refs.render
+
+      // Images
+      const imgs = render.querySelectorAll('img')
+      for (const img of imgs) {
+        img.onload = this.onImgLoad
+      }
+    },
+
+    onImgLoad (e) {
+      const img = e.currentTarget
+      // Badge
+      if (img.offsetHeight !== 20) {
+        img.classList.add('ally-bg')
+      }
     },
   },
 }
