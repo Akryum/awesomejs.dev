@@ -1,11 +1,12 @@
 <template>
   <div>
     <BaseButton
-      class="inline-block w-full bg-gray-800 hover:bg-gray-700 px-8 py-4"
+      class="inline-block w-full"
+      :class="buttonClass"
       @click="open = true"
     >
       <span v-if="!projectType">
-        Select a project type...
+        {{ placeholder }}
       </span>
       <span
         v-else
@@ -42,6 +43,7 @@
           >
             <ProjectTypesItem
               :project-type="p"
+              :selected="p === projectType"
             />
           </BaseButton>
         </div>
@@ -70,6 +72,21 @@ export default {
       type: String,
       default: null,
     },
+
+    projectTypeSlug: {
+      type: String,
+      default: null,
+    },
+
+    placeholder: {
+      type: String,
+      default: 'Select a project type...',
+    },
+
+    buttonClass: {
+      type: [String, Array, Object],
+      default: 'bg-gray-800 hover:bg-gray-700 px-8 py-4',
+    },
   },
 
   data () {
@@ -92,13 +109,21 @@ export default {
 
   computed: {
     projectType () {
-      return (this.projectTypes || []).find(p => p.id === this.projectTypeId)
+      return (this.projectTypes || []).find(
+        p => p.id === this.projectTypeId || p.slug === this.projectTypeSlug
+      )
     },
   },
 
   methods: {
     select (projectType) {
-      this.$emit('update', projectType.id)
+      if (projectType === this.projectType) {
+        this.$emit('update', null)
+        this.$emit('update:projectTypeSlug', null)
+      } else {
+        this.$emit('update', projectType.id)
+        this.$emit('update:projectTypeSlug', projectType.slug)
+      }
       this.open = false
     },
   },

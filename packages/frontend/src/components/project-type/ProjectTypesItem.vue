@@ -5,6 +5,9 @@
     w-24 h-24 lg:w-32 lg:h-32 cursor-pointer
     hover:bg-gray-700
     "
+    :class="{
+      'text-purple-200 bg-purple-800 hover:bg-purple-700': selected,
+    }"
   >
     <div
       class="w-8 lg:w-16 flex items-center justify-center flex-1"
@@ -28,6 +31,11 @@ export default {
     projectType: {
       type: Object,
       required: true,
+    },
+
+    selected: {
+      type: Boolean,
+      default: false,
     },
   },
 }

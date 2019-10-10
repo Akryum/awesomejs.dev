@@ -19,13 +19,23 @@
           Close
         </BaseButton>
 
-        <input
-          v-model="searchText"
-          v-focus.lazy="true"
-          placeholder="Search..."
-          maxlength="80"
-          class="mt-2 sm:mt-8 bg-black px-8 py-4 rounded w-full"
-        >
+        <div class="flex w-full mt-2 sm:mt-8 mb-4">
+          <input
+            ref="input"
+            v-model="searchText"
+            v-focus.lazy="true"
+            placeholder="Search..."
+            maxlength="80"
+            class="bg-black px-8 py-4 rounded w-full flex-1 mr-4"
+          >
+
+          <ProjectTypeSelect
+            :project-type-slug.sync="projectTypeSlug"
+            placeholder="Any Project type"
+            class="flex-none"
+            button-class="bg-black hover:bg-purple-900 px-4 py-4"
+          />
+        </div>
 
         <LoadingIndicator
           v-if="!result"
@@ -47,7 +57,7 @@
                 packageId: hit.id,
               },
             }"
-            class="mt-4"
+            class="mt-4 first:mt-0"
           />
         </div>
 
@@ -66,7 +76,9 @@ import EmptyMessage from '../EmptyMessage.vue'
 import FocusLock from 'vue-focus-lock'
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageListItem from '../pkg/PackageListItem.vue'
-import { useSearch } from './use-search'
+import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
+import { useSearch } from '@/util/algolia'
+import { ref, computed, watch } from '@vue/composition-api'
 
 export default {
   components: {
@@ -74,6 +86,7 @@ export default {
     FocusLock,
     LoadingIndicator,
     PackageListItem,
+    ProjectTypeSelect,
   },
 
   setup (props, { emit }) {
@@ -81,15 +94,33 @@ export default {
       emit('close')
     }
 
-    const {
-      searchText,
-      result,
-    } = useSearch('packages')
+    const input = ref(null)
+
+    function focusInput () {
+      if (input.value) {
+        input.value.focus()
+      }
+    }
+
+    const projectTypeSlug = ref(null)
+
+    watch(projectTypeSlug, () => focusInput())
+
+    const searchParams = computed(() => ({
+      facetFilters: [
+        ...projectTypeSlug.value ? [`projectType.slug:${projectTypeSlug.value}`] : [],
+      ],
+    }))
+
+    const { searchText, result } = useSearch('packages', searchParams)
 
     return {
       close,
+      input,
+      focusInput,
       searchText,
       result,
+      projectTypeSlug,
     }
   },
 
@@ -97,6 +128,10 @@ export default {
     '$route' () {
       this.close()
     },
+  },
+
+  created () {
+    this.projectTypeSlug = this.$route.params.projectTypeSlug
   },
 }
 </script>
