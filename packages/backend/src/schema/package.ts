@@ -3,6 +3,7 @@ import { IResolvers } from 'graphql-tools'
 import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
 import * as Metadata from '../util/metadata'
+import { processReadme } from '@/util/readme'
 
 const getNpmMetadata = Metadata.getNpmMetadata('Packages')
 const getGithubMetadata = Metadata.getGithubMetadata('Packages', 'packages')
@@ -86,24 +87,7 @@ export const resolvers: IResolvers<any, Context> = {
             accept: 'application/vnd.github.3.html',
           },
         }) as any
-        // Fix image urls
-        data = data.replace(/src="([^"]+)/g, (result, group1) => {
-          if (group1.startsWith('http')) {
-            return result
-          } else if (group1.startsWith('/')) {
-            return `src="https://github.com/${
-              encodeURIComponent(slug.owner)
-            }/${
-              encodeURIComponent(slug.repo)
-            }/raw/${defaultBranch}${group1}`
-          } else {
-            return `src="https://raw.githubusercontent.com/${
-              encodeURIComponent(slug.owner)
-            }/${
-              encodeURIComponent(slug.repo)
-            }/${defaultBranch}/${group1}?sanitize=true`
-          }
-        })
+        data = processReadme(data, slug, defaultBranch)
         return data
       }
     },
