@@ -74,7 +74,7 @@ export default {
 <style lang="postcss" scoped>
 .readme {
   &:not(.expand) {
-    max-height: calc(100vh - 400px);
+    max-height: calc(100vh - 420px);
   }
 }
 
