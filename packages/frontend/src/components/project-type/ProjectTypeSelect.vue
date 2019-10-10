@@ -23,76 +23,52 @@
       </span>
     </BaseButton>
 
-    <FocusTrap :active="open">
-      <transition name="zoom">
-        <div
-          v-if="open"
-          class="overlay fixed z-10 inset-0 flex flex-col items-center justify-start bg-blur p-4 sm:p-24 "
-          @keyup.esc="open = false"
+    <PopupModal
+      v-if="open"
+      @close="open = false"
+    >
+      <template #title>
+        Select project type
+      </template>
+
+      <div class="flex justify-center mb-8">
+        <input
+          ref="input"
+          v-model="searchText"
+          v-focus.lazy="true"
+          placeholder="Search..."
+          class="bg-gray-900 px-4 py-2 rounded w-full sm:w-64"
+          @keyup.enter="filteredProjectTypes.length && select(filteredProjectTypes[0])"
         >
-          <div
-            class="absolute inset-0 bg-gray-900 opacity-90"
-            @click="open = false"
+      </div>
+
+      <div class="project-types-grid">
+        <BaseButton
+          v-for="p of filteredProjectTypes"
+          :key="p.id"
+          @click="select(p)"
+        >
+          <ProjectTypesItem
+            :project-type="p"
+            :selected="p === projectType"
           />
+        </BaseButton>
+      </div>
 
-          <div
-            class="zoomable relative bg-gray-800 shadow-lg rounded p-4 sm:p-8 sm:pt-4 flex-1 w-full max-w-6xl max-h-screen overflow-auto box"
-          >
-            <div class="flex items-center mb-2 sm:mb-4 lg:mb-0">
-              <div class="text-gray-600 flex-1 truncate">
-                Select a project type
-              </div>
-
-              <BaseButton
-                icon-left="close"
-                class="px-4 -mr-4 py-1 text-gray-600 hover:text-gray-500"
-                @click="open = false"
-              >
-                Close
-              </BaseButton>
-            </div>
-
-            <div class="flex justify-center mb-8">
-              <input
-                ref="input"
-                v-model="searchText"
-                v-focus.lazy="true"
-                placeholder="Search..."
-                class="bg-gray-900 px-4 py-2 rounded w-full sm:w-64"
-                @keyup.enter="filteredProjectTypes.length && select(filteredProjectTypes[0])"
-              >
-            </div>
-
-            <div class="project-types-grid">
-              <BaseButton
-                v-for="p of filteredProjectTypes"
-                :key="p.id"
-                @click="select(p)"
-              >
-                <ProjectTypesItem
-                  :project-type="p"
-                  :selected="p === projectType"
-                />
-              </BaseButton>
-            </div>
-
-            <div class="h-32 sm:hidden" />
-          </div>
-        </div>
-      </transition>
-    </FocusTrap>
+      <div class="h-32 sm:hidden" />
+    </PopupModal>
   </div>
 </template>
 
 <script>
 import gql from 'graphql-tag'
 import { projectType } from './fragments'
+import PopupModal from '../PopupModal.vue'
 import ProjectTypesItem from './ProjectTypesItem.vue'
-import { FocusTrap } from 'focus-trap-vue'
 
 export default {
   components: {
-    FocusTrap,
+    PopupModal,
     ProjectTypesItem,
   },
 
