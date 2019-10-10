@@ -37,10 +37,14 @@
       </BaseButton>
     </div>
 
-    <SearchOverlay
-      v-if="openSearch"
-      @close="openSearch = false"
-    />
+    <transition name="fade">
+      <keep-alive>
+        <SearchOverlay
+          v-if="openSearch"
+          @close="openSearch = false"
+        />
+      </keep-alive>
+    </transition>
   </header>
 </template>
 

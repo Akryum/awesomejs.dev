@@ -11,8 +11,18 @@ body {
 }
 
 [type="button"],
-[type="submit"] {
+[type="submit"],
+.button-like {
   -webkit-appearance: none !important;
+  outline: none !important;
+
+  &:active {
+    filter: brightness(90%);
+  }
+
+  &:focus-visible {
+    @apply shadow-outline;
+  }
 }
 
 *::-webkit-scrollbar-track {

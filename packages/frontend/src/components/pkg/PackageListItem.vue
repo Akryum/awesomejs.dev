@@ -1,7 +1,7 @@
 <template>
   <router-link
     v-bind="$attrs"
-    class="package-list-item flex items-center bg-gray-800 rounded px-6 py-4 hover:bg-gray-700"
+    class="package-list-item button-like flex items-center bg-gray-800 rounded px-6 py-4 hover:bg-gray-700"
   >
     <PackageLogo
       :pkg="pkg"

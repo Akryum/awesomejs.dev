@@ -1,15 +1,16 @@
 <template>
-  <FocusLock>
+  <FocusTrap active>
     <div
       class="overlay fixed z-30 inset-0 flex justify-center bg-blur"
+      @keyup.esc="close()"
     >
       <div
-        class="absolute inset-0 bg-gray-900 opacity-75"
+        class="absolute inset-0 bg-gray-900 opacity-90"
         @click="close()"
       />
 
       <div
-        class="relative m-2 sm:m-8 flex-auto max-w-xl max-h-screen box flex flex-col items-center"
+        class="relative m-2 sm:m-8 flex-auto max-w-3xl max-h-screen box flex flex-col items-center"
       >
         <BaseButton
           icon-left="close"
@@ -23,7 +24,6 @@
           <input
             ref="input"
             v-model="searchText"
-            v-focus.lazy="true"
             placeholder="Search..."
             maxlength="80"
             class="bg-black px-8 py-4 rounded w-full flex-1 mr-4"
@@ -68,22 +68,22 @@
         </EmptyMessage>
       </div>
     </div>
-  </FocusLock>
+  </FocusTrap>
 </template>
 
 <script>
 import EmptyMessage from '../EmptyMessage.vue'
-import FocusLock from 'vue-focus-lock'
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageListItem from '../pkg/PackageListItem.vue'
 import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
+import { FocusTrap } from 'focus-trap-vue'
 import { useSearch } from '@/util/algolia'
 import { ref, computed, watch } from '@vue/composition-api'
 
 export default {
   components: {
     EmptyMessage,
-    FocusLock,
+    FocusTrap,
     LoadingIndicator,
     PackageListItem,
     ProjectTypeSelect,
@@ -131,7 +131,18 @@ export default {
   },
 
   created () {
-    this.projectTypeSlug = this.$route.params.projectTypeSlug
+    this.onOpen()
+  },
+
+  activated () {
+    this.onOpen()
+  },
+
+  methods: {
+    onOpen () {
+      this.projectTypeSlug = this.$route.params.projectTypeSlug
+      this.focusInput()
+    },
   },
 }
 </script>

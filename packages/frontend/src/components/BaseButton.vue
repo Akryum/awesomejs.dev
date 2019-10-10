@@ -6,7 +6,7 @@
     :tabindex="ghost ? -1 : 0"
     role="button"
     :aria-disabled="ghost"
-    class="inline-block cursor-pointer text-center relative rounded"
+    class="inline-block cursor-pointer text-center relative rounded select-none outline-none"
     :class="{
       'pointer-events-none opacity-50': ghost,
     }"
