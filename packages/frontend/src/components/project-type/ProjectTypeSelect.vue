@@ -38,7 +38,7 @@
           v-focus.lazy="true"
           placeholder="Search..."
           class="bg-gray-900 px-4 py-2 rounded w-full sm:w-64"
-          @keyup.enter="filteredProjectTypes.length && select(filteredProjectTypes[0])"
+          @keyup.enter="!$reponsive.small && filteredProjectTypes.length && select(filteredProjectTypes[0])"
         >
       </div>
 
