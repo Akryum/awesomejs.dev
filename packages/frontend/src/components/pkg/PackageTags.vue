@@ -1,10 +1,10 @@
 <template>
-  <div class="flex">
+  <div class="flex flex-wrap">
     <i class="material-icons text-gray-600 mr-2">filter_list</i>
     <div
       v-for="tag of pkg.info.tags || []"
       :key="tag"
-      class="mr-2 px-2 text-gray-500 bg-gray-800 rounded mb-2 flex-auto sm:flex-none xl:mb-0"
+      class="mr-2 px-2 text-gray-500 bg-gray-800 rounded mb-2 flex-none xl:mb-0"
     >
       {{ tag }}
     </div>
