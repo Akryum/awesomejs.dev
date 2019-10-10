@@ -17,8 +17,11 @@
 
 <script>
 import PackageLinks from './PackageLinks.vue'
-import PackageReadme from './PackageReadme.vue'
 import PackageTags from './PackageTags.vue'
+const PackageReadme = () => import(
+  /* webpackChunkName: "PackageReadme.vue" */
+  './PackageReadme.vue'
+)
 
 export default {
   components: {
