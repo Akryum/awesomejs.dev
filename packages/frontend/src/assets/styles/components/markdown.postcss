@@ -1,6 +1,6 @@
 .markdown {
   img {
-    display: inline-block;
+    @apply inline-block bg-gray-200 rounded p-2;
   }
 
   a {
@@ -32,6 +32,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
+    @apply flex items-center;
+
     &:first-child {
       @apply mt-0;
     }
@@ -75,5 +77,12 @@
 
   .markdown-body {
     @apply p-0;
+  }
+
+  .anchor {
+    @apply text-gray-600 mr-2;
+    svg {
+      @apply fill-current;
+    }
   }
 }
