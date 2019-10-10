@@ -35,7 +35,7 @@
       >
         <ProjectTypePackageProposalsButton
           :project-type-id="projectType.id"
-          class="w-full mb-6"
+          class="w-full mb-4 sm:mb-6"
         />
 
         <PackageList

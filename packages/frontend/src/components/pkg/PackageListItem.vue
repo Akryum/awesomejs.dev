@@ -1,14 +1,14 @@
 <template>
   <router-link
     v-bind="$attrs"
-    class="package-list-item button-like flex items-center bg-gray-800 rounded px-6 py-4 hover:bg-gray-700"
+    class="package-list-item button-like flex items-center bg-gray-800 rounded p-2 sm:px-6 sm:py-4 hover:bg-gray-700 leading-snug sm:leading-normal"
   >
     <PackageLogo
       :pkg="pkg"
-      class="mr-6"
+      class="mr-2 sm:mr-6"
     />
 
-    <div class="flex-1 w-0 mr-6 overflow-hidden">
+    <div class="flex-1 w-0 mr-2 sm:mr-6 overflow-hidden">
       <div class="w-full truncate text-gray-600">
         <span class="text-gray-100">
           {{ pkg.name }}

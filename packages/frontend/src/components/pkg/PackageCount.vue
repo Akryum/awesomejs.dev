@@ -1,6 +1,6 @@
 <template>
   <div class="flex text-purple-500">
-    <div class="mr-2">
+    <div class="mr-1 sm:mr-2">
       {{ formatted }}
     </div>
     <i class="material-icons">{{ icon }}</i>

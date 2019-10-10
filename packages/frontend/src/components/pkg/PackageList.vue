@@ -13,7 +13,7 @@
           params: { packageId: pkg.id },
         }"
         :pkg="pkg"
-        class="mb-6"
+        class="mb-4 sm:mb-6"
       />
     </template>
     <EmptyMessage v-else>
