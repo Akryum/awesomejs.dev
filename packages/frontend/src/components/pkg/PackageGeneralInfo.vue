@@ -28,6 +28,7 @@
     </div>
 
     <a
+      v-if="pkg.repo"
       :href="pkg.repo"
       target="_blank"
     >
