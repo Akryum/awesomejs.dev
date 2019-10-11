@@ -63,5 +63,8 @@
     "OAUTH_GITHUB_ID": "@awesomejs_oauth_github_id",
     "OAUTH_GITHUB_SECRET": "@awesomejs_oauth_github_secret",
     "OAUTH_GITHUB_CALLBACK": "https://awesomejs.dev/api/auth/github/callback"
+  },
+  "github": {
+    "autoAlias": false
   }
 }
