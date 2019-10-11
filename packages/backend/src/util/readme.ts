@@ -18,7 +18,7 @@ export function processReadme (
         encodeURIComponent(slug.owner)
       }/${
         encodeURIComponent(slug.repo)
-      }/${defaultBranch}/${group1}?sanitize=true`
+      }/${defaultBranch}/${group1}${group1.endsWith('svg') ? '?sanitize=true' : ''}`
     }
   })
 
