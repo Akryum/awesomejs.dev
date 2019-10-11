@@ -2,7 +2,7 @@
   <div class="text-center my-8">
     <div
       v-if="projectType"
-      class="w-24 h-24 mx-auto mb-6 flex items-center justify-center"
+      class="logo mx-auto mb-6 flex items-center justify-center"
     >
       <img
         :src="projectType.logo"
@@ -42,3 +42,10 @@ export default {
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+.logo {
+  width: 100px;
+  height: 100px;
+}
+</style>
