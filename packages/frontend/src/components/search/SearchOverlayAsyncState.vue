@@ -9,9 +9,10 @@
     <div
       class="relative m-2 sm:m-8 flex-auto max-w-3xl max-h-screen box flex items-center justify-center"
     >
-      <ErrorMessage v-if="state === 'errror'">
-        Can't load Search Overlay component
-      </ErrorMessage>
+      <ErrorMessage
+        v-if="state === 'errror'"
+        error="Can't load Search Overlay component"
+      />
       <LoadingIndicator v-else-if="state === 'loading'" />
     </div>
   </div>
