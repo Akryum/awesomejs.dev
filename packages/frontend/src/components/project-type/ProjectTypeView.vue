@@ -46,6 +46,7 @@
 
       <div
         v-if="!$responsive.md || packageId"
+        ref="scroller"
         class="w-full lg:w-2/3 lg:pl-16 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto"
       >
         <router-view />
@@ -119,6 +120,12 @@ export default {
         }
       },
       update: data => data.projectTypeBySlug.popularTags,
+    },
+  },
+
+  watch: {
+    packageId () {
+      this.$refs.scroller.scrollTop = 0
     },
   },
 
