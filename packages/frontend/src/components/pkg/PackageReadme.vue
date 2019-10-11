@@ -13,7 +13,7 @@
   >
     <div
       ref="render"
-      class="markdown pb-32"
+      class="markdown pt-8 pb-32"
       v-html="pkg.readme"
     />
 
@@ -143,7 +143,7 @@ export default {
 <style lang="postcss" scoped>
 .readme {
   &:not(.expand) {
-    max-height: calc(100vh - 420px);
+    max-height: calc(100vh - 500px);
   }
 }
 
