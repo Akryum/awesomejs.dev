@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'home' }">
+  <router-link :to="route">
     <img
       :src="src"
       class="w-8 h-8 rounded"
@@ -11,6 +11,7 @@
 <script>
 import gql from 'graphql-tag'
 import { projectType } from '../project-type/fragments'
+import { getNamedParents } from '@/util/router'
 
 export default {
   computed: {
@@ -23,6 +24,18 @@ export default {
         return this.projectType.logo
       }
       return require('@/assets/logo.png')
+    },
+
+    route () {
+      if (this.$responsive.md) {
+        const parents = getNamedParents(this.$router.options.routes, this.$route.matched)
+        if (parents.length) {
+          return {
+            name: parents[parents.length - 1].name,
+          }
+        }
+      }
+      return { name: 'home' }
     },
   },
 
