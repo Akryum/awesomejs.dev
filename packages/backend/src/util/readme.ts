@@ -4,7 +4,7 @@ export function processReadme (
   defaultBranch: string,
 ) {
   // Fix image urls
-  text = text.replace(/src="([^"]+)/g, (result, group1) => {
+  text = text.replace(/src="([^"]+)/gi, (result, group1) => {
     if (group1.startsWith('http')) {
       return result
     } else if (group1.startsWith('/')) {
@@ -21,6 +21,9 @@ export function processReadme (
       }/${defaultBranch}/${group1}${group1.endsWith('svg') ? '?sanitize=true' : ''}`
     }
   })
+
+  // Fix image sizes
+  text = text.replace(/(width|height)="(\d+)"/gi, (result, group1, group2) => `${result} style="${group1}:${group2}px"`)
 
   // Links
   text = text.replace(/href="(.*)"/gi, (result, group1) => {
