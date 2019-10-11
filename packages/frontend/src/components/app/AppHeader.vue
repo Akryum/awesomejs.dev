@@ -52,10 +52,28 @@
 import AppHeaderLogo from './AppHeaderLogo.vue'
 import PackageAddButton from '../pkg/PackageAddButton.vue'
 import UserMenu from '../user/UserMenu.vue'
-const SearchOverlay = () => import(
-  /* webpackChunkName: "SearchOverlay.vue" */
-  '../search/SearchOverlay.vue'
-)
+import SearchOverlayAsyncState from '../search/SearchOverlayAsyncState.vue'
+const SearchOverlayLoading = {
+  render: h => h(SearchOverlayAsyncState, { props: { state: 'loading' } }),
+}
+const SearchOverlayError = {
+  render: h => h(SearchOverlayAsyncState, { props: { state: 'error' } }),
+}
+const SearchOverlay = () => ({
+  component: import(
+    /* webpackChunkName: "SearchOverlay.vue" */
+    '../search/SearchOverlay.vue'
+  ),
+  // A component to use while the async component is loading
+  loading: SearchOverlayLoading,
+  // A component to use if the load fails
+  error: SearchOverlayError,
+  // Delay before showing the loading component. Default: 200ms.
+  delay: 0,
+  // The error component will be displayed if a timeout is
+  // provided and exceeded. Default: Infinity.
+  timeout: 3000,
+})
 
 export default {
   components: {
