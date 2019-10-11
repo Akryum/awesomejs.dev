@@ -8,6 +8,7 @@ import { createProvider } from './vue-apollo'
 import './components'
 
 Vue.config.productionTip = false
+Vue.config.devtools = true
 
 new Vue({
   router,
