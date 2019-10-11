@@ -106,5 +106,9 @@ export default {
   components: {
     PageTitle,
   },
+
+  metaInfo: {
+    title: 'Privacy & Security',
+  },
 }
 </script>

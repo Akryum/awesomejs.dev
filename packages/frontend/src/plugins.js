@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Responsive from './util/responsive'
 import { focus } from 'vue-focus'
 import VueCompositionApi from '@vue/composition-api'
+import VueMeta from 'vue-meta'
 
 Vue.use(Responsive, {
   computed: {
@@ -23,3 +24,5 @@ Vue.use(Responsive, {
 Vue.directive('focus', focus)
 
 Vue.use(VueCompositionApi)
+
+Vue.use(VueMeta)

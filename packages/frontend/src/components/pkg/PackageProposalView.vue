@@ -61,5 +61,13 @@ export default {
       },
     },
   },
+
+  metaInfo () {
+    if (!this.pkg) return
+
+    return {
+      title: `[Proposal] ${this.pkg.name}`,
+    }
+  },
 }
 </script>

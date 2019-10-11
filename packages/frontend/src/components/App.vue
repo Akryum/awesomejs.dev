@@ -17,11 +17,18 @@ import AppHeader from './app/AppHeader.vue'
 import AppFooter from './app/AppFooter.vue'
 import AppServiceWorkerManager from './app/AppServiceWorkerManager.vue'
 
+const title = 'Awesome JS'
+
 export default {
   components: {
     AppHeader,
     AppFooter,
     AppServiceWorkerManager,
+  },
+
+  metaInfo: {
+    title,
+    titleTemplate: t => t === title ? t : `${t} - ${title}`,
   },
 }
 </script>

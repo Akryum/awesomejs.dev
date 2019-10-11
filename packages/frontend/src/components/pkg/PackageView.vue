@@ -68,5 +68,13 @@ export default {
       },
     },
   },
+
+  metaInfo () {
+    if (!this.pkg) return
+
+    return {
+      title: this.pkg.name,
+    }
+  },
 }
 </script>

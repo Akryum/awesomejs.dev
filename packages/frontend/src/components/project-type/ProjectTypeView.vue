@@ -139,5 +139,13 @@ export default {
       }
     },
   },
+
+  metaInfo () {
+    if (!this.projectType) return
+
+    return {
+      title: `Awesome ${this.projectType.name} packages`,
+    }
+  },
 }
 </script>

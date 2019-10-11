@@ -78,5 +78,9 @@ export default {
       update: data => data.currentUser.bookmarkedPackages,
     },
   },
+
+  metaInfo: {
+    title: 'My Bookmarks',
+  },
 }
 </script>

@@ -70,5 +70,9 @@ export default {
   created () {
     this.baseUrl = process.env.VUE_APP_API_BASE
   },
+
+  metaInfo: {
+    title: 'My Dashboard',
+  },
 }
 </script>
