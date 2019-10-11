@@ -1,0 +1,15 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install deps
+      run: yarn install --pure-lockfile
+    - name: Linting files...
+      run: npx lerna run lint -- --no-fix
