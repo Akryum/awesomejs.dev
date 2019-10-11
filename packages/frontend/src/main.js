@@ -10,6 +10,10 @@ import './components'
 Vue.config.productionTip = false
 Vue.config.devtools = true
 
+Vue.config.errorHandler = (err, vm, info) => {
+  console.error(err, vm, info)
+}
+
 new Vue({
   router,
   apolloProvider: createProvider(),
