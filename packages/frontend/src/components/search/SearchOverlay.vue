@@ -79,6 +79,7 @@ import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
 import { FocusTrap } from 'focus-trap-vue'
 import { useSearch } from '@/util/algolia'
 import { ref, computed, watch } from '@vue/composition-api'
+import { useLockScroll } from '@/util/lock-scroll'
 
 export default {
   components: {
@@ -113,6 +114,8 @@ export default {
     }))
 
     const { searchText, result } = useSearch('packages', searchParams)
+
+    useLockScroll()
 
     return {
       close,
