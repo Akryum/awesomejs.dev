@@ -12,11 +12,11 @@
 
       <div
         v-if="!$responsive.sm"
-        class="absolute top-0 left-0 w-full h-4 flex justify-center"
+        class="absolute top-0 left-0 w-full pointer-events-none flex justify-center"
       >
         <BaseButton
           icon-left="search"
-          class="px-4 py-1 text-gray-600 hover:text-gray-500"
+          class="px-4 py-1 text-gray-600 hover:text-gray-500 pointer-events-auto"
           @click="openSearch = true"
         >
           Search...
