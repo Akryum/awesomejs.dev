@@ -4,6 +4,9 @@ export function getNamedParents (routes, matched) {
   const parentPath = []
   for (const record of matched) {
     let path = record.path
+    if (!path) {
+      path = '/'
+    }
     if (parent) {
       parentPath.push(parent.path)
     }
