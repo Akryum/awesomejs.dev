@@ -38,7 +38,7 @@
     </div>
 
     <transition name="fade">
-      <keep-alive>
+      <keep-alive include="SearchOverlay">
         <SearchOverlay
           v-if="openSearch"
           @close="openSearch = false"
@@ -57,7 +57,9 @@ const SearchOverlayLoading = {
   render: h => h(SearchOverlayAsyncState, { props: { state: 'loading' } }),
 }
 const SearchOverlayError = {
-  render: h => h(SearchOverlayAsyncState, { props: { state: 'error' } }),
+  render (h) {
+    return h(SearchOverlayAsyncState, { props: { state: 'error' }, on: this.$listeners })
+  },
 }
 const SearchOverlay = () => ({
   component: import(

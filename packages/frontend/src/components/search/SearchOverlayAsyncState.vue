@@ -10,8 +10,9 @@
       class="relative m-2 sm:m-8 flex-auto max-w-3xl max-h-screen box flex items-center justify-center"
     >
       <ErrorMessage
-        v-if="state === 'errror'"
+        v-if="state === 'error'"
         error="Can't load Search Overlay component"
+        @click.native="$emit('close')"
       />
       <LoadingIndicator v-else-if="state === 'loading'" />
     </div>
