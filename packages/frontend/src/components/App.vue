@@ -29,6 +29,23 @@ export default {
   metaInfo: {
     title,
     titleTemplate: t => t === title ? t : `${t} - ${title}`,
+    meta: [
+      {
+        property: 'og:title',
+        content: 'Awesome JS Packages',
+        vmid: 'og:title',
+      },
+      {
+        property: 'og:description',
+        content: 'Find awesome package for your actual project',
+        vmid: 'og:description',
+      },
+      {
+        property: 'og:image',
+        content: `${process.env.BASE_URL}thumbnail.png`,
+        vmid: 'og:image',
+      },
+    ],
   },
 }
 </script>

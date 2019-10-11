@@ -74,6 +74,18 @@ export default {
 
     return {
       title: this.pkg.name,
+      meta: [
+        {
+          property: 'og:title',
+          content: this.pkg.name,
+          vmid: 'og:title',
+        },
+        {
+          property: 'og:description',
+          content: this.pkg.description,
+          vmid: 'og:description',
+        },
+      ],
     }
   },
 }

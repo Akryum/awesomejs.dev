@@ -61,6 +61,7 @@ import PackageList from '../pkg/PackageList.vue'
 import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
 import gql from 'graphql-tag'
 import { projectType } from './fragments'
+import { setFavicon, resetFavicon } from '@/util/favicon'
 
 export default {
   components: {
@@ -120,6 +121,9 @@ export default {
         }
       },
       update: data => data.projectTypeBySlug.popularTags,
+      result () {
+        setFavicon(this.projectType.logo)
+      },
     },
   },
 
@@ -127,6 +131,10 @@ export default {
     packageId () {
       this.$refs.scroller && (this.$refs.scroller.scrollTop = 0)
     },
+  },
+
+  destroyed () {
+    resetFavicon()
   },
 
   methods: {
