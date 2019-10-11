@@ -125,7 +125,7 @@ export default {
 
   watch: {
     packageId () {
-      this.$refs.scroller.scrollTop = 0
+      this.$refs.scroller && (this.$refs.scroller.scrollTop = 0)
     },
   },
 
