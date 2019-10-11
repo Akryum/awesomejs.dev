@@ -121,7 +121,7 @@ export default {
       }
 
       const brightness = Math.floor(colorSum / (img.width * img.height))
-      if (brightness < 40) {
+      if (brightness < 60) {
         el.classList.add('ally-bg')
 
         if (img.width === img.height) {
