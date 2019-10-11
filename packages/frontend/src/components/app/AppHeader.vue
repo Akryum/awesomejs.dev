@@ -12,7 +12,7 @@
 
       <div
         v-if="!$responsive.sm"
-        class="absolute top-0 left-0 w-full h-0 flex justify-center"
+        class="absolute top-0 left-0 w-full h-4 flex justify-center"
       >
         <BaseButton
           icon-left="search"
