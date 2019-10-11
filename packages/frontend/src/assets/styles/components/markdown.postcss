@@ -29,34 +29,64 @@
   }
 
   h1 {
-    @apply text-4xl mt-8 mb-4 text-gray-600;
+    @apply text-3xl mt-8 mb-4 text-gray-600;
+
+    @media (max-width: 640px) {
+      @apply text-2xl;
+    }
   }
 
   h2 {
-    @apply text-3xl;
+    @apply text-2xl;
+
+    @media (max-width: 640px) {
+      @apply text-xl;
+    }
   }
 
   h3 {
-    @apply text-2xl;
+    @apply text-xl;
+
+    @media (max-width: 640px) {
+      @apply text-lg;
+    }
+  }
+
+  h1, h2 {
+    @apply pb-2 border-b border-gray-800;
   }
 
   h2, h3 {
-    @apply mt-5 mb-3 text-gray-500;
+    @apply mt-8 mb-3 text-gray-500;
   }
 
   h4, h5, h6 {
-    @apply text-xl;
+    @apply text-lg mt-6;
+
+    @media (max-width: 640px) {
+      @apply text-base;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply flex items-center;
+    @apply flex flex-wrap items-center whitespace-pre-wrap font-bold;
 
     &:first-child {
       @apply mt-0;
     }
 
-    > * {
-      @apply mx-2;
+    &[align="center"] {
+      @apply justify-center;
+    }
+
+    &[align="right"] {
+      @apply justify-end;
+    }
+
+    &:hover {
+      .anchor {
+        @apply visible;
+      }
     }
   }
 
@@ -66,6 +96,12 @@
 
   table {
     border-collapse: collapse;
+  }
+
+  tr {
+    &:nth-child(2n) {
+      @apply bg-gray-850;
+    }
   }
 
   td, th {
@@ -85,7 +121,7 @@
   }
 
   ul, ol {
-    @apply my-2;
+    @apply my-2 pl-2;
   }
 
   li {
@@ -93,7 +129,25 @@
   }
 
   pre {
-    @apply text-gray-500 bg-black rounded p-4 my-4;
+    @apply text-gray-500 bg-gray-850 rounded p-4 my-4 overflow-x-auto;
+  }
+
+  code {
+    @apply text-gray-500 bg-gray-850 rounded px-2 py-1;
+  }
+
+  blockquote {
+    @apply pl-4 my-4 border-l-4 border-purple-700 text-gray-500;
+
+    p {
+      &:first-child {
+        @apply mt-0;
+      }
+
+      &:last-child {
+        @apply mb-0;
+      }
+    }
   }
 
   .markdown-body {
@@ -101,7 +155,7 @@
   }
 
   .anchor {
-    @apply text-gray-600 ml-0 mr-2;
+    @apply invisible text-gray-600 pr-1 -ml-5 h-6 flex items-center;
     svg {
       @apply fill-current;
     }

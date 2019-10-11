@@ -46,7 +46,7 @@
 
       <div
         v-if="!$responsive.md || packageId"
-        class="w-full lg:w-2/3 lg:pl-16 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-auto"
+        class="w-full lg:w-2/3 lg:pl-16 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto"
       >
         <router-view />
       </div>

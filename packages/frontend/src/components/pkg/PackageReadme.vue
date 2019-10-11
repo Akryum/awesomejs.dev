@@ -5,9 +5,10 @@
   />
   <div
     v-else
-    class="readme overflow-hidden relative pb-8 mt-4 border-t-2 border-gray-800"
+    class="readme relative pb-8 mt-4 border-t-2 border-gray-800"
     :class="{
-      expand: expand || $responsive.sm
+      expand: expanded,
+      'overflow-y-hidden': !expanded
     }"
   >
     <div
@@ -72,6 +73,12 @@ export default {
     },
   },
 
+  computed: {
+    expanded () {
+      return this.expand || this.$responsive.sm
+    },
+  },
+
   watch: {
     'pkg.readme': 'processRender',
   },
@@ -124,7 +131,7 @@ export default {
       if (brightness < 60) {
         el.classList.add('ally-bg')
 
-        if (img.width === img.height) {
+        if (img.width === img.height && img.width <= 64) {
           el.classList.add('avatar')
         }
       }

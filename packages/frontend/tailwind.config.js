@@ -1,6 +1,9 @@
 module.exports = {
   theme: {
     extend: {
+      colors: {
+        'gray-850': '#212935',
+      },
       inset: {
         'full': '100%',
       },
