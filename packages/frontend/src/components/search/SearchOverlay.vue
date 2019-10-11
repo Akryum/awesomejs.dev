@@ -132,7 +132,6 @@ export default {
 
   created () {
     this.onOpen()
-    alert('hello')
   },
 
   activated () {
