@@ -46,6 +46,9 @@ export default new Router({
           path: 'bookmarks',
           component: () => import(/* webpackChunkName: "user-tab-bookmarks" */ './components/user/UserTabBookmarks.vue'),
           props: true,
+          meta: {
+            keepScroll: true,
+          },
           children: [
             {
               path: '',
@@ -61,6 +64,9 @@ export default new Router({
       path: '/for/:projectTypeSlug',
       component: () => import(/* webpackChunkName: "project-type" */ './components/project-type/ProjectTypeView.vue'),
       props: true,
+      meta: {
+        keepScroll: true,
+      },
       children: [
         {
           path: '',
@@ -74,6 +80,9 @@ export default new Router({
       path: '/proposed/:projectTypeSlug',
       component: () => import(/* webpackChunkName: "project-type-package-proposals" */ './components/project-type/ProjectTypePackageProposalsView.vue'),
       props: true,
+      meta: {
+        keepScroll: true,
+      },
       children: [
         {
           path: '',
