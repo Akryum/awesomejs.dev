@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import AppHome from './components/app/AppHome.vue'
+import { scrollBehavior } from './util/scroll-behavior'
 
 Vue.use(Router)
 
@@ -20,6 +21,7 @@ const packageRoute = (namePrefix = '') => ({
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
+  scrollBehavior,
   routes: [
     {
       path: '/',
