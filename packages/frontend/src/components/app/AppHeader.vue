@@ -71,7 +71,7 @@ const SearchOverlay = () => ({
   // A component to use if the load fails
   error: SearchOverlayError,
   // Delay before showing the loading component. Default: 200ms.
-  delay: 0,
+  delay: 200,
   // The error component will be displayed if a timeout is
   // provided and exceeded. Default: Infinity.
   timeout: 3000,
