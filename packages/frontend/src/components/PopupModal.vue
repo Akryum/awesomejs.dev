@@ -47,6 +47,7 @@
 
 <script>
 import { FocusTrap } from 'focus-trap-vue'
+import { useLockScroll } from '@/util/lock-scroll'
 
 export default {
   components: {
@@ -58,6 +59,10 @@ export default {
       type: String,
       default: 'full',
     },
+  },
+
+  setup () {
+    useLockScroll()
   },
 
   methods: {
