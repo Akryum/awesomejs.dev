@@ -1,27 +1,26 @@
 <template>
   <h1
-    class="flex flex-col xl:flex-row"
+    class="flex items-center"
     :class="{
-      'items-center justify-center': center,
-      'items-baseline': !center,
+      'justify-center': center,
     }"
   >
     <div
-      class="flex-none flex"
+      class="flex-none flex items-center"
       :class="{
         'justify-center': center,
-        'mr-4': !center,
+        'mr-1 lg:mr-4': !center,
       }"
     >
       <router-link
         v-if="backTo"
         :to="backTo"
-        class="mr-4 text-gray-600 hover:text-gray-500 text-xl lg:text-2xl"
+        class="mr-2 lg:mr-4 text-gray-600 hover:text-gray-500 h-6"
       >
-        <i class="material-icons">arrow_back</i>
+        <i class="material-icons text-xl lg:text-2xl">arrow_back</i>
       </router-link>
 
-      <span class="text-gray-500 text-lg lg:text-2xl">
+      <span class="text-gray-500 text-xl lg:text-2xl leading-snug">
         <slot />
       </span>
     </div>

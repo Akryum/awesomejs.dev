@@ -2,7 +2,7 @@
   <div
     class="
     flex flex-col items-center justify-center p-2 bg-gray-800 rounded
-    w-24 h-24 lg:w-32 lg:h-32 cursor-pointer
+    w-24 h-24 lg:w-32 lg:h-32 cursor-pointer relative
     hover:bg-gray-700
     "
     :class="{
@@ -21,6 +21,15 @@
 
     <div class="truncate max-w-full">
       {{ projectType.name }}
+    </div>
+
+    <div
+      v-if="projectType.bookmarked"
+      class="absolute top-0 right-0 pt-1 pr-2"
+    >
+      <i
+        class="material-icons text-lg text-gray-600"
+      >bookmark</i>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 import { ApolloContext } from '@nodepack/plugin-apollo'
 import { ExpressContext } from '@nodepack/plugin-express'
-import { PassportContext } from '@nodepack/plugin-passport'
+import { PassportContext, PassportUser } from '@nodepack/plugin-passport'
 import { Client as FaunaClient } from 'faunadb'
 import { Options } from 'npm-registry-fetch'
 import Octokit from '@octokit/rest'
@@ -15,11 +15,16 @@ export interface Config {
   apollo: typeof ApolloConfig
 }
 
+export interface User extends PassportUser {
+  projectTypeBookmarks?: string[]
+}
+
 export interface Context extends
   Omit<ApolloContext, 'user'>,
   ExpressContext,
   PassportContext {
   config: Config
+  user: User
   db: FaunaClient
   npm: (url: string, opts?: Options) => Promise<any>,
   github: Octokit

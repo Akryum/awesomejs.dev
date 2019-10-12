@@ -6,5 +6,6 @@ fragment projectType on ProjectType {
   name
   slug
   logo
+  bookmarked
 }
 `

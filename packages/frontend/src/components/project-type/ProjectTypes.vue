@@ -8,7 +8,7 @@
     class="project-types-grid my-4 sm:my-8"
   >
     <router-link
-      v-for="projectType of projectTypes"
+      v-for="projectType of sortedProjectTypes"
       :key="projectType.id"
       :to="{
         name: 'project-type',
@@ -51,6 +51,20 @@ export default {
       }
       ${projectType}
     `,
+  },
+
+  computed: {
+    sortedProjectTypes () {
+      return this.projectTypes.slice().sort((a, b) => {
+        if (a.bookmarked === b.bookmarked) {
+          return 0
+        } else if (a.bookmarked) {
+          return -1
+        } else {
+          return 1
+        }
+      })
+    },
   },
 }
 </script>

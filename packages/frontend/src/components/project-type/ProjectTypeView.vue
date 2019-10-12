@@ -5,28 +5,32 @@
       :back-to="{ name: 'home' }"
       class="mb-4"
     >
-      Awesome {{ projectType.name }} packages
+      <span v-if="!$responsive.sm">Awesome</span> {{ projectType.name }} packages
 
       <template #after>
-        <div
-          v-if="tags.length"
-          class="mt-4 xl:mt-0 flex flex-wrap justify-stretch -mr-2"
-        >
-          <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
-          <BaseButton
-            v-for="tag of tags"
-            :key="tag"
-            class="mr-2 px-2 text-gray-500 bg-gray-800 hover:bg-gray-700 mb-2 flex-auto xl:mb-0"
-            :class="{
-              'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.includes(tag),
-            }"
-            @click="toggleTag(tag)"
-          >
-            {{ tag }}
-          </BaseButton>
-        </div>
+        <ProjectTypeBookmarkButton
+          :project-type="projectType"
+        />
       </template>
     </PageTitle>
+
+    <div
+      v-if="tags.length"
+      class="my-2 xl:mt-0 md:my-4 xl:mb-8 flex flex-wrap justify-stretch -mr-2"
+    >
+      <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
+      <BaseButton
+        v-for="tag of tags"
+        :key="tag"
+        class="mr-2 px-2 text-gray-500 bg-gray-800 hover:bg-gray-700 mb-2 flex-auto lg:flex-none xl:mb-0"
+        :class="{
+          'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.includes(tag),
+        }"
+        @click="toggleTag(tag)"
+      >
+        {{ tag }}
+      </BaseButton>
+    </div>
 
     <div class="flex">
       <div
@@ -58,6 +62,7 @@
 <script>
 import PageTitle from '../PageTitle.vue'
 import PackageList from '../pkg/PackageList.vue'
+import ProjectTypeBookmarkButton from './ProjectTypeBookmarkButton.vue'
 import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
 import gql from 'graphql-tag'
 import { projectType } from './fragments'
@@ -67,6 +72,7 @@ export default {
   components: {
     PageTitle,
     PackageList,
+    ProjectTypeBookmarkButton,
     ProjectTypePackageProposalsButton,
   },
 

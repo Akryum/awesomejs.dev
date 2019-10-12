@@ -3,6 +3,8 @@ import Responsive from './util/responsive'
 import { focus } from 'vue-focus'
 import VueCompositionApi from '@vue/composition-api'
 import VueMeta from 'vue-meta'
+import VTooltip from 'v-tooltip'
+import 'v-tooltip/dist/v-tooltip.css'
 
 Vue.use(Responsive, {
   computed: {
@@ -26,3 +28,5 @@ Vue.directive('focus', focus)
 Vue.use(VueCompositionApi)
 
 Vue.use(VueMeta)
+
+Vue.use(VTooltip)
