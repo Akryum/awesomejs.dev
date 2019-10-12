@@ -13,7 +13,7 @@
   >
     <div
       ref="render"
-      class="markdown pt-8 pb-32"
+      class="markdown pt-8 pb-64"
       v-html="pkg.readme"
     />
 
