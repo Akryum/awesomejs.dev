@@ -7,7 +7,7 @@
       },
     }"
     icon-left="add"
-    class="px-4 py-1 text-gray-600 hover:text-gray-500"
+    class="px-4 py-1 text-gray-500 hover:text-gray-400"
   >
     Add package
   </BaseButton>
