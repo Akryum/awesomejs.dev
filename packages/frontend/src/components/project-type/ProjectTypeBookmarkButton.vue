@@ -12,6 +12,8 @@
 
 <script>
 import gql from 'graphql-tag'
+import { checkUnauthorized } from '@/util/error'
+
 export default {
   props: {
     projectType: {
@@ -22,29 +24,34 @@ export default {
 
   methods: {
     async toggle () {
-      await this.$apollo.mutate({
-        mutation: gql`
-          mutation ToggleProjectTypeBookmark ($input: ToggleProjectTypeBookmarkInput!) {
-            toggleProjectTypeBookmark (input: $input) {
-              id
-              bookmarked
+      try {
+        await this.$apollo.mutate({
+          mutation: gql`
+            mutation ToggleProjectTypeBookmark ($input: ToggleProjectTypeBookmarkInput!) {
+              toggleProjectTypeBookmark (input: $input) {
+                id
+                bookmarked
+              }
             }
-          }
-        `,
-        variables: {
-          input: {
-            projectTypeId: this.projectType.id,
+          `,
+          variables: {
+            input: {
+              projectTypeId: this.projectType.id,
+            },
           },
-        },
-        optimisticResponse: {
-          __typename: 'Mutation',
-          toggleProjectTypeBookmark: {
-            __typename: 'ProjectType',
-            id: this.projectType.id,
-            bookmarked: !this.projectType.bookmarked,
+          optimisticResponse: {
+            __typename: 'Mutation',
+            toggleProjectTypeBookmark: {
+              __typename: 'ProjectType',
+              id: this.projectType.id,
+              bookmarked: !this.projectType.bookmarked,
+            },
           },
-        },
-      })
+        })
+      } catch (e) {
+        console.error(e)
+        checkUnauthorized.bind(this)(e)
+      }
     },
   },
 }
