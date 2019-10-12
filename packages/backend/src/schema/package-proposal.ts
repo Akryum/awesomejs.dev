@@ -282,6 +282,7 @@ export const resolvers: IResolvers<any, Context> = {
               data: {
                 name: pkgProposal.data.name,
                 projectTypeId: projectType.ref.id,
+                github: pkgProposal.data.github,
                 info: pkgProposal.data.info,
                 metadata: pkgProposal.data.metadata,
               },
