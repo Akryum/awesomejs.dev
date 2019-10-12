@@ -39,6 +39,10 @@ module.exports = {
           'src': 'img/icons/guijs-192.png',
           'sizes': '192x192',
           'type': 'image/png',
+        }, {
+          'src': 'img/icons/guijs-512.png',
+          'sizes': '512x512',
+          'type': 'image/png',
         },
       ],
     },
