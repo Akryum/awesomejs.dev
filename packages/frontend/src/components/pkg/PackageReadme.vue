@@ -33,7 +33,7 @@
 
 <script>
 import LoadingIndicator from '../LoadingIndicator.vue'
-import { gql } from 'apollo-server-core'
+import gql from 'graphql-tag'
 
 const GOOGLE_IMG_PROXY = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url='
 

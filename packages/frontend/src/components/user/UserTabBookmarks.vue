@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { gql } from 'apollo-server-core'
+import gql from 'graphql-tag'
 import { pkg } from '../pkg/fragments'
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageListItem from '../pkg/PackageListItem.vue'
