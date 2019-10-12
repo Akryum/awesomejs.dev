@@ -33,6 +33,7 @@
     },
     {
       "src": "/.well-known/apollo/server-health",
+      "headers": { "cache-control": "s-maxage=0" },
       "dest": "/packages/backend/dist/app.js"
     },
     {
@@ -42,6 +43,7 @@
     },
     {
       "src": "/(.*\\.(ico|js|json|css|svg|png|jpg|txt))",
+      "headers": { "cache-control": "s-maxage=31536000" },
       "dest": "/packages/frontend/$1"
     },
     {
