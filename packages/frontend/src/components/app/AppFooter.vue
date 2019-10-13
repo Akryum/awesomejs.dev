@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="text-center text-gray-600 px-8 py-16"
+    class="text-center text-gray-700 px-8 py-16"
   >
     <div>
       <span class="inline-block mr-4">
@@ -46,7 +46,7 @@
         <img
           src="~@/assets/search-by-algolia-dark-background.svg"
           alt="Search by Algolia"
-          class="opacity-50"
+          class="opacity-25"
         >
       </a>
     </div>

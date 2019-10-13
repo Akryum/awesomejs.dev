@@ -6,17 +6,19 @@
     :tabindex="ghost ? -1 : 0"
     role="button"
     :aria-disabled="ghost"
-    class="inline-block cursor-pointer text-center relative rounded select-none outline-none"
+    class="inline-block cursor-pointer relative rounded select-none outline-none"
     :class="{
       'pointer-events-none opacity-50': ghost,
+      'text-center': align === 'center',
     }"
     @click.capture="handleClick"
     @click.capture.native="handleClick"
   >
     <div
-      class="flex items-center justify-center rounded"
+      class="flex items-center rounded"
       :class="{
         'opacity-0': loading,
+        'justify-center': align === 'center',
       }"
     >
       <i
@@ -71,6 +73,11 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+
+    align: {
+      type: String,
+      default: 'center',
     },
   },
 

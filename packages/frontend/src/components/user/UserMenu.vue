@@ -4,15 +4,51 @@
       v-if="currentUser"
       class="w-8 h-8 flex items-center justify-center"
     >
-      <router-link
-        :to="{ name: 'user-dashboard' }"
+      <VDropdown
+        placement="bottom-end"
+        class="h-8"
       >
-        <img
-          :src="currentUser.avatar || require('@/assets/user.svg')"
-          alt="User"
-          class="max-w-full max-h-full rounded-full bg-gray-700"
-        >
-      </router-link>
+        <BaseButton>
+          <img
+            :src="currentUser.avatar || require('@/assets/user.svg')"
+            alt="User"
+            class="max-w-full max-h-full rounded-full bg-gray-700 border-2 border-gray-700"
+          >
+        </BaseButton>
+
+        <template #popper>
+          <div class="flex flex-col items-stretch">
+            <BaseButton
+              v-close-popper
+              :to="{ name: 'user-dashboard' }"
+              icon-left="dashboard"
+              align="left"
+              class="px-2 py-1 hover:bg-gray-700"
+            >
+              Dashboard
+            </BaseButton>
+
+            <BaseButton
+              v-close-popper
+              :to="{ name: 'user-bookmarks' }"
+              icon-left="bookmark"
+              align="left"
+              class="px-2 py-1 hover:bg-gray-700"
+            >
+              Bookmarks
+            </BaseButton>
+
+            <BaseButton
+              :href="`${baseUrl}/auth/logout`"
+              icon-left="power_settings_new"
+              align="left"
+              class="px-2 py-1 hover:bg-gray-700"
+            >
+              Logout
+            </BaseButton>
+          </div>
+        </template>
+      </VDropdown>
     </div>
     <div v-else>
       <BaseButton
@@ -40,6 +76,10 @@ export default {
       }
       ${user}
     `,
+  },
+
+  created () {
+    this.baseUrl = process.env.VUE_APP_API_BASE
   },
 }
 </script>

@@ -10,13 +10,6 @@
     <div v-else-if="user">
       <PageTitle>
         Hello {{ user.nickname }}! 👋️
-
-        <a
-          :href="`${baseUrl}/auth/logout`"
-          class="ml-8 text-base text-gray-600 hover:text-gray-500"
-        >
-          Logout
-        </a>
       </PageTitle>
 
       <div class="flex mt-2">
@@ -65,10 +58,6 @@ export default {
       }
       ${user}
     `,
-  },
-
-  created () {
-    this.baseUrl = process.env.VUE_APP_API_BASE
   },
 
   metaInfo: {

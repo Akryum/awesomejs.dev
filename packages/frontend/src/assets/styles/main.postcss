@@ -49,4 +49,14 @@ body {
 .no-scroll {
   @apply overflow-y-hidden;
 }
+
+.v-popper--theme-dropdown .v-popper__inner {
+  @apply p-2 bg-gray-800;
+  color: inherit;
+}
+
+.v-popper--theme-dropdown .v-popper__arrow {
+  border-color: theme('colors.gray.800') !important;
+}
+
 /* purgecss end ignore */
