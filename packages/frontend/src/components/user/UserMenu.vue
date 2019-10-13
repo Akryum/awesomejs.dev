@@ -23,7 +23,7 @@
               :to="{ name: 'user-dashboard' }"
               icon-left="dashboard"
               align="left"
-              class="px-2 py-1 hover:bg-gray-700"
+              class="px-3 py-2 hover:bg-gray-700"
             >
               Dashboard
             </BaseButton>
@@ -33,7 +33,7 @@
               :to="{ name: 'user-bookmarks' }"
               icon-left="bookmark"
               align="left"
-              class="px-2 py-1 hover:bg-gray-700"
+              class="px-3 py-2 hover:bg-gray-700"
             >
               Bookmarks
             </BaseButton>
@@ -42,7 +42,7 @@
               :href="`${baseUrl}/auth/logout`"
               icon-left="power_settings_new"
               align="left"
-              class="px-2 py-1 hover:bg-gray-700"
+              class="px-3 py-2 hover:bg-gray-700"
             >
               Logout
             </BaseButton>
