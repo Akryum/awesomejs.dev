@@ -110,6 +110,9 @@ export default {
           slug: this.projectTypeSlug,
         }
       },
+      result () {
+        setFavicon(this.projectType.logo)
+      },
     },
 
     tags: {
@@ -127,9 +130,6 @@ export default {
         }
       },
       update: data => data.projectTypeBySlug.popularTags,
-      result () {
-        setFavicon(this.projectType.logo)
-      },
     },
   },
 
