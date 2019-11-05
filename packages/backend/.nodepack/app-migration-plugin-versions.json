@@ -1,8 +1,8 @@
 {
-  "@nodepack/service": "0.4.11",
-  "@nodepack/plugin-typescript": "0.4.5",
-  "@nodepack/plugin-express": "0.4.7",
-  "@nodepack/plugin-apollo": "0.4.7",
-  "@nodepack/plugin-babel": "0.4.5",
-  "@nodepack/plugin-passport": "0.4.7"
+  "@nodepack/service": "0.7.0",
+  "@nodepack/plugin-apollo": "0.7.0",
+  "@nodepack/plugin-express": "0.7.0",
+  "@nodepack/plugin-typescript": "0.7.0",
+  "@nodepack/plugin-babel": "0.7.0",
+  "@nodepack/plugin-passport": "0.7.0"
 }

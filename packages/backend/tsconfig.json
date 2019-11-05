@@ -7,6 +7,9 @@
       ],
       "@config/*": [
         "config/*"
+      ],
+      "@context": [
+        "src/generated/context.d.ts"
       ]
     },
     "lib": [
@@ -24,6 +27,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "noUnusedLocals": true,
+    "skipLibCheck": true,
     // Strict
     "noImplicitAny": true,
     "noImplicitThis": true,

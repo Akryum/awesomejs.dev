@@ -6,11 +6,12 @@
     "dev": "nodepack-service dev",
     "build": "nodepack-service build",
     "lint": "nodepack-service lint",
-    "start": "node -r dotenv/config ./dist/app.js dotenv_config_path=.env.local",
-    "now-build": "yarn run build --no-preInstall"
+    "now-build": "yarn run build --no-preInstall",
+    "start": "node -r dotenv/config ./dist/app.js dotenv_config_path=.env.local"
   },
   "dependencies": {
-    "@nodepack/app": "^0.5.0",
+    "@nodepack/app": "^0.7.0",
+    "@nodepack/app-context": "0.7.0",
     "@octokit/rest": "^16.30.1",
     "algoliasearch": "^3.35.0",
     "faunadb": "^2.8.1",
@@ -24,12 +25,12 @@
     "passport-github2": "^0.1.11"
   },
   "devDependencies": {
-    "@nodepack/plugin-apollo": "^0.5.0",
-    "@nodepack/plugin-babel": "^0.5.0",
-    "@nodepack/plugin-express": "^0.5.0",
-    "@nodepack/plugin-passport": "^0.5.0",
-    "@nodepack/plugin-typescript": "^0.5.0",
-    "@nodepack/service": "^0.5.0",
+    "@nodepack/plugin-apollo": "^0.7.0",
+    "@nodepack/plugin-babel": "^0.7.0",
+    "@nodepack/plugin-express": "^0.7.0",
+    "@nodepack/plugin-passport": "^0.7.0",
+    "@nodepack/plugin-typescript": "^0.7.0",
+    "@nodepack/service": "^0.7.0",
     "@types/algoliasearch": "^3.34.3",
     "@types/morgan": "^1.7.37",
     "@types/ms": "^0.7.31",

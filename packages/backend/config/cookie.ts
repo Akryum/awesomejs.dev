@@ -1,4 +1,4 @@
-import { CookieOptions } from "express";
+import { CookieOptions } from 'express'
 
 export default {
   secret: process.env.COOKIE_SECRET,

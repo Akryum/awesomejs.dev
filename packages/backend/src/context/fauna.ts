@@ -1,7 +1,11 @@
-import { hook } from '@nodepack/app-context'
-import { Client } from 'faunadb'
+import { onCreate } from '@nodepack/app-context'
+import { Client as FaunaClient } from 'faunadb'
 import { Context } from '../context'
 
-hook('create', async (context: Context) => {
-  context.db = new Client(context.config.db)
+onCreate(async (context: Context) => {
+  context.db = new FaunaClient(context.config.db)
 })
+
+export default interface FaunaContext {
+  db: FaunaClient
+}

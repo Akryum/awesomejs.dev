@@ -1,7 +1,11 @@
-import Algolia from 'algoliasearch'
-import { hook } from '@nodepack/app-context'
+import Algolia, { Client as AlgoliaClient } from 'algoliasearch'
+import { onCreate } from '@nodepack/app-context'
 import { Context } from '@/context'
 
-hook('create', (ctx: Context) => {
+onCreate((ctx: Context) => {
   ctx.algolia = Algolia(process.env.ALGOLIA_ID, process.env.ALGOLIA_KEY)
 })
+
+export default interface AlgoliaContext {
+  algolia: AlgoliaClient
+}

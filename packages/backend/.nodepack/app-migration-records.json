@@ -42,5 +42,19 @@
     "pluginVersion": "0.4.7",
     "options": {},
     "date": "2019-09-30T17:11:45.343Z"
+  },
+  {
+    "id": "contextTypePath",
+    "pluginId": "@nodepack/plugin-typescript",
+    "pluginVersion": "0.6.0",
+    "options": {},
+    "date": "2019-11-05T13:08:27.307Z"
+  },
+  {
+    "id": "skipLibCheck",
+    "pluginId": "@nodepack/plugin-typescript",
+    "pluginVersion": "0.7.0",
+    "options": {},
+    "date": "2019-11-05T15:53:31.756Z"
   }
 ]
