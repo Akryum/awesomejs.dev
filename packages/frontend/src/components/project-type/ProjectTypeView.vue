@@ -1,40 +1,41 @@
 <template>
   <div v-if="projectType">
-    <PageTitle
-      v-if="!$responsive.md || !packageId"
-      :back-to="{ name: 'home' }"
-      class="mb-4"
-    >
-      <span v-if="!$responsive.sm">Awesome</span> {{ projectType.name }} packages
-
-      <template #after>
-        <ProjectTypeBookmarkButton
-          :project-type="projectType"
-        />
-      </template>
-    </PageTitle>
-
-    <div
-      v-if="tags.length"
-      class="my-2 xl:mt-0 md:my-4 xl:mb-8 flex flex-wrap justify-stretch -mr-2"
-    >
-      <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
-      <BaseButton
-        v-for="tag of tags"
-        :key="tag"
-        class="mr-2 px-2 text-gray-500 bg-gray-800 hover:bg-gray-700 mb-2 flex-auto lg:flex-none xl:mb-0"
-        :class="{
-          'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.includes(tag),
-        }"
-        @click="toggleTag(tag)"
+    <template v-if="!$responsive.lg || !packageId">
+      <PageTitle
+        :back-to="{ name: 'home' }"
+        class="mb-4"
       >
-        {{ tag }}
-      </BaseButton>
-    </div>
+        <span v-if="!$responsive.sm">Awesome</span> {{ projectType.name }} packages
+
+        <template #after>
+          <ProjectTypeBookmarkButton
+            :project-type="projectType"
+          />
+        </template>
+      </PageTitle>
+
+      <div
+        v-if="tags.length"
+        class="my-2 xl:mt-0 lg:my-4 xl:mb-8 flex flex-wrap justify-stretch -mr-2"
+      >
+        <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
+        <BaseButton
+          v-for="tag of tags"
+          :key="tag"
+          class="mr-2 px-2 text-gray-500 bg-gray-800 hover:bg-gray-700 mb-2 flex-auto lg:flex-none xl:mb-0"
+          :class="{
+            'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.includes(tag),
+          }"
+          @click="toggleTag(tag)"
+        >
+          {{ tag }}
+        </BaseButton>
+      </div>
+    </template>
 
     <div class="flex">
       <div
-        v-if="!$responsive.md || !packageId"
+        v-if="!$responsive.lg || !packageId"
         class="w-full lg:w-1/3 lg:pb-64"
       >
         <ProjectTypePackageProposalsButton
@@ -49,7 +50,7 @@
       </div>
 
       <div
-        v-if="!$responsive.md || packageId"
+        v-if="!$responsive.lg || packageId"
         ref="scroller"
         class="w-full lg:w-2/3 lg:pl-16 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto"
       >

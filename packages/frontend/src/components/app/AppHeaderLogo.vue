@@ -28,7 +28,7 @@ export default {
     },
 
     route () {
-      if (this.$responsive.md) {
+      if (this.$responsive.lg) {
         const parents = getNamedParents(this.$router.options.routes, this.$route.matched)
         if (parents.length) {
           return {

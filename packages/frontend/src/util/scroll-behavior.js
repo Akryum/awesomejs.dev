@@ -23,7 +23,7 @@ export const scrollBehavior = function (to, from, savedPosition) {
       return false
     }
 
-    if (window.innerWidth <= 768 || !to.matched.some(m => m.meta.keepScroll)) {
+    if (window.innerWidth < 1024 || !to.matched.some(m => m.meta.keepScroll)) {
       // coords will be used if no selector is provided,
       // or if the selector didn't match any element.
       position.x = 0

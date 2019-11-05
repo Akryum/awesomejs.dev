@@ -1,7 +1,7 @@
 <template>
   <div v-if="projectType">
     <PageTitle
-      v-if="!$responsive.md || !packageId"
+      v-if="!$responsive.lg || !packageId"
       :back-to="{
         name: 'project-type',
         params: {
@@ -15,7 +15,7 @@
 
     <div class="flex">
       <div
-        v-if="!$responsive.md || !packageId"
+        v-if="!$responsive.lg || !packageId"
         class="w-full lg:w-1/3 lg:pb-64"
       >
         <PackageProposalList
@@ -24,7 +24,7 @@
       </div>
 
       <div
-        v-if="!$responsive.md || packageId"
+        v-if="!$responsive.lg || packageId"
         class="w-full lg:w-2/3 lg:pl-16 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-auto"
       >
         <router-view />

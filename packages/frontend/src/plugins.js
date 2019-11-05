@@ -9,16 +9,16 @@ import 'v-tooltip/dist/v-tooltip.css'
 Vue.use(Responsive, {
   computed: {
     sm () {
-      return this.width <= 640
+      return this.width < 640
     },
     md () {
-      return this.width <= 768
+      return this.width < 768
     },
     lg () {
-      return this.width <= 1024
+      return this.width < 1024
     },
     xl () {
-      return this.width <= 1280
+      return this.width < 1280
     },
   },
 })

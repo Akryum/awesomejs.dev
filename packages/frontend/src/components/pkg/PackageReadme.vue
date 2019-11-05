@@ -18,7 +18,7 @@
     />
 
     <div
-      v-if="!$responsive.md"
+      v-if="!$responsive.lg"
       class="action-overlay absolute bottom-0 left-0 w-full flex justify-center pt-6 pb-2"
       @click="expand = !expand"
     >
@@ -75,7 +75,7 @@ export default {
 
   computed: {
     expanded () {
-      return this.expand || this.$responsive.md
+      return this.expand || this.$responsive.lg
     },
   },
 
