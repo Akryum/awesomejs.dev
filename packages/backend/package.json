@@ -6,7 +6,7 @@
     "dev": "nodepack-service dev",
     "build": "nodepack-service build",
     "lint": "nodepack-service lint",
-    "now-build": "yarn run build --no-preInstall",
+    "now-build": "yarn run build --no-preInstall --no-maintenance",
     "start": "node -r dotenv/config ./dist/app.js dotenv_config_path=.env.local"
   },
   "dependencies": {
