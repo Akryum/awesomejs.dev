@@ -1,15 +1,15 @@
 <template>
   <BaseButton
-    :to="{
-      name: 'add-package',
-      query: {
-        projectTypeId: projectType ? projectType.id : null,
-      },
-    }"
+    v-tooltip="`Suggest a new package <span class='text-gray-500 font-mono'>${isMac ? '⌘' : 'Ctrl'}+A</span>`"
+    :to="route"
     icon-left="add"
-    class="px-4 py-1 text-gray-500 hover:text-gray-400"
+    class="px-4 py-2 bg-purple-900 text-purple-200 hover:bg-purple-800"
   >
-    Add package
+    Package
+
+    <GlobalEvents
+      @keydown.ctrl.65.prevent="$router.push(route)"
+    />
   </BaseButton>
 </template>
 
@@ -21,6 +21,15 @@ export default {
   computed: {
     projectTypeSlug () {
       return this.$route.params.projectTypeSlug
+    },
+
+    route () {
+      return {
+        name: 'add-package',
+        query: {
+          projectTypeId: this.projectType ? this.projectType.id : null,
+        },
+      }
     },
   },
 

@@ -2,11 +2,11 @@
   <div v-if="!$apollo.loading">
     <div
       v-if="currentUser"
-      class="w-8 h-8 flex items-center justify-center"
+      class="w-10 h-10 flex items-center justify-center"
     >
       <VDropdown
         placement="bottom-end"
-        class="h-8"
+        class="h-10"
       >
         <BaseButton>
           <img

@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="flex px-4 my-4 lg:px-16 lg:my-8 relative">
+    <div class="flex items-center px-4 my-4 lg:px-16 lg:my-8 relative">
       <AppHeaderLogo class="flex-none" />
 
       <div class="flex-1" />
@@ -16,9 +16,9 @@
       >
         <div>
           <BaseButton
-            v-tooltip.bottom="`<i>${isMac ? '⌘' : 'Ctrl'} + F</i>`"
+            v-tooltip="`Search packages <span class='text-gray-500 font-mono'>${isMac ? '⌘' : 'Ctrl'}+F</span>`"
             icon-left="search"
-            class="px-4 py-1 text-gray-500 hover:text-gray-400"
+            class="px-4 py-2 text-gray-500 hover:text-gray-400"
             @click="openSearch = true"
           >
             Search...
