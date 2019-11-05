@@ -68,6 +68,10 @@
   },
   "build": {
     "env": {
+      "DB_SECRET": "@awesomejs_db_secret",
+      "GITHUB_AUTH": "@awesomejs_github_auth",
+      "ALGOLIA_ID": "@awesomejs_algolia_id",
+      "ALGOLIA_KEY": "@awesomejs_algolia_key",
       "VUE_APP_ALGOLIA_ID": "@awesomejs_algolia_id",
       "VUE_APP_ALGOLIA_KEY": "@awesomejs_algolia_key"
     }
