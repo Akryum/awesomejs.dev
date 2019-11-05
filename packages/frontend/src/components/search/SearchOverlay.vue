@@ -10,17 +10,19 @@
       />
 
       <div
-        class="relative m-2 sm:m-8 flex-auto max-w-3xl max-h-screen box flex flex-col items-center"
+        class="relative m-2 sm:m-4 flex-auto max-w-3xl max-h-screen box flex flex-col items-center"
       >
-        <BaseButton
-          icon-left="close"
-          class="px-4 py-1 text-gray-600 hover:text-gray-500"
-          @click="close()"
-        >
-          Close
-        </BaseButton>
+        <div class="lg:fixed lg:top-0 lg:right-0 lg:p-4">
+          <BaseButton
+            icon-left="close"
+            class="px-4 py-2 text-gray-600 hover:text-gray-500 hover:bg-gray-800"
+            @click="close()"
+          >
+            Close
+          </BaseButton>
+        </div>
 
-        <div class="flex w-full mt-2 sm:mt-8 mb-4">
+        <div class="flex w-full mt-2 sm:mt-4 lg:mt-0 mb-4">
           <input
             ref="input"
             v-model="searchText"

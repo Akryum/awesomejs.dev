@@ -18,7 +18,7 @@
           <BaseButton
             v-tooltip="`Search packages <span class='text-gray-500 font-mono'>${isMac ? '⌘' : 'Ctrl'}+F</span>`"
             icon-left="search"
-            class="px-4 py-2 text-gray-500 hover:text-gray-400"
+            class="px-4 py-2 text-gray-500 hover:text-gray-400 hover:bg-gray-800"
             @click="openSearch = true"
           >
             Search...
