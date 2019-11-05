@@ -25,12 +25,12 @@
     "passport-github2": "^0.1.11"
   },
   "devDependencies": {
-    "@nodepack/plugin-apollo": "^0.7.0",
+    "@nodepack/plugin-apollo": "^0.7.2",
     "@nodepack/plugin-babel": "^0.7.0",
-    "@nodepack/plugin-express": "^0.7.0",
-    "@nodepack/plugin-passport": "^0.7.0",
-    "@nodepack/plugin-typescript": "^0.7.0",
-    "@nodepack/service": "^0.7.0",
+    "@nodepack/plugin-express": "^0.7.2",
+    "@nodepack/plugin-passport": "^0.7.2",
+    "@nodepack/plugin-typescript": "^0.7.2",
+    "@nodepack/service": "^0.7.2",
     "@types/algoliasearch": "^3.34.3",
     "@types/morgan": "^1.7.37",
     "@types/ms": "^0.7.31",
