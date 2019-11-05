@@ -1683,10 +1683,10 @@
     "@nodepack/app-config" "^0.7.0"
     "@nodepack/hookable" "^0.7.0"
 
-"@nodepack/app-migrator@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@nodepack/app-migrator/-/app-migrator-0.7.2.tgz#2f73017348af6fd032ad4099096b90e85d9c51f3"
-  integrity sha512-l7oCY2or9Z7Ju9w0uTahcwFakpWFToO0TaO36GmT5EDr/oY3JdA49feF2+M3HbYpYh7m6eyLw4nVMTrRQJ71mA==
+"@nodepack/app-migrator@^0.7.2", "@nodepack/app-migrator@^0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@nodepack/app-migrator/-/app-migrator-0.7.3.tgz#1e3eec95a755101d9da12243dc4ea5cc16aade5f"
+  integrity sha512-n8l94b7ZiAlxHBTLcU9f0O6ZQaVAhbFtTctgtOiHgJhwzp6EHDJhPtCMVO/PfzuP/B4V2JO+WhQKG31YYlmgQg==
   dependencies:
     "@nodepack/config-transformer" "^0.7.2"
     "@nodepack/module" "^0.7.0"
@@ -1740,11 +1740,11 @@
     recast "^0.18.5"
 
 "@nodepack/db-migrator@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@nodepack/db-migrator/-/db-migrator-0.7.2.tgz#ed013cc6fe170f1b2232a66ca3706edc2a17b0db"
-  integrity sha512-xAY6hMvF9GlQWCPb/nXFzB1yT8zi9usNbaSYa9EkG+XYnd87RoYGd5bHA9p4BF9rXbwgJUplFEtL+AB2VjpLtQ==
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@nodepack/db-migrator/-/db-migrator-0.7.3.tgz#c617ebf634aceb12890ef10b8ff87052c1b1e22c"
+  integrity sha512-IdzxnyffNkmBfLhzri/WDdOuk5LeIYTkhXpDxml5GDDUFwvhCw66SMbB8MCpcqp8a4MWwiELRQQ37UWclH7rSA==
   dependencies:
-    "@nodepack/env-migrator" "^0.7.2"
+    "@nodepack/env-migrator" "^0.7.3"
 
 "@nodepack/env-check@^0.7.2":
   version "0.7.2"
@@ -1757,10 +1757,10 @@
     semver "^6.3.0"
     systeminformation "^4.14.17"
 
-"@nodepack/env-migrator@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@nodepack/env-migrator/-/env-migrator-0.7.2.tgz#df0e87f2333846280aca6fc5401eb2cc9e26f31e"
-  integrity sha512-/BpJ8ID2ivhmjTMkoTBKTLZ2TvqvyRrKUmq/cmaPlbBZAOtir5zxspoPDVLVL8vM9b/6/AjlY1xWPx6O8VVf8w==
+"@nodepack/env-migrator@^0.7.2", "@nodepack/env-migrator@^0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@nodepack/env-migrator/-/env-migrator-0.7.3.tgz#6b3b965508e7399bfbdc720ccaf1799da27eb061"
+  integrity sha512-unBxfqtiMYwk2KHZCucFMi3KihnfHh1yPdshaE+TIEq4o2dO48MAZ/x7OjKLNswiQk5j5YzRAE6ftFefAJVKfQ==
   dependencies:
     "@nodepack/module" "^0.7.0"
     "@nodepack/utils" "^0.7.2"
@@ -1861,12 +1861,12 @@
     typescript "^3.7.2"
 
 "@nodepack/service@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@nodepack/service/-/service-0.7.2.tgz#bd88187676cdbd54eb670849905e33bb7155bed2"
-  integrity sha512-f+AzbwkjkKla1+YOVbAocG8URDUHbp4ofPObtIKLXHOgStaugdFGBMJfgCZbxXGt0X7LM7tN2XBBBNodZb5p0w==
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@nodepack/service/-/service-0.7.3.tgz#e1457f13b5cf7dca41107ccc61de279cf72b1b1b"
+  integrity sha512-vKgZXmCzs+RuCyLGwuwiOijxK9AvAfoqaHCanpf7+Bcz0Q4DjeT1zgqpKnZw4h1tc2OxVqaRfDblb3NkJn0CjA==
   dependencies:
     "@nodepack/app-context" "^0.7.0"
-    "@nodepack/app-migrator" "^0.7.2"
+    "@nodepack/app-migrator" "^0.7.3"
     "@nodepack/env-check" "^0.7.2"
     "@nodepack/fragment" "^0.7.0"
     "@nodepack/maintenance" "^0.7.2"
@@ -2374,14 +2374,14 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@>= 8", "@types/node@>=6":
-  version "12.12.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.5.tgz#66103d2eddc543d44a04394abb7be52506d7f290"
-  integrity sha512-KEjODidV4XYUlJBF3XdjSH5FWoMCtO0utnhtdLf1AgeuZLOrRbvmU/gaRCVg7ZaQDjVf3l84egiY0mRNe5xE4A==
+  version "12.12.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.6.tgz#a47240c10d86a9a57bb0c633f0b2e0aea9ce9253"
+  integrity sha512-FjsYUPzEJdGXjwKqSpE0/9QEh6kzhTAeObA54rn6j3rR4C/mzpI9L0KNfoeASSPMMdxIsoJuCLDWcM/rVjIsSA==
 
 "@types/node@^10.1.0":
-  version "10.17.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.3.tgz#65a8d9a6a0f6af55595a2d0020617959130d6495"
-  integrity sha512-QZ9CjUB3QoA3f2afw3utKlfRPhpmufB7jC2+oDhLWnXqoyx333fhKSQDLQu2EK7OE0a15X67eYiRAaJsHXrpMA==
+  version "10.17.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.4.tgz#8993a4fe3c4022fda66bf4ea660d615fc5659c6f"
+  integrity sha512-F2pgg+LcIr/elguz+x+fdBX5KeZXGUOp7TV8M0TVIrDezYLFRNt8oMTyps0VQ1kj5WGGoR18RdxnRDHXrIFHMQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -6168,9 +6168,9 @@ ejs@^2.0.0, ejs@^2.6.1, ejs@^2.7.1:
   integrity sha512-kS/gEPzZs3Y1rRsbGX4UOSjtP/CeJP0CxSNZHYxGfVM/VgLcv0ZqM7C45YyTj2DI2g7+P9Dd24C+IMIg6D0nYQ==
 
 electron-to-chromium@^1.3.295:
-  version "1.3.303"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.303.tgz#3059bcc39c1c3b492ca381d577b6a49b5050085e"
-  integrity sha512-xDFPmMjJ0gQBsVwspB0bjcbFn3MVcvU0sxXYmh1UMbZ6rDogQVM3vSyOvTO4rym1KlnJIU6nqzK3qs0yKudmjw==
+  version "1.3.304"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.304.tgz#49b47d961f8143116174c2f70fbfee3aabf43015"
+  integrity sha512-a5mqa13jCdBc+Crgk3Gyr7vpXCiFWfFq23YDCEmrPYeiDOQKZDVE6EX/Q4Xdv97n3XkcjiSBDOY0IS19yP2yeA==
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
