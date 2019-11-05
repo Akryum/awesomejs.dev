@@ -14,13 +14,16 @@
         v-if="!$responsive.sm"
         class="absolute top-0 left-0 w-full h-0 flex justify-center"
       >
-        <BaseButton
-          icon-left="search"
-          class="px-4 py-1 text-gray-500 hover:text-gray-400"
-          @click="openSearch = true"
-        >
-          Search...
-        </BaseButton>
+        <div>
+          <BaseButton
+            v-tooltip.bottom="`<i>${isMac ? '⌘' : 'Ctrl'} + F</i>`"
+            icon-left="search"
+            class="px-4 py-1 text-gray-500 hover:text-gray-400"
+            @click="openSearch = true"
+          >
+            Search...
+          </BaseButton>
+        </div>
       </div>
     </div>
 
@@ -45,10 +48,16 @@
         />
       </keep-alive>
     </transition>
+
+    <GlobalEvents
+      @keydown.ctrl.70.prevent="openSearch = !openSearch"
+    />
   </header>
 </template>
 
 <script>
+import { ref } from '@vue/composition-api'
+import { isMac } from '@/util/env'
 import AppHeaderLogo from './AppHeaderLogo.vue'
 import PackageAddButton from '../pkg/PackageAddButton.vue'
 import UserMenu from '../user/UserMenu.vue'
@@ -85,9 +94,11 @@ export default {
     UserMenu,
   },
 
-  data () {
+  setup () {
+    const openSearch = ref(false)
     return {
-      openSearch: false,
+      openSearch,
+      isMac,
     }
   },
 }

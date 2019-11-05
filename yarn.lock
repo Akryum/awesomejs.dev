@@ -14355,6 +14355,11 @@ vue-focus@^2.1.0:
   dependencies:
     loose-envify "^1.2.0"
 
+vue-global-events@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vue-global-events/-/vue-global-events-1.1.2.tgz#aae6e221d095ab6fc82ce5d3a40ba3b9ebdfaab7"
+  integrity sha512-iZv/IBUNzVkwN+OraP6bxvcy/yld3snrfK8M5np5afAstFEPMj78xj+slereYycNQ7/W+pdYkSDKoK7hjT5BPw==
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"

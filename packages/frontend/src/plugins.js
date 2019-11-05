@@ -5,6 +5,7 @@ import VueCompositionApi from '@vue/composition-api'
 import VueMeta from 'vue-meta'
 import VTooltip from 'v-tooltip'
 import 'v-tooltip/dist/v-tooltip.css'
+import GlobalEvents from 'vue-global-events'
 
 Vue.use(Responsive, {
   computed: {
@@ -29,4 +30,17 @@ Vue.use(VueCompositionApi)
 
 Vue.use(VueMeta)
 
-Vue.use(VTooltip)
+Vue.use(VTooltip, {
+  boundariesElement: 'viewport',
+  themes: {
+    tooltip: {
+      // Delay (ms)
+      delay: {
+        show: 700,
+        hide: 0,
+      },
+    },
+  },
+})
+
+Vue.component('GlobalEvents', GlobalEvents)
