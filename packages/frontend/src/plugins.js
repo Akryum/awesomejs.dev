@@ -39,6 +39,7 @@ Vue.use(VTooltip, {
         show: 700,
         hide: 0,
       },
+      offset: 8,
     },
   },
 })
