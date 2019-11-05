@@ -1,6 +1,7 @@
 <template>
   <router-link :to="route">
     <img
+      v-if="src"
       :src="src"
       class="w-8 h-8 rounded"
       alt="Logo"
@@ -20,8 +21,8 @@ export default {
     },
 
     src () {
-      if (this.hasProjectType && this.projectType) {
-        return this.projectType.logo
+      if (this.hasProjectType) {
+        return this.projectType && this.projectType.logo
       }
       return require('@/assets/logo.png')
     },

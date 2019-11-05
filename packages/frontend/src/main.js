@@ -14,8 +14,12 @@ Vue.config.errorHandler = (err, vm, info) => {
   console.error(err, vm, info)
 }
 
-new Vue({
+const app = new Vue({
   router,
   apolloProvider: createProvider(),
   render: h => h(App),
-}).$mount('#app')
+})
+
+router.onReady(() => {
+  app.$mount('#app')
+})
