@@ -3,7 +3,7 @@ import { onCreate } from '@nodepack/app-context'
 import { Context } from '@/context'
 
 onCreate((ctx: Context) => {
-  ctx.algolia = Algolia(process.env.ALGOLIA_ID, process.env.ALGOLIA_KEY)
+  ctx.algolia = Algolia(ctx.config.algolia.id, ctx.config.algolia.key)
 })
 
 export default interface AlgoliaContext {

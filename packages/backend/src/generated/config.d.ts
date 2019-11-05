@@ -3,6 +3,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
+import ConfigAlgolia from '@config/algolia'
 import ConfigApollo from '@config/apollo'
 import ConfigCookie from '@config/cookie'
 import ConfigCors from '@config/cors'
@@ -10,6 +11,7 @@ import ConfigDb from '@config/db'
 import ConfigGithub from '@config/github'
 
 export default interface BaseConfig {
+  algolia: typeof ConfigAlgolia
   apollo: typeof ConfigApollo
   cookie: typeof ConfigCookie
   cors: typeof ConfigCors
