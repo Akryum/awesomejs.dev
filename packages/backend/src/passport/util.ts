@@ -1,6 +1,5 @@
 import { VerifyCallback, Strategy, VerifyFunction } from 'passport-oauth2'
 import { query as q, values } from 'faunadb'
-import { UserAccount } from './util'
 import { useStrategy, deserializeUser } from '@nodepack/plugin-passport'
 import { hook } from '@nodepack/app-context'
 import { Context } from '@/context'
