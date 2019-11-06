@@ -29,6 +29,9 @@
             placeholder="Search..."
             maxlength="80"
             class="bg-black px-8 py-4 rounded w-full flex-1 mr-4"
+            @keydown.up="focusPrevious()"
+            @keydown.down="focusNext()"
+            @keyup.enter="selectFocused()"
           >
 
           <ProjectTypeSelect
@@ -68,12 +71,6 @@
           No results
         </EmptyMessage>
       </div>
-
-      <GlobalEvents
-        @keydown.up="focusPrevious()"
-        @keydown.down="focusNext()"
-        @keyup.enter="selectFocused()"
-      />
     </div>
   </FocusTrap>
 </template>
