@@ -104,6 +104,7 @@ export default {
     function focusInput () {
       if (input.value) {
         input.value.focus()
+        input.value.select()
       }
     }
 
