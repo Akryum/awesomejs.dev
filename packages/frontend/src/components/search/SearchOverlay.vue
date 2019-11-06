@@ -150,7 +150,8 @@ export default {
     }
 
     watch(focusIndex, () => {
-      list.value.querySelector('.focused').scrollIntoViewIfNeeded()
+      const el = list.value.querySelector('.focused')
+      el.scrollIntoViewIfNeeded ? el.scrollIntoViewIfNeeded() : el.scrollIntoView()
     }, {
       lazy: true,
     })
