@@ -1,24 +1,24 @@
 <template>
   <div class="flex flex-col items-center">
-    <i class="material-icons text-6xl text-purple-700 mb-4">thumb_up</i>
-    <h1 class="text-3xl text-gray-500">
+    <h1 class="text-3xl text-gray-500 mt-20 mb-4">
+      <i class="material-icons text-4xl text-purple-700 mr-2">thumb_up</i>
       Join our community now!
     </h1>
-    <div class="text-gray-300 mt-8">
-      How do you want to sign in?
-    </div>
-    <div class="text-gray-300 mt-8">
-      <span class="inline-block mr-4">
-        <router-link
-          :to="{ name: 'about-privacy' }"
-          class="underline"
-        >Privacy &amp; Cookies</router-link>
-      </span>
+    <div class="mb-8">
+      <router-link
+        :to="{ name: 'about-privacy' }"
+        class="text-purple-400 hover:text-purple-300"
+      >
+        Privacy &amp; Cookies
+      </router-link>
     </div>
     <div class="mt-4">
       <BaseButton
         :href="`${baseUrl}/auth/github`"
-        class="bg-black hover:bg-gray-800 w-64 py-4"
+        :loading="loading === 'github'"
+        :disabled="!!loading"
+        class="bg-gray-800 hover:bg-gray-700 w-64 py-4"
+        @click="loading = 'github'"
       >
         <img
           src="~@/assets/github.png"
@@ -34,8 +34,18 @@
 <script>
 import gql from 'graphql-tag'
 import { user } from './fragments'
+import { ref } from '@vue/composition-api'
 
 export default {
+  setup () {
+    const loading = ref(null)
+
+    return {
+      loading,
+      baseUrl: process.env.VUE_APP_API_BASE,
+    }
+  },
+
   apollo: {
     user: {
       query: gql`
@@ -52,10 +62,6 @@ export default {
         }
       },
     },
-  },
-
-  created () {
-    this.baseUrl = process.env.VUE_APP_API_BASE
   },
 
   metaInfo: {
