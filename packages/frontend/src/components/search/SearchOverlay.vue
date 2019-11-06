@@ -46,20 +46,19 @@
 
         <div
           v-else-if="result.hits.length"
+          ref="list"
           class="w-full flex-1 overflow-auto"
         >
           <PackageListItem
-            v-for="hit of result.hits"
+            v-for="(hit, index) of result.hits"
             :key="hit.id"
             :pkg="hit"
-            :to="{
-              name: 'package',
-              params: {
-                projectTypeSlug: hit.projectType.slug,
-                packageId: hit.id,
-              },
+            :to="getRoute(hit)"
+            class="mt-4 first:mt-0 border-l-2 border-transparent"
+            :class="{
+              'focused': focusIndex === index,
             }"
-            class="mt-4 first:mt-0"
+            @mouseover.native="focusIndex = index"
           />
         </div>
 
@@ -69,6 +68,12 @@
           No results
         </EmptyMessage>
       </div>
+
+      <GlobalEvents
+        @keydown.up="focusPrevious()"
+        @keydown.down="focusNext()"
+        @keyup.enter="selectFocused()"
+      />
     </div>
   </FocusTrap>
 </template>
@@ -117,6 +122,41 @@ export default {
 
     const { searchText, result } = useSearch('packages', searchParams)
 
+    function getRoute (hit) {
+      return {
+        name: 'package',
+        params: {
+          projectTypeSlug: hit.projectType.slug,
+          packageId: hit.id,
+        },
+      }
+    }
+
+    const list = ref(null)
+    const focusIndex = ref(0)
+
+    watch(result, () => {
+      focusIndex.value = 0
+    })
+
+    function focusPrevious () {
+      if (focusIndex.value > 0) {
+        focusIndex.value--
+      }
+    }
+
+    function focusNext () {
+      if (focusIndex.value < result.value.hits.length - 1) {
+        focusIndex.value++
+      }
+    }
+
+    watch(focusIndex, () => {
+      list.value.querySelector('.focused').scrollIntoViewIfNeeded()
+    }, {
+      lazy: true,
+    })
+
     useLockScroll()
 
     return {
@@ -125,6 +165,11 @@ export default {
       focusInput,
       searchText,
       result,
+      getRoute,
+      list,
+      focusIndex,
+      focusPrevious,
+      focusNext,
       projectTypeSlug,
     }
   },
@@ -148,6 +193,22 @@ export default {
       this.projectTypeSlug = this.$route.params.projectTypeSlug
       this.focusInput()
     },
+
+    selectFocused () {
+      if (this.focusIndex < this.result.hits.length) {
+        this.$router.push(this.getRoute(this.result.hits[this.focusIndex]))
+      }
+    },
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+.focused {
+  @apply bg-gray-700;
+
+  &.router-link-active {
+    @apply bg-purple-800;
+  }
+}
+</style>
