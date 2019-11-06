@@ -1,6 +1,6 @@
 <template>
   <BaseButton
-    v-tooltip="`Suggest a new package <span class='text-gray-500 font-mono'>${isMac ? '⌘' : 'Ctrl'}+A</span>`"
+    v-tooltip="`Suggest a new package <span class='text-gray-500 font-mono'>${isMac ? '⌘' : 'Ctrl'}+Shift+A</span>`"
     :to="route"
     icon-left="add"
     class="px-4 py-2 bg-purple-900 text-purple-200 hover:bg-purple-800"
@@ -8,7 +8,7 @@
     Package
 
     <GlobalEvents
-      @keydown.ctrl.65.prevent="$router.push(route)"
+      @keydown.ctrl.shift.65.prevent="$router.push(route)"
     />
   </BaseButton>
 </template>
