@@ -25,10 +25,11 @@
         <div class="flex w-full mt-2 sm:mt-4 lg:mt-0 mb-4">
           <input
             ref="input"
-            v-model="searchText"
+            :value="searchText"
             placeholder="Search..."
             maxlength="80"
             class="bg-black px-8 py-4 rounded w-full flex-1 mr-4"
+            @input="searchText = $event.currentTarget.value"
             @keydown.up="focusPrevious()"
             @keydown.down="focusNext()"
             @keyup.enter="selectFocused()"
