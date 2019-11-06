@@ -140,21 +140,21 @@ export default {
     function focusPrevious () {
       if (focusIndex.value > 0) {
         focusIndex.value--
+        scrollToFocused()
       }
     }
 
     function focusNext () {
       if (focusIndex.value < result.value.hits.length - 1) {
         focusIndex.value++
+        scrollToFocused()
       }
     }
 
-    watch(focusIndex, () => {
+    function scrollToFocused () {
       const el = list.value.querySelector('.focused')
       el.scrollIntoViewIfNeeded ? el.scrollIntoViewIfNeeded() : el.scrollIntoView()
-    }, {
-      lazy: true,
-    })
+    }
 
     useLockScroll()
 
