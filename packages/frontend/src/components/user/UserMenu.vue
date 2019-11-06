@@ -61,7 +61,7 @@
       <BaseButton
         :to="{ name: 'login' }"
         icon-left="face"
-        class="px-4 py-1 bg-purple-800 hover:bg-purple-700"
+        class="px-4 py-2 bg-gray-800 text-gray-200 hover:bg-gray-700"
       >
         Sign in
       </BaseButton>
