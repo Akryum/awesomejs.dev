@@ -15,9 +15,16 @@
 
 <script>
 import gql from 'graphql-tag'
+import { isMac } from '@/util/env'
 import { projectType } from '../project-type/fragments'
 
 export default {
+  setup () {
+    return {
+      isMac,
+    }
+  },
+
   computed: {
     projectTypeSlug () {
       return this.$route.params.projectTypeSlug
