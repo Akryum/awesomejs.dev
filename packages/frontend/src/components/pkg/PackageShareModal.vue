@@ -21,13 +21,12 @@ export default {
       emit('close')
     }
 
-    const url = ref('')
-    url.value = window.location.origin + root.$router.resolve({
+    const url = ref(window.location.origin + root.$router.resolve({
       name: 'package',
       params: {
         packageId: props.pkg.id,
       },
-    }).href
+    }).href)
 
     const input = ref(null)
 
