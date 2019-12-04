@@ -1,7 +1,7 @@
 <script>
 import gql from 'graphql-tag'
 import { pkgProposalFragment, pkgFragment } from './fragments'
-import { useMutation } from '@vue/apollo-composable'
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 
 export default {
   props: {
@@ -14,14 +14,27 @@ export default {
       type: Object,
       required: true,
     },
-
-    proposals: {
-      type: Array,
-      required: true,
-    },
   },
 
   setup (props, { root }) {
+    // Proposals
+    const { result } = useQuery(gql`
+      query ProjectTypePackages ($id: ID!) {
+        projectType (id: $id) {
+          id
+          packageProposals {
+            id
+          }
+        }
+      }
+    `, () => ({
+      id: props.projectTypeId,
+    }), {
+      fetchPolicy: 'cache-and-network',
+    })
+    const proposals = useResult(result, [], data => data.projectType.packageProposals)
+
+    // Action
     const { mutate } = useMutation(gql`
       mutation ApprovePackageProposal ($input: ApprovePackageProposalInput!) {
         approvePackageProposal (input: $input) {
@@ -71,13 +84,13 @@ export default {
 
     async function approve () {
       // Select next proposal
-      let index = props.proposals.indexOf(props.proposal)
-      if (index === props.proposals.length - 1) {
+      let index = proposals.value.findIndex(p => p.id === props.proposal.id)
+      if (index === proposals.value.length - 1) {
         index = 0
       } else {
         index++
       }
-      const nextProposal = props.proposals[index]
+      const nextProposal = proposals.value[index]
       if (nextProposal) {
         root.$router.push({
           name: 'package-proposal',
@@ -98,7 +111,7 @@ export default {
 
 <template>
   <BaseButton
-    class="bg-red-800 hover:bg-red-700 p-2 ml-4"
+    class="bg-red-800 hover:bg-red-700"
     @click="approve()"
   >
     Approve

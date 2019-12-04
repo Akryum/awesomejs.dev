@@ -81,7 +81,9 @@ export default {
         v-if="!$responsive.lg || packageId"
         class="w-full lg:w-2/3 lg:pl-16 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-auto"
       >
-        <router-view />
+        <router-view
+          :project-type-id="projectType.id"
+        />
       </div>
     </div>
   </div>

@@ -2,20 +2,28 @@
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageGeneralInfo from './PackageGeneralInfo.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
+import PackageProposalApproveButton from './PackageProposalApproveButton.vue'
 
 import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { pkgProposalFragment } from './fragments'
+import { useCurrentUser } from '../user/useCurrentUser'
 
 export default {
   components: {
     LoadingIndicator,
     PackageGeneralInfo,
+    PackageProposalApproveButton,
     PackageProposalUpvoteButton,
   },
 
   props: {
     packageId: {
+      type: String,
+      required: true,
+    },
+
+    projectTypeId: {
       type: String,
       required: true,
     },
@@ -37,6 +45,7 @@ export default {
     return {
       pkg,
       loading,
+      currentUser: useCurrentUser().currentUser,
     }
   },
 
@@ -61,9 +70,17 @@ export default {
         :pkg="pkg"
       />
 
-      <div class="mb-4">
+      <div class="mb-4 flex overflow-x-auto">
         <PackageProposalUpvoteButton
           :pkg="pkg"
+          class="mr-4"
+        />
+
+        <PackageProposalApproveButton
+          v-if="currentUser && currentUser.admin"
+          :project-type-id="projectTypeId"
+          :proposal="pkg"
+          class="px-8 py-4"
         />
       </div>
 

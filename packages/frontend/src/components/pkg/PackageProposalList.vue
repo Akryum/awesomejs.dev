@@ -77,7 +77,7 @@ export default {
           v-if="currentUser && currentUser.admin"
           :project-type-id="projectTypeId"
           :proposal="pkg"
-          :proposals="proposals"
+          class="p-2 ml-4"
         />
       </PackageListItem>
     </template>
