@@ -1,3 +1,19 @@
+<script>
+export default {
+  props: {
+    backTo: {
+      type: [String, Object],
+      default: null,
+    },
+
+    center: {
+      type: Boolean,
+      default: false,
+    },
+  },
+}
+</script>
+
 <template>
   <h1
     class="flex items-center"
@@ -28,19 +44,3 @@
     <slot name="after" />
   </h1>
 </template>
-
-<script>
-export default {
-  props: {
-    backTo: {
-      type: [String, Object],
-      default: null,
-    },
-
-    center: {
-      type: Boolean,
-      default: false,
-    },
-  },
-}
-</script>

@@ -1,3 +1,31 @@
+<script>
+import { ref, watch } from '@vue/composition-api'
+import { useCurrentUser } from './useCurrentUser'
+
+export default {
+  setup (props, { root }) {
+    // Redirect if already logged in
+    const { currentUser } = useCurrentUser()
+    watch(currentUser, value => {
+      if (value) {
+        root.$router.replace({ name: 'home' })
+      }
+    })
+
+    const loading = ref(null)
+
+    return {
+      loading,
+      baseUrl: process.env.VUE_APP_API_BASE,
+    }
+  },
+
+  metaInfo: {
+    title: 'Login',
+  },
+}
+</script>
+
 <template>
   <div class="flex flex-col items-center">
     <h1 class="text-3xl text-gray-500 mt-20 mb-4">
@@ -30,42 +58,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import gql from 'graphql-tag'
-import { user } from './fragments'
-import { ref } from '@vue/composition-api'
-
-export default {
-  setup () {
-    const loading = ref(null)
-
-    return {
-      loading,
-      baseUrl: process.env.VUE_APP_API_BASE,
-    }
-  },
-
-  apollo: {
-    user: {
-      query: gql`
-        query CurrentUser {
-          user: currentUser {
-            ...user
-          }
-        }
-        ${user}
-      `,
-      result () {
-        if (this.user) {
-          this.$router.replace({ name: 'home' })
-        }
-      },
-    },
-  },
-
-  metaInfo: {
-    title: 'Login',
-  },
-}
-</script>

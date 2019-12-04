@@ -1,3 +1,17 @@
+<script>
+import PageTitle from '../PageTitle.vue'
+
+export default {
+  components: {
+    PageTitle,
+  },
+
+  metaInfo: {
+    title: 'Privacy & Security',
+  },
+}
+</script>
+
 <template>
   <div class="about-document">
     <div class="flex justify-center text-purple-500 mb-4">
@@ -98,17 +112,3 @@
     </p>
   </div>
 </template>
-
-<script>
-import PageTitle from '../PageTitle.vue'
-
-export default {
-  components: {
-    PageTitle,
-  },
-
-  metaInfo: {
-    title: 'Privacy & Security',
-  },
-}
-</script>

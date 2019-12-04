@@ -1,3 +1,38 @@
+<script>
+import { computed } from '@vue/composition-api'
+export default {
+  props: {
+    pkg: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  setup (props) {
+    const links = computed(() => {
+      const list = []
+      if (props.pkg.homepage) {
+        list.push({
+          url: props.pkg.homepage,
+          label: 'Homepage',
+        })
+      }
+      if (props.pkg.repo) {
+        list.push({
+          url: props.pkg.repo,
+          label: 'Repository',
+        })
+      }
+      return list
+    })
+
+    return {
+      links,
+    }
+  },
+}
+</script>
+
 <template>
   <div v-if="links.length">
     <a
@@ -12,33 +47,3 @@
     </a>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    pkg: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  computed: {
-    links () {
-      const list = []
-      if (this.pkg.homepage) {
-        list.push({
-          url: this.pkg.homepage,
-          label: 'Homepage',
-        })
-      }
-      if (this.pkg.repo) {
-        list.push({
-          url: this.pkg.repo,
-          label: 'Repository',
-        })
-      }
-      return list
-    },
-  },
-}
-</script>

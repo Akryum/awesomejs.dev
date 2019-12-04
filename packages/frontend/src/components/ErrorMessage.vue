@@ -1,3 +1,32 @@
+<script>
+import { computed } from '@vue/composition-api'
+
+export default {
+  props: {
+    error: {
+      type: [String, Object, Error],
+      default: null,
+    },
+  },
+
+  setup (props) {
+    const message = computed(() => {
+      if (typeof props.error === 'string') {
+        return props.error
+      }
+      if (props.error.graphQLErrors) {
+        return props.error.graphQLErrors.map(e => e.message).join('\n')
+      }
+      return props.error.message
+    })
+
+    return {
+      message,
+    }
+  },
+}
+</script>
+
 <template>
   <div
     v-if="error"
@@ -7,26 +36,3 @@
     <span class="whitespace-pre">{{ message }}</span>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    error: {
-      type: [String, Object, Error],
-      default: null,
-    },
-  },
-
-  computed: {
-    message () {
-      if (typeof this.error === 'string') {
-        return this.error
-      }
-      if (this.error.graphQLErrors) {
-        return this.error.graphQLErrors.map(e => e.message).join('\n')
-      }
-      return this.error.message
-    },
-  },
-}
-</script>

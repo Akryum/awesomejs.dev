@@ -1,3 +1,33 @@
+<script>
+import { FocusTrap } from 'focus-trap-vue'
+import { useLockScroll } from '@/util/lock-scroll'
+
+export default {
+  components: {
+    FocusTrap,
+  },
+
+  props: {
+    size: {
+      type: String,
+      default: 'full',
+    },
+  },
+
+  setup (props, { emit }) {
+    useLockScroll()
+
+    function close () {
+      emit('close')
+    }
+
+    return {
+      close,
+    }
+  },
+}
+</script>
+
 <template>
   <transition
     name="zoom"
@@ -44,31 +74,3 @@
     </FocusTrap>
   </transition>
 </template>
-
-<script>
-import { FocusTrap } from 'focus-trap-vue'
-import { useLockScroll } from '@/util/lock-scroll'
-
-export default {
-  components: {
-    FocusTrap,
-  },
-
-  props: {
-    size: {
-      type: String,
-      default: 'full',
-    },
-  },
-
-  setup () {
-    useLockScroll()
-  },
-
-  methods: {
-    close () {
-      this.$emit('close')
-    },
-  },
-}
-</script>

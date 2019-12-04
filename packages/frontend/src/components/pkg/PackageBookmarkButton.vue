@@ -1,17 +1,6 @@
-<template>
-  <BaseButton
-    :disabled="$apollo.loading"
-    class="bg-gray-800 hover:bg-gray-700 px-8 py-4"
-    :icon-left="pkg.bookmarked ? 'bookmark' : 'bookmark_border'"
-    @click="toggle()"
-  >
-    {{ pkg.bookmarked ? 'Bookmarked' : 'Bookmark' }}
-  </BaseButton>
-</template>
-
 <script>
 import gql from 'graphql-tag'
-import { checkUnauthorized } from '@/util/error'
+import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
 
 export default {
   props: {
@@ -21,61 +10,60 @@ export default {
     },
   },
 
-  data () {
-    return {
-      pkg: {},
-    }
-  },
-
-  apollo: {
-    pkg: {
-      query: gql`
-        query PackageBookmarked ($id: ID!) {
-          pkg: package(id: $id) {
-            id
-            bookmarked
-          }
+  setup (props) {
+    // Package
+    const { result, loading } = useQuery(gql`
+      query PackageBookmarked ($id: ID!) {
+        pkg: package(id: $id) {
+          id
+          bookmarked
         }
-      `,
-      variables () {
-        return {
-          id: this.packageId,
-        }
-      },
-    },
-  },
-
-  methods: {
-    async toggle () {
-      try {
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation TogglePackageBookmark ($input: TogglePackageBookmarkInput!) {
-              togglePackageBookmark (input: $input) {
-                id
-                bookmarked
-              }
-            }
-          `,
-          variables: {
-            input: {
-              packageId: this.packageId,
-            },
-          },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            togglePackageBookmark: {
-              __typename: 'Package',
-              id: this.packageId,
-              bookmarked: !this.pkg.bookmarked,
-            },
-          },
-        })
-      } catch (e) {
-        console.error(e)
-        checkUnauthorized.bind(this)(e)
       }
-    },
+    `, () => ({
+      id: props.packageId,
+    }))
+    const pkg = useResult(result, {})
+
+    // Toggle
+    const { mutate: toggle } = useMutation(gql`
+      mutation TogglePackageBookmark ($input: TogglePackageBookmarkInput!) {
+        togglePackageBookmark (input: $input) {
+          id
+          bookmarked
+        }
+      }
+    `, () => ({
+      variables: {
+        input: {
+          packageId: props.packageId,
+        },
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        togglePackageBookmark: {
+          __typename: 'Package',
+          id: props.packageId,
+          bookmarked: !pkg.value.bookmarked,
+        },
+      },
+    }))
+
+    return {
+      pkg,
+      loading,
+      toggle,
+    }
   },
 }
 </script>
+
+<template>
+  <BaseButton
+    :disabled="loading"
+    class="bg-gray-800 hover:bg-gray-700 px-8 py-4"
+    :icon-left="pkg.bookmarked ? 'bookmark' : 'bookmark_border'"
+    @click="toggle()"
+  >
+    {{ pkg.bookmarked ? 'Bookmarked' : 'Bookmark' }}
+  </BaseButton>
+</template>

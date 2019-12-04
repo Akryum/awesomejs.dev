@@ -1,3 +1,122 @@
+<script>
+import EmptyMessage from '../EmptyMessage.vue'
+import LoadingIndicator from '../LoadingIndicator.vue'
+import PackageListItem from '../pkg/PackageListItem.vue'
+import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
+
+import { FocusTrap } from 'focus-trap-vue'
+import { ref, computed, watch, onActivated } from '@vue/composition-api'
+import { useSearch } from '@/util/algolia'
+import { useLockScroll } from '@/util/lock-scroll'
+
+export default {
+  components: {
+    EmptyMessage,
+    FocusTrap,
+    LoadingIndicator,
+    PackageListItem,
+    ProjectTypeSelect,
+  },
+
+  setup (props, { emit, root }) {
+    function close () {
+      emit('close')
+    }
+    watch(() => root.$route, () => close(), {
+      lazy: true,
+    })
+
+    const input = ref(null)
+
+    function focusInput () {
+      if (input.value) {
+        input.value.focus()
+        input.value.select()
+      }
+    }
+
+    const projectTypeSlug = ref(null)
+
+    watch(projectTypeSlug, () => focusInput())
+
+    const searchParams = computed(() => ({
+      facetFilters: [
+        ...projectTypeSlug.value ? [`projectType.slug:${projectTypeSlug.value}`] : [],
+      ],
+    }))
+
+    const { searchText, result } = useSearch('packages', searchParams)
+
+    function getRoute (hit) {
+      return {
+        name: 'package',
+        params: {
+          projectTypeSlug: hit.projectType.slug,
+          packageId: hit.id,
+        },
+      }
+    }
+
+    const list = ref(null)
+    const focusIndex = ref(0)
+
+    watch(result, () => {
+      focusIndex.value = 0
+    })
+
+    function focusPrevious () {
+      if (focusIndex.value > 0) {
+        focusIndex.value--
+        scrollToFocused()
+      }
+    }
+
+    function focusNext () {
+      if (focusIndex.value < result.value.hits.length - 1) {
+        focusIndex.value++
+        scrollToFocused()
+      }
+    }
+
+    function scrollToFocused () {
+      const el = list.value.querySelector('.focused')
+      el.scrollIntoViewIfNeeded ? el.scrollIntoViewIfNeeded() : el.scrollIntoView()
+    }
+
+    function selectFocused () {
+      if (focusIndex.value < result.value.hits.length) {
+        root.$router.push(getRoute(result.value.hits[focusIndex.value]))
+      }
+    }
+
+    useLockScroll()
+
+    function onOpen () {
+      projectTypeSlug.value = root.$route.params.projectTypeSlug
+      focusInput()
+    }
+
+    onOpen()
+    onActivated(onOpen)
+
+    return {
+      close,
+      input,
+      focusInput,
+      searchText,
+      result,
+      getRoute,
+      list,
+      focusIndex,
+      focusPrevious,
+      focusNext,
+      selectFocused,
+      projectTypeSlug,
+    }
+  },
+}
+</script>
+
 <template>
   <FocusTrap active>
     <div
@@ -75,133 +194,6 @@
     </div>
   </FocusTrap>
 </template>
-
-<script>
-import EmptyMessage from '../EmptyMessage.vue'
-import LoadingIndicator from '../LoadingIndicator.vue'
-import PackageListItem from '../pkg/PackageListItem.vue'
-import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
-import { FocusTrap } from 'focus-trap-vue'
-import { useSearch } from '@/util/algolia'
-import { ref, computed, watch } from '@vue/composition-api'
-import { useLockScroll } from '@/util/lock-scroll'
-
-export default {
-  components: {
-    EmptyMessage,
-    FocusTrap,
-    LoadingIndicator,
-    PackageListItem,
-    ProjectTypeSelect,
-  },
-
-  setup (props, { emit }) {
-    function close () {
-      emit('close')
-    }
-
-    const input = ref(null)
-
-    function focusInput () {
-      if (input.value) {
-        input.value.focus()
-        input.value.select()
-      }
-    }
-
-    const projectTypeSlug = ref(null)
-
-    watch(projectTypeSlug, () => focusInput())
-
-    const searchParams = computed(() => ({
-      facetFilters: [
-        ...projectTypeSlug.value ? [`projectType.slug:${projectTypeSlug.value}`] : [],
-      ],
-    }))
-
-    const { searchText, result } = useSearch('packages', searchParams)
-
-    function getRoute (hit) {
-      return {
-        name: 'package',
-        params: {
-          projectTypeSlug: hit.projectType.slug,
-          packageId: hit.id,
-        },
-      }
-    }
-
-    const list = ref(null)
-    const focusIndex = ref(0)
-
-    watch(result, () => {
-      focusIndex.value = 0
-    })
-
-    function focusPrevious () {
-      if (focusIndex.value > 0) {
-        focusIndex.value--
-        scrollToFocused()
-      }
-    }
-
-    function focusNext () {
-      if (focusIndex.value < result.value.hits.length - 1) {
-        focusIndex.value++
-        scrollToFocused()
-      }
-    }
-
-    function scrollToFocused () {
-      const el = list.value.querySelector('.focused')
-      el.scrollIntoViewIfNeeded ? el.scrollIntoViewIfNeeded() : el.scrollIntoView()
-    }
-
-    useLockScroll()
-
-    return {
-      close,
-      input,
-      focusInput,
-      searchText,
-      result,
-      getRoute,
-      list,
-      focusIndex,
-      focusPrevious,
-      focusNext,
-      projectTypeSlug,
-    }
-  },
-
-  watch: {
-    '$route' () {
-      this.close()
-    },
-  },
-
-  created () {
-    this.onOpen()
-  },
-
-  activated () {
-    this.onOpen()
-  },
-
-  methods: {
-    onOpen () {
-      this.projectTypeSlug = this.$route.params.projectTypeSlug
-      this.focusInput()
-    },
-
-    selectFocused () {
-      if (this.focusIndex < this.result.hits.length) {
-        this.$router.push(this.getRoute(this.result.hits[this.focusIndex]))
-      }
-    },
-  },
-}
-</script>
 
 <style lang="postcss" scoped>
 .focused {

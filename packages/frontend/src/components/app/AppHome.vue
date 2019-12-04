@@ -1,13 +1,3 @@
-<template>
-  <div>
-    <PageTitle>
-      Select your project type
-    </PageTitle>
-
-    <ProjectTypes />
-  </div>
-</template>
-
 <script>
 import PageTitle from '../PageTitle.vue'
 import ProjectTypes from '../project-type/ProjectTypes.vue'
@@ -19,3 +9,13 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div>
+    <PageTitle>
+      Select your project type
+    </PageTitle>
+
+    <ProjectTypes />
+  </div>
+</template>

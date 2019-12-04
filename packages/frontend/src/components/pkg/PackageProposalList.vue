@@ -1,7 +1,65 @@
+<script>
+import gql from 'graphql-tag'
+import { useQuery, useResult, useQueryLoading } from '@vue/apollo-composable'
+import { useCurrentUser } from '../user/useCurrentUser'
+import { pkgProposalFragment } from './fragments'
+
+import EmptyMessage from '../EmptyMessage.vue'
+import PackageAddButton from './PackageAddButton.vue'
+import PackageListItem from './PackageListItem.vue'
+import LoadingIndicator from '../LoadingIndicator.vue'
+const PackageProposalApproveButton = () => import(
+  /* webpackChunkName: "PackageProposalApproveButton.vue" */
+  './PackageProposalApproveButton.vue'
+)
+
+export default {
+  components: {
+    EmptyMessage,
+    PackageAddButton,
+    PackageListItem,
+    PackageProposalApproveButton,
+    LoadingIndicator,
+  },
+
+  props: {
+    projectTypeId: {
+      type: String,
+      required: true,
+    },
+  },
+
+  setup (props) {
+    const { result } = useQuery(gql`
+      query ProjectTypePackages ($id: ID!) {
+        projectType (id: $id) {
+          id
+          packageProposals {
+            ...pkgProposal
+          }
+        }
+      }
+      ${pkgProposalFragment}
+    `, () => ({
+      id: props.projectTypeId,
+    }), {
+      fetchPolicy: 'cache-and-network',
+    })
+    const proposals = useResult(result, [], data => data.projectType.packageProposals)
+
+    return {
+      loading: useQueryLoading(),
+      proposals,
+      currentUser: useCurrentUser().currentUser,
+    }
+  },
+}
+</script>
+
 <template>
   <div>
     <LoadingIndicator
-      v-if="$apollo.loading && !proposals.length"
+      v-if="loading && !proposals.length"
       class="py-8"
     />
     <template v-else-if="proposals.length">
@@ -34,72 +92,3 @@
     </EmptyMessage>
   </div>
 </template>
-
-<script>
-import gql from 'graphql-tag'
-import { pkgProposal } from './fragments'
-import { user } from '../user/fragments'
-import EmptyMessage from '../EmptyMessage.vue'
-import PackageAddButton from './PackageAddButton.vue'
-import PackageListItem from './PackageListItem.vue'
-import LoadingIndicator from '../LoadingIndicator.vue'
-const PackageProposalApproveButton = () => import(
-  /* webpackChunkName: "PackageProposalApproveButton.vue" */
-  './PackageProposalApproveButton.vue'
-)
-
-export default {
-  components: {
-    EmptyMessage,
-    PackageAddButton,
-    PackageListItem,
-    PackageProposalApproveButton,
-    LoadingIndicator,
-  },
-
-  props: {
-    projectTypeId: {
-      type: String,
-      required: true,
-    },
-  },
-
-  data () {
-    return {
-      proposals: [],
-    }
-  },
-
-  apollo: {
-    proposals: {
-      query: gql`
-        query ProjectTypePackages ($id: ID!) {
-          projectType (id: $id) {
-            id
-            packageProposals {
-              ...pkgProposal
-            }
-          }
-        }
-        ${pkgProposal}
-      `,
-      variables () {
-        return {
-          id: this.projectTypeId,
-        }
-      },
-      update: data => data.projectType.packageProposals,
-      fetchPolicy: 'cache-and-network',
-    },
-
-    currentUser: gql`
-      query CurrentUser {
-        currentUser {
-          ...user
-        }
-      }
-      ${user}
-    `,
-  },
-}
-</script>

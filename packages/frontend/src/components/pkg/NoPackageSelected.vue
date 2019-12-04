@@ -1,3 +1,29 @@
+<script>
+import gql from 'graphql-tag'
+import { projectTypeFragment } from '../project-type/fragments'
+import { useQuery, useResult } from '@vue/apollo-composable'
+
+export default {
+  setup (props, { root }) {
+    const { result } = useQuery(gql`
+      query ProjectType ($slug: String!) {
+        projectType: projectTypeBySlug (slug: $slug) {
+          ...projectType
+        }
+      }
+      ${projectTypeFragment}
+    `, () => ({
+      slug: root.$route.params.projectTypeSlug,
+    }))
+    const projectType = useResult(result)
+
+    return {
+      projectType,
+    }
+  },
+}
+</script>
+
 <template>
   <div class="text-center my-8">
     <div
@@ -17,31 +43,6 @@
     </h1>
   </div>
 </template>
-
-<script>
-import gql from 'graphql-tag'
-import { projectType } from '../project-type/fragments'
-
-export default {
-  apollo: {
-    projectType: {
-      query: gql`
-        query ProjectType ($slug: String!) {
-          projectType: projectTypeBySlug (slug: $slug) {
-            ...projectType
-          }
-        }
-        ${projectType}
-      `,
-      variables () {
-        return {
-          slug: this.$route.params.projectTypeSlug,
-        }
-      },
-    },
-  },
-}
-</script>
 
 <style lang="postcss" scoped>
 .logo {

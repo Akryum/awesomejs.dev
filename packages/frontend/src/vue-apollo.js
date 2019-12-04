@@ -1,10 +1,8 @@
-import Vue from 'vue'
-import VueApollo from 'vue-apollo'
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client'
+import { onError } from 'apollo-link-error'
+import { logErrorMessages } from '@vue/apollo-util'
+import { checkUnauthorized } from '@/util/error'
 import { cache } from './cache'
-
-// Install the vue plugin
-Vue.use(VueApollo)
 
 // Name of the localStorage item
 const AUTH_TOKEN = 'apollo-token'
@@ -53,29 +51,20 @@ const defaultOptions = {
 }
 
 // Call this in the Vue app file
-export function createProvider (options = {}) {
+export function createClient (options = {}) {
+  const link = onError(error => {
+    logErrorMessages(error)
+    checkUnauthorized(error)
+  })
+
   // Create apollo client
   const { apolloClient, wsClient } = createApolloClient({
     ...defaultOptions,
     ...options,
+    link,
   })
   apolloClient.wsClient = wsClient
-
-  // Create vue apollo provider
-  const apolloProvider = new VueApollo({
-    defaultClient: apolloClient,
-    defaultOptions: {
-      $query: {
-        // fetchPolicy: 'cache-and-network',
-      },
-    },
-    errorHandler (error) {
-      // eslint-disable-next-line no-console
-      console.log('%cError', 'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;', error.message)
-    },
-  })
-
-  return apolloProvider
+  return apolloClient
 }
 
 // Manually call this when user log in

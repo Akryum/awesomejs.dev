@@ -1,3 +1,72 @@
+<script>
+import PopupModal from '../PopupModal.vue'
+import { ref } from '@vue/composition-api'
+import { useQrcode } from '@/util/qrcode'
+import { useShare } from '@/util/share'
+
+export default {
+  components: {
+    PopupModal,
+  },
+
+  props: {
+    pkg: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  setup (props, { emit, root }) {
+    function close () {
+      emit('close')
+    }
+
+    const url = ref('')
+    url.value = window.location.origin + root.$router.resolve({
+      name: 'package',
+      params: {
+        packageId: props.pkg.id,
+      },
+    }).href
+
+    const input = ref(null)
+
+    function selectAll () {
+      input.value.setSelectionRange(0, input.value.value.length)
+    }
+
+    const copied = ref(false)
+
+    async function copy () {
+      await navigator.clipboard.writeText(url.value)
+      copied.value = true
+      setTimeout(() => {
+        copied.value = false
+      }, 2000)
+    }
+
+    const qrcode = useQrcode(url)
+
+    const share = useShare(() => ({
+      title: props.pkg.name,
+      text: `${props.pkg.name} - ${props.pkg.description}`,
+      url: url.value,
+    }))
+
+    return {
+      close,
+      url,
+      input,
+      selectAll,
+      copy,
+      copied,
+      qrcode,
+      share,
+    }
+  },
+}
+</script>
+
 <template>
   <PopupModal
     size="small"
@@ -50,75 +119,3 @@
     </div>
   </PopupModal>
 </template>
-
-<script>
-import PopupModal from '../PopupModal.vue'
-import { ref } from '@vue/composition-api'
-import { useQrcode } from '@/util/qrcode'
-import { useShare } from '@/util/share'
-
-export default {
-  components: {
-    PopupModal,
-  },
-
-  props: {
-    pkg: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  setup (props, { emit, ...meow }) {
-    function close () {
-      emit('close')
-    }
-
-    const url = ref('')
-
-    const input = ref(null)
-
-    function selectAll () {
-      input.value.setSelectionRange(0, input.value.value.length)
-    }
-
-    const copied = ref(false)
-
-    async function copy () {
-      await navigator.clipboard.writeText(url.value)
-      copied.value = true
-      setTimeout(() => {
-        copied.value = false
-      }, 2000)
-    }
-
-    const qrcode = useQrcode(url)
-
-    const share = useShare(() => ({
-      title: props.pkg.name,
-      text: `${props.pkg.name} - ${props.pkg.description}`,
-      url: url.value,
-    }))
-
-    return {
-      close,
-      url,
-      input,
-      selectAll,
-      copy,
-      copied,
-      qrcode,
-      share,
-    }
-  },
-
-  created () {
-    this.url = window.location.origin + this.$router.resolve({
-      name: 'package',
-      params: {
-        packageId: this.pkg.id,
-      },
-    }).href
-  },
-}
-</script>

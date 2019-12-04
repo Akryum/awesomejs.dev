@@ -1,3 +1,40 @@
+<script>
+import { ref, watch } from '@vue/composition-api'
+import genericLogo from '@/assets/package.png'
+
+export default {
+  props: {
+    pkg: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  setup (props) {
+    const src = ref(null)
+
+    watch(() => props.pkg.id, id => {
+      const img = new Image()
+      img.onload = () => {
+        if (id !== props.pkg.id) return
+        src.value = img.src
+      }
+      img.src = `https://unpkg.com/${props.pkg.name}/logo.png`
+    })
+
+    function onError () {
+      src.value = genericLogo
+    }
+
+    return {
+      src,
+      genericLogo,
+      onError,
+    }
+  },
+}
+</script>
+
 <template>
   <div class="w-10 h-10 flex items-center justify-center">
     <img
@@ -8,47 +45,3 @@
     >
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    pkg: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  data () {
-    return {
-      src: null,
-    }
-  },
-
-  watch: {
-    'pkg.id': {
-      handler: 'updateLogo',
-      immediate: true,
-    },
-  },
-
-  created () {
-    this.genericLogo = require('@/assets/package.png')
-  },
-
-  methods: {
-    updateLogo () {
-      const id = this.pkg.id
-      const img = new Image()
-      img.onload = () => {
-        if (id !== this.pkg.id) return
-        this.src = img.src
-      }
-      img.src = `https://unpkg.com/${this.pkg.name}/logo.png`
-    },
-
-    onError () {
-      this.src = this.genericLogo
-    },
-  },
-}
-</script>

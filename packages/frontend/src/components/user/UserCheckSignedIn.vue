@@ -1,24 +1,15 @@
 <script>
-import gql from 'graphql-tag'
-import { user } from './fragments'
+import { watch } from '@vue/composition-api'
+import { useCurrentUser } from './useCurrentUser'
 
 export default {
-  apollo: {
-    user: {
-      query: gql`
-        query CurrentUser {
-          user: currentUser {
-            ...user
-          }
-        }
-        ${user}
-      `,
-      result () {
-        if (!this.user) {
-          this.$router.replace({ name: 'login' })
-        }
-      },
-    },
+  setup (props, { root }) {
+    const { currentUser, loading } = useCurrentUser()
+    watch(currentUser, value => {
+      if (!loading.value && !value) {
+        root.$router.replace({ name: 'login' })
+      }
+    })
   },
 
   render (h) {

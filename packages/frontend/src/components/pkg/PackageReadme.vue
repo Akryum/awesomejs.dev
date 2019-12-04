@@ -1,39 +1,10 @@
-<template>
-  <LoadingIndicator
-    v-if="$apollo.loading"
-    class="p-8"
-  />
-  <div
-    v-else
-    class="readme relative pb-8 mt-4 border-t-2 border-gray-800"
-    :class="{
-      expand: expanded,
-      'overflow-y-hidden': !expanded
-    }"
-  >
-    <div
-      ref="render"
-      class="markdown pt-8 pb-64"
-      v-html="pkg.readme"
-    />
-
-    <div
-      v-if="!$responsive.lg"
-      class="action-overlay absolute bottom-0 left-0 w-full flex justify-center pt-6 pb-2"
-      @click="expand = !expand"
-    >
-      <BaseButton
-        class="p-1 bg-gray-800"
-      >
-        <i class="material-icons">{{ expand ? 'expand_less' : 'expand_more' }}</i>
-      </BaseButton>
-    </div>
-  </div>
-</template>
-
 <script>
 import LoadingIndicator from '../LoadingIndicator.vue'
+
+import Vue from 'vue'
 import gql from 'graphql-tag'
+import { ref, computed, watch } from '@vue/composition-api'
+import { useQuery, useResult } from '@vue/apollo-composable'
 
 const GOOGLE_IMG_PROXY = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url='
 
@@ -49,56 +20,39 @@ export default {
     },
   },
 
-  data () {
-    return {
-      expand: false,
-    }
-  },
+  setup (props, { root }) {
+    const expand = ref(false)
+    const expanded = computed(() => expand.value || root.$responsive.lg)
 
-  apollo: {
-    pkg: {
-      query: gql`
-        query PackageReadme ($id: ID!) {
-          pkg: package (id: $id) {
-            id
-            readme
-          }
+    // Pkg
+    const { result, loading } = useQuery(gql`
+      query PackageReadme ($id: ID!) {
+        pkg: package (id: $id) {
+          id
+          readme
         }
-      `,
-      variables () {
-        return {
-          id: this.packageId,
-        }
-      },
-    },
-  },
+      }
+    `, () => ({
+      id: props.packageId,
+    }))
+    const pkg = useResult(result, {})
 
-  computed: {
-    expanded () {
-      return this.expand || this.$responsive.lg
-    },
-  },
-
-  watch: {
-    'pkg.readme': 'processRender',
-  },
-
-  methods: {
-    async processRender () {
-      await this.$nextTick()
-      const render = this.$refs.render
+    // Processing
+    const render = ref()
+    async function processRender () {
+      await Vue.nextTick()
 
       // Images
-      const imgs = render.querySelectorAll('img')
+      const imgs = render.value.querySelectorAll('img')
       for (const el of imgs) {
         const img = new Image()
         img.crossOrigin = 'Anonymous'
-        img.onload = () => this.onImgLoad(img, el)
+        img.onload = () => onImgLoad(img, el)
         img.src = `${GOOGLE_IMG_PROXY}${el.src}`
       }
-    },
+    }
 
-    onImgLoad (img, el) {
+    function onImgLoad (img, el) {
       // Empty
       if (img.width <= 1 || img.height <= 1) return
 
@@ -135,10 +89,55 @@ export default {
           el.classList.add('avatar')
         }
       }
-    },
+    }
+
+    watch(() => pkg.value.readme, () => processRender(), {
+      lazy: true,
+    })
+
+    return {
+      expand,
+      expanded,
+      pkg,
+      loading,
+      render,
+    }
   },
 }
 </script>
+
+<template>
+  <LoadingIndicator
+    v-if="loading"
+    class="p-8"
+  />
+  <div
+    v-else
+    class="readme relative pb-8 mt-4 border-t-2 border-gray-800"
+    :class="{
+      expand: expanded,
+      'overflow-y-hidden': !expanded
+    }"
+  >
+    <div
+      ref="render"
+      class="markdown pt-8 pb-64"
+      v-html="pkg.readme"
+    />
+
+    <div
+      v-if="!$responsive.lg"
+      class="action-overlay absolute bottom-0 left-0 w-full flex justify-center pt-6 pb-2"
+      @click="expand = !expand"
+    >
+      <BaseButton
+        class="p-1 bg-gray-800"
+      >
+        <i class="material-icons">{{ expand ? 'expand_less' : 'expand_more' }}</i>
+      </BaseButton>
+    </div>
+  </div>
+</template>
 
 <style lang="postcss" scoped>
 .readme {

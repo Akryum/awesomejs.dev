@@ -1,3 +1,98 @@
+<script>
+import PageTitle from '../PageTitle.vue'
+import PackageList from '../pkg/PackageList.vue'
+import ProjectTypeBookmarkButton from './ProjectTypeBookmarkButton.vue'
+import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
+
+import gql from 'graphql-tag'
+import { watch, ref, onUnmounted } from '@vue/composition-api'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import { projectTypeFragment } from './fragments'
+import { setFavicon, resetFavicon } from '@/util/favicon'
+
+export default {
+  components: {
+    PageTitle,
+    PackageList,
+    ProjectTypeBookmarkButton,
+    ProjectTypePackageProposalsButton,
+  },
+
+  props: {
+    projectTypeSlug: {
+      type: String,
+      required: true,
+    },
+
+    packageId: {
+      type: String,
+      default: null,
+    },
+  },
+
+  setup (props) {
+    const { result } = useQuery(gql`
+      query ProjectTypeAndPopularTags ($slug: String!) {
+        projectType: projectTypeBySlug (slug: $slug) {
+          ...projectType
+          popularTags
+        }
+      }
+      ${projectTypeFragment}
+    `, () => ({
+      slug: props.projectTypeSlug,
+    }))
+    const projectType = useResult(result)
+
+    // Favicon
+    watch(projectType, value => {
+      if (value) {
+        setFavicon(value.logo)
+      }
+    })
+    onUnmounted(() => {
+      resetFavicon()
+    })
+
+    // Tags
+    const tags = useResult(result, [], data => data.projectType.popularTags)
+    const selectedTags = ref([])
+    function toggleTag (tag) {
+      const index = selectedTags.value.indexOf(tag)
+      if (index === -1) {
+        selectedTags.value.push(tag)
+      } else {
+        selectedTags.value.splice(index, 1)
+      }
+    }
+
+    // Scroll to top
+    const scroller = ref()
+    watch(() => props.packageId, () => {
+      scroller.value && (scroller.value.scrollTop = 0)
+    })
+
+    return {
+      projectType,
+
+      tags,
+      selectedTags,
+      toggleTag,
+
+      scroller,
+    }
+  },
+
+  metaInfo () {
+    if (!this.projectType) return
+
+    return {
+      title: `Awesome ${this.projectType.name} packages`,
+    }
+  },
+}
+</script>
+
 <template>
   <div v-if="projectType">
     <template v-if="!$responsive.lg || !packageId">
@@ -59,108 +154,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import PageTitle from '../PageTitle.vue'
-import PackageList from '../pkg/PackageList.vue'
-import ProjectTypeBookmarkButton from './ProjectTypeBookmarkButton.vue'
-import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
-import gql from 'graphql-tag'
-import { projectType } from './fragments'
-import { setFavicon, resetFavicon } from '@/util/favicon'
-
-export default {
-  components: {
-    PageTitle,
-    PackageList,
-    ProjectTypeBookmarkButton,
-    ProjectTypePackageProposalsButton,
-  },
-
-  props: {
-    projectTypeSlug: {
-      type: String,
-      required: true,
-    },
-
-    packageId: {
-      type: String,
-      default: null,
-    },
-  },
-
-  data () {
-    return {
-      tags: [],
-      selectedTags: [],
-    }
-  },
-
-  apollo: {
-    projectType: {
-      query: gql`
-        query ProjectType ($slug: String!) {
-          projectType: projectTypeBySlug (slug: $slug) {
-            ...projectType
-          }
-        }
-        ${projectType}
-      `,
-      variables () {
-        return {
-          slug: this.projectTypeSlug,
-        }
-      },
-      result () {
-        setFavicon(this.projectType.logo)
-      },
-    },
-
-    tags: {
-      query: gql`
-        query ProjectTypeTags ($slug: String!) {
-          projectTypeBySlug (slug: $slug) {
-            id
-            popularTags
-          }
-        }
-      `,
-      variables () {
-        return {
-          slug: this.projectTypeSlug,
-        }
-      },
-      update: data => data.projectTypeBySlug.popularTags,
-    },
-  },
-
-  watch: {
-    packageId () {
-      this.$refs.scroller && (this.$refs.scroller.scrollTop = 0)
-    },
-  },
-
-  destroyed () {
-    resetFavicon()
-  },
-
-  methods: {
-    toggleTag (tag) {
-      const index = this.selectedTags.indexOf(tag)
-      if (index === -1) {
-        this.selectedTags.push(tag)
-      } else {
-        this.selectedTags.splice(index, 1)
-      }
-    },
-  },
-
-  metaInfo () {
-    if (!this.projectType) return
-
-    return {
-      title: `Awesome ${this.projectType.name} packages`,
-    }
-  },
-}
-</script>

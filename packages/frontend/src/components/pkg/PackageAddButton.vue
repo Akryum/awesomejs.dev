@@ -1,3 +1,43 @@
+<script>
+import gql from 'graphql-tag'
+import { computed } from '@vue/composition-api'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import { isMac } from '@/util/env'
+import { projectTypeFragment } from '../project-type/fragments'
+
+export default {
+  setup (props, { root }) {
+    const projectTypeSlug = computed(() => root.$route.params.projectTypeSlug)
+
+    const { result } = useQuery(gql`
+      query ProjectType ($slug: String!) {
+        projectType: projectTypeBySlug (slug: $slug) {
+          ...projectType
+        }
+      }
+      ${projectTypeFragment}
+    `, () => ({
+      slug: projectTypeSlug.value,
+    }), () => ({
+      enabled: !!projectTypeSlug.value,
+    }))
+    const projectType = useResult(result)
+
+    const route = computed(() => ({
+      name: 'add-package',
+      query: {
+        projectTypeId: projectType.value ? projectType.value.id : null,
+      },
+    }))
+
+    return {
+      route,
+      isMac,
+    }
+  },
+}
+</script>
+
 <template>
   <BaseButton
     v-tooltip="`Suggest a new package <span class='text-gray-500 font-mono'>${isMac ? '⌘' : 'Ctrl'}+Shift+A</span>`"
@@ -12,53 +52,3 @@
     />
   </BaseButton>
 </template>
-
-<script>
-import gql from 'graphql-tag'
-import { isMac } from '@/util/env'
-import { projectType } from '../project-type/fragments'
-
-export default {
-  setup () {
-    return {
-      isMac,
-    }
-  },
-
-  computed: {
-    projectTypeSlug () {
-      return this.$route.params.projectTypeSlug
-    },
-
-    route () {
-      return {
-        name: 'add-package',
-        query: {
-          projectTypeId: this.projectType ? this.projectType.id : null,
-        },
-      }
-    },
-  },
-
-  apollo: {
-    projectType: {
-      query: gql`
-        query ProjectType ($slug: String!) {
-          projectType: projectTypeBySlug (slug: $slug) {
-            ...projectType
-          }
-        }
-        ${projectType}
-      `,
-      variables () {
-        return {
-          slug: this.projectTypeSlug,
-        }
-      },
-      skip () {
-        return !this.projectTypeSlug
-      },
-    },
-  },
-}
-</script>

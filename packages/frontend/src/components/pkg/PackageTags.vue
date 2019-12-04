@@ -1,3 +1,14 @@
+<script>
+export default {
+  props: {
+    pkg: {
+      type: Object,
+      required: true,
+    },
+  },
+}
+</script>
+
 <template>
   <div class="flex flex-wrap">
     <i class="material-icons text-gray-600 mr-2">filter_list</i>
@@ -16,14 +27,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    pkg: {
-      type: Object,
-      required: true,
-    },
-  },
-}
-</script>

@@ -1,3 +1,4 @@
+/** @type {import('@vue/cli-service').ProjectOptions} */
 module.exports = {
   pwa: {
     name: 'AwesomeJS',
@@ -46,5 +47,9 @@ module.exports = {
         },
       ],
     },
+  },
+
+  chainWebpack (config) {
+    config.resolve.symlinks(false)
   },
 }

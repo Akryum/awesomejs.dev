@@ -1,5 +1,21 @@
+<script>
+import { useCurrentUser } from './useCurrentUser'
+
+export default {
+  setup () {
+    const { currentUser, loading } = useCurrentUser()
+
+    return {
+      currentUser,
+      loading,
+      baseUrl: process.env.VUE_APP_API_BASE,
+    }
+  },
+}
+</script>
+
 <template>
-  <div v-if="!$apollo.loading">
+  <div v-if="!loading">
     <div
       v-if="currentUser"
       class="w-10 h-10 flex items-center justify-center"
@@ -68,28 +84,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import gql from 'graphql-tag'
-import { user } from './fragments'
-
-export default {
-  apollo: {
-    currentUser: gql`
-      query CurrentUser {
-        currentUser {
-          ...user
-        }
-      }
-      ${user}
-    `,
-  },
-
-  created () {
-    this.baseUrl = process.env.VUE_APP_API_BASE
-  },
-}
-</script>
 
 <style lang="postcss" scoped>
 .v-popper--open {

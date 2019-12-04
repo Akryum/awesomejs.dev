@@ -1,3 +1,55 @@
+<script>
+import gql from 'graphql-tag'
+import { computed } from '@vue/composition-api'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import { getNamedParents } from '@/util/router'
+import { projectTypeFragment } from '../project-type/fragments'
+
+export default {
+  setup (props, { root }) {
+    const hasProjectType = computed(() => !!root.$route.params.projectTypeSlug)
+
+    const { result } = useQuery(gql`
+      query ProjectType ($slug: String!) {
+        projectType: projectTypeBySlug (slug: $slug) {
+          ...projectType
+        }
+      }
+      ${projectTypeFragment}
+    `, () => ({
+      slug: root.$route.params.projectTypeSlug,
+    }), () => ({
+      enabled: !!hasProjectType.value,
+    }))
+    const projectType = useResult(result)
+
+    const src = computed(() => {
+      if (hasProjectType.value) {
+        return projectType.value && projectType.value.logo
+      }
+      return require('@/assets/logo.png')
+    })
+
+    const route = computed(() => {
+      if (root.$responsive.lg) {
+        const parents = getNamedParents(root.$router.options.routes, root.$route.matched)
+        if (parents.length) {
+          return {
+            name: parents[parents.length - 1].name,
+          }
+        }
+      }
+      return { name: 'home' }
+    })
+
+    return {
+      route,
+      src,
+    }
+  },
+}
+</script>
+
 <template>
   <router-link :to="route">
     <img
@@ -8,57 +60,3 @@
     >
   </router-link>
 </template>
-
-<script>
-import gql from 'graphql-tag'
-import { projectType } from '../project-type/fragments'
-import { getNamedParents } from '@/util/router'
-
-export default {
-  computed: {
-    hasProjectType () {
-      return !!this.$route.params.projectTypeSlug
-    },
-
-    src () {
-      if (this.hasProjectType) {
-        return this.projectType && this.projectType.logo
-      }
-      return require('@/assets/logo.png')
-    },
-
-    route () {
-      if (this.$responsive.lg) {
-        const parents = getNamedParents(this.$router.options.routes, this.$route.matched)
-        if (parents.length) {
-          return {
-            name: parents[parents.length - 1].name,
-          }
-        }
-      }
-      return { name: 'home' }
-    },
-  },
-
-  apollo: {
-    projectType: {
-      query: gql`
-        query ProjectType ($slug: String!) {
-          projectType: projectTypeBySlug (slug: $slug) {
-            ...projectType
-          }
-        }
-        ${projectType}
-      `,
-      variables () {
-        return {
-          slug: this.$route.params.projectTypeSlug,
-        }
-      },
-      skip () {
-        return !this.hasProjectType
-      },
-    },
-  },
-}
-</script>

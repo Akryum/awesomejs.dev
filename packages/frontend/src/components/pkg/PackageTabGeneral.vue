@@ -1,20 +1,3 @@
-<template>
-  <div>
-    <PackageLinks
-      :pkg="pkg"
-      class="mb-4"
-    />
-
-    <PackageTags
-      :pkg="pkg"
-    />
-
-    <PackageReadme
-      :package-id="pkg.id"
-    />
-  </div>
-</template>
-
 <script>
 import PackageLinks from './PackageLinks.vue'
 import PackageTags from './PackageTags.vue'
@@ -38,3 +21,20 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div>
+    <PackageLinks
+      :pkg="pkg"
+      class="mb-4"
+    />
+
+    <PackageTags
+      :pkg="pkg"
+    />
+
+    <PackageReadme
+      :package-id="pkg.id"
+    />
+  </div>
+</template>

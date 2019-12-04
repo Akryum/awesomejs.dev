@@ -1,3 +1,9 @@
+<script>
+export default {
+  inheritAttrs: false,
+}
+</script>
+
 <template>
   <BaseButton
     v-bind="$attrs"
@@ -6,12 +12,6 @@
     <slot />
   </BaseButton>
 </template>
-
-<script>
-export default {
-  inheritAttrs: false,
-}
-</script>
 
 <style lang="postcss" scoped>
 .tab.router-link-active {

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const projectType = gql`
+export const projectTypeFragment = gql`
 fragment projectType on ProjectType {
   id
   name

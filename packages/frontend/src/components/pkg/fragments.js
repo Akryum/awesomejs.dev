@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const pkg = gql`
+export const pkgFragment = gql`
 fragment pkg on Package {
   id
   name
@@ -20,7 +20,7 @@ fragment pkg on Package {
 }
 `
 
-export const pkgProposal = gql`
+export const pkgProposalFragment = gql`
 fragment pkgProposal on PackageProposal {
   id
   name

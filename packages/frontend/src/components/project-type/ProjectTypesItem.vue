@@ -1,3 +1,19 @@
+<script>
+export default {
+  props: {
+    projectType: {
+      type: Object,
+      required: true,
+    },
+
+    selected: {
+      type: Boolean,
+      default: false,
+    },
+  },
+}
+</script>
+
 <template>
   <div
     class="
@@ -33,19 +49,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  props: {
-    projectType: {
-      type: Object,
-      required: true,
-    },
-
-    selected: {
-      type: Boolean,
-      default: false,
-    },
-  },
-}
-</script>

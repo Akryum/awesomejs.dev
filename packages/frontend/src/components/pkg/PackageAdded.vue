@@ -1,3 +1,20 @@
+<script>
+import PageTitle from '../PageTitle.vue'
+
+export default {
+  components: {
+    PageTitle,
+  },
+
+  props: {
+    proposal: {
+      type: Object,
+      required: true,
+    },
+  },
+}
+</script>
+
 <template>
   <div class="max-w-lg">
     <PageTitle>
@@ -60,20 +77,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import PageTitle from '../PageTitle.vue'
-
-export default {
-  components: {
-    PageTitle,
-  },
-
-  props: {
-    proposal: {
-      type: Object,
-      required: true,
-    },
-  },
-}
-</script>

@@ -1,3 +1,22 @@
+<script>
+import ErrorMessage from '../ErrorMessage.vue'
+import LoadingIndicator from '../LoadingIndicator.vue'
+
+export default {
+  components: {
+    ErrorMessage,
+    LoadingIndicator,
+  },
+
+  props: {
+    state: {
+      type: String,
+      required: true,
+    },
+  },
+}
+</script>
+
 <template>
   <div
     class="overlay fixed z-30 inset-0 flex justify-center bg-blur"
@@ -18,22 +37,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import ErrorMessage from '../ErrorMessage.vue'
-import LoadingIndicator from '../LoadingIndicator.vue'
-
-export default {
-  components: {
-    ErrorMessage,
-    LoadingIndicator,
-  },
-
-  props: {
-    state: {
-      type: String,
-      required: true,
-    },
-  },
-}
-</script>

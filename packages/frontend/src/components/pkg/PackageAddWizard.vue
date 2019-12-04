@@ -1,3 +1,124 @@
+<script>
+import PageTitle from '../PageTitle.vue'
+import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
+import UserCheckSignedIn from '../user/UserCheckSignedIn.vue'
+import PackageAdded from './PackageAdded.vue'
+import ErrorMessage from '../ErrorMessage.vue'
+
+import gql from 'graphql-tag'
+import { ref, reactive, computed } from '@vue/composition-api'
+import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
+import { pkgProposalFragment } from './fragments'
+
+export default {
+  components: {
+    PageTitle,
+    ProjectTypeSelect,
+    UserCheckSignedIn,
+    PackageAdded,
+    ErrorMessage,
+  },
+
+  setup (props, { root }) {
+    // Form data
+    const projectTypeId = ref(root.$route.query.projectTypeId || null)
+    const formData = reactive({
+      packageName: '',
+      tags: '',
+    })
+
+    // Check for existing proposals & packages
+    const { result, loading } = useQuery(gql`
+      query PackageProposalAndPackageByName ($name: String!) {
+        proposal: packageProposalByName (name: $name) {
+          id
+        }
+
+        pkg: packageByName (name: $name) {
+          id
+        }
+      }
+    `, () => ({
+      name: formData.packageName,
+    }), () => ({
+      enabled: !!formData.packageName,
+      debounce: 2000,
+    }))
+    const proposal = useResult(result, null, data => data.proposal)
+    const pkg = useResult(result, null, data => data.pkg)
+    const alreadyProposed = computed(() => formData.packageName && !loading.value && proposal.value)
+    const alreadyExists = computed(() => formData.packageName && !loading.value && pkg.value)
+
+    // Form validation
+    const requiredFieldsValid = computed(() => projectTypeId.value != null && !!formData.packageName)
+    const valid = computed(() => requiredFieldsValid.value && !alreadyProposed.value && !alreadyExists.value)
+
+    // Added summary
+    const added = ref(false)
+    const addedProposal = ref(null)
+
+    // Submit
+
+    const { mutate, error, loading: submitting, onDone } = useMutation(gql`
+      mutation ProposePackage ($input: ProposePackageInput!) {
+        proposePackage (input: $input) {
+          ...pkgProposal
+          projectType {
+            id
+            name
+            slug
+          }
+        }
+      }
+      ${pkgProposalFragment}
+    `)
+
+    async function submit () {
+      if (!valid.value) {
+        if (!requiredFieldsValid.value) {
+          error.value = `Project type and package name are required`
+        }
+        return
+      }
+      await mutate({
+        input: {
+          projectTypeId: projectTypeId.value,
+          packageName: formData.packageName,
+          tags: formData.tags.trim().split(',').map(t => t.trim()).filter(t => t.length),
+        },
+      })
+    }
+
+    onDone(({ data }) => {
+      addedProposal.value = data.proposePackage
+      added.value = true
+    })
+
+    function addAnother () {
+      formData.packageName = ''
+      formData.tags = ''
+      added.value = false
+    }
+
+    return {
+      projectTypeId,
+      formData,
+
+      alreadyProposed,
+      alreadyExists,
+
+      submit,
+      submitting,
+      error,
+
+      added,
+      addedProposal,
+      addAnother,
+    }
+  },
+}
+</script>
+
 <template>
   <div v-if="!added">
     <UserCheckSignedIn />
@@ -17,7 +138,7 @@
       />
 
       <input
-        v-model="packageName"
+        v-model="formData.packageName"
         v-focus.lazy="true"
         placeholder="Enter package name on npm"
         maxlength="80"
@@ -34,7 +155,7 @@
       </div>
 
       <input
-        v-model="tags"
+        v-model="formData.tags"
         placeholder="Enter a list of tags separated with commas"
         maxlength="200"
         class="mt-8 bg-black px-8 py-4 rounded w-full"
@@ -64,141 +185,3 @@
     />
   </div>
 </template>
-
-<script>
-import PageTitle from '../PageTitle.vue'
-import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
-import UserCheckSignedIn from '../user/UserCheckSignedIn.vue'
-import PackageAdded from './PackageAdded.vue'
-import ErrorMessage from '../ErrorMessage.vue'
-import gql from 'graphql-tag'
-import { pkgProposal } from './fragments'
-
-export default {
-  components: {
-    PageTitle,
-    ProjectTypeSelect,
-    UserCheckSignedIn,
-    PackageAdded,
-    ErrorMessage,
-  },
-
-  data () {
-    return {
-      added: false,
-      projectTypeId: this.$route.query.projectTypeId || null,
-      packageName: '',
-      tags: '',
-      addedProposal: null,
-      submitting: false,
-      error: null,
-    }
-  },
-
-  apollo: {
-    proposal: {
-      query: gql`
-        query PackageProposal ($name: String!) {
-          proposal: packageProposalByName (name: $name) {
-            id
-          }
-        }
-      `,
-      variables () {
-        return {
-          name: this.packageName,
-        }
-      },
-      skip () {
-        return !this.packageName
-      },
-      debounce: 2000,
-    },
-
-    pkg: {
-      query: gql`
-        query PackageProposal ($name: String!) {
-          pkg: packageByName (name: $name) {
-            id
-          }
-        }
-      `,
-      variables () {
-        return {
-          name: this.packageName,
-        }
-      },
-      skip () {
-        return !this.packageName
-      },
-      debounce: 2000,
-    },
-  },
-
-  computed: {
-    alreadyProposed () {
-      return this.packageName && this.proposal && !this.$apollo.loading
-    },
-
-    alreadyExists () {
-      return this.packageName && this.pkg && !this.$apollo.loading
-    },
-
-    validRequired () {
-      return this.projectTypeId != null && !!this.packageName
-    },
-
-    valid () {
-      return this.validRequired && !this.alreadyProposed && !this.alreadyExists
-    },
-  },
-
-  methods: {
-    async submit () {
-      this.error = null
-      if (!this.valid) {
-        if (!this.validRequired) {
-          this.error = `Project type and package name are required`
-        }
-        return
-      }
-      this.submitting = true
-      try {
-        const { data } = await this.$apollo.mutate({
-          mutation: gql`
-            mutation ProposePackage ($input: ProposePackageInput!) {
-              proposePackage (input: $input) {
-                ...pkgProposal
-                projectType {
-                  id
-                  name
-                  slug
-                }
-              }
-            }
-            ${pkgProposal}
-          `,
-          variables: {
-            input: {
-              projectTypeId: this.projectTypeId,
-              packageName: this.packageName,
-              tags: this.tags.trim().split(',').map(t => t.trim()).filter(t => t.length),
-            },
-          },
-        })
-        this.addedProposal = data.proposePackage
-        this.added = true
-      } catch (e) {
-        this.error = e
-      }
-      this.submitting = false
-    },
-
-    addAnother () {
-      this.packageName = ''
-      this.tags = ''
-      this.added = false
-    },
-  },
-}
-</script>

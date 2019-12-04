@@ -1,3 +1,57 @@
+<script>
+import PageTitle from '../PageTitle.vue'
+import PackageProposalList from '../pkg/PackageProposalList.vue'
+
+import gql from 'graphql-tag'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import { projectTypeFragment } from './fragments'
+
+export default {
+  components: {
+    PageTitle,
+    PackageProposalList,
+  },
+
+  props: {
+    projectTypeSlug: {
+      type: String,
+      required: true,
+    },
+
+    packageId: {
+      type: String,
+      default: null,
+    },
+  },
+
+  setup (props) {
+    const { result } = useQuery(gql`
+      query ProjectType ($slug: String!) {
+        projectType: projectTypeBySlug (slug: $slug) {
+          ...projectType
+        }
+      }
+      ${projectTypeFragment}
+    `, () => ({
+      slug: props.projectTypeSlug,
+    }))
+    const projectType = useResult(result)
+
+    return {
+      projectType,
+    }
+  },
+
+  metaInfo () {
+    if (!this.projectType) return
+
+    return {
+      title: `Awesome ${this.projectType.name} proposals`,
+    }
+  },
+}
+</script>
+
 <template>
   <div v-if="projectType">
     <PageTitle
@@ -32,55 +86,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import PageTitle from '../PageTitle.vue'
-import PackageProposalList from '../pkg/PackageProposalList.vue'
-import gql from 'graphql-tag'
-import { projectType } from './fragments'
-
-export default {
-  components: {
-    PageTitle,
-    PackageProposalList,
-  },
-
-  props: {
-    projectTypeSlug: {
-      type: String,
-      required: true,
-    },
-
-    packageId: {
-      type: String,
-      default: null,
-    },
-  },
-
-  apollo: {
-    projectType: {
-      query: gql`
-        query ProjectType ($slug: String!) {
-          projectType: projectTypeBySlug (slug: $slug) {
-            ...projectType
-          }
-        }
-        ${projectType}
-      `,
-      variables () {
-        return {
-          slug: this.projectTypeSlug,
-        }
-      },
-    },
-  },
-
-  metaInfo () {
-    if (!this.projectType) return
-
-    return {
-      title: `Awesome ${this.projectType.name} proposals`,
-    }
-  },
-}
-</script>

@@ -1,3 +1,46 @@
+<script>
+import gql from 'graphql-tag'
+import { useMutation } from '@vue/apollo-composable'
+
+export default {
+  props: {
+    projectType: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  setup (props) {
+    const { mutate: toggle } = useMutation(gql`
+      mutation ToggleProjectTypeBookmark ($input: ToggleProjectTypeBookmarkInput!) {
+        toggleProjectTypeBookmark (input: $input) {
+          id
+          bookmarked
+        }
+      }
+    `, () => ({
+      variables: {
+        input: {
+          projectTypeId: props.projectType.id,
+        },
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        toggleProjectTypeBookmark: {
+          __typename: 'ProjectType',
+          id: props.projectType.id,
+          bookmarked: !props.projectType.bookmarked,
+        },
+      },
+    }))
+
+    return {
+      toggle,
+    }
+  },
+}
+</script>
+
 <template>
   <BaseButton
     v-tooltip="projectType.bookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'"
@@ -9,50 +52,3 @@
     </i>
   </BaseButton>
 </template>
-
-<script>
-import gql from 'graphql-tag'
-import { checkUnauthorized } from '@/util/error'
-
-export default {
-  props: {
-    projectType: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  methods: {
-    async toggle () {
-      try {
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation ToggleProjectTypeBookmark ($input: ToggleProjectTypeBookmarkInput!) {
-              toggleProjectTypeBookmark (input: $input) {
-                id
-                bookmarked
-              }
-            }
-          `,
-          variables: {
-            input: {
-              projectTypeId: this.projectType.id,
-            },
-          },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            toggleProjectTypeBookmark: {
-              __typename: 'ProjectType',
-              id: this.projectType.id,
-              bookmarked: !this.projectType.bookmarked,
-            },
-          },
-        })
-      } catch (e) {
-        console.error(e)
-        checkUnauthorized.bind(this)(e)
-      }
-    },
-  },
-}
-</script>

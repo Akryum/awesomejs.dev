@@ -1,3 +1,52 @@
+<script>
+import { ref } from '@vue/composition-api'
+import { isMac } from '@/util/env'
+import AppHeaderLogo from './AppHeaderLogo.vue'
+import PackageAddButton from '../pkg/PackageAddButton.vue'
+import UserMenu from '../user/UserMenu.vue'
+import SearchOverlayAsyncState from '../search/SearchOverlayAsyncState.vue'
+const SearchOverlayLoading = {
+  render: h => h(SearchOverlayAsyncState, { props: { state: 'loading' } }),
+}
+const SearchOverlayError = {
+  render (h) {
+    return h(SearchOverlayAsyncState, { props: { state: 'error' }, on: this.$listeners })
+  },
+}
+const SearchOverlay = () => ({
+  component: import(
+    /* webpackChunkName: "SearchOverlay.vue" */
+    '../search/SearchOverlay.vue'
+  ),
+  // A component to use while the async component is loading
+  loading: SearchOverlayLoading,
+  // A component to use if the load fails
+  error: SearchOverlayError,
+  // Delay before showing the loading component. Default: 200ms.
+  delay: 200,
+  // The error component will be displayed if a timeout is
+  // provided and exceeded. Default: Infinity.
+  timeout: 3000,
+})
+
+export default {
+  components: {
+    AppHeaderLogo,
+    PackageAddButton,
+    SearchOverlay,
+    UserMenu,
+  },
+
+  setup () {
+    const openSearch = ref(false)
+    return {
+      openSearch,
+      isMac,
+    }
+  },
+}
+</script>
+
 <template>
   <header>
     <div class="flex items-center px-4 my-4 lg:px-16 lg:my-8 relative">
@@ -54,52 +103,3 @@
     />
   </header>
 </template>
-
-<script>
-import { ref } from '@vue/composition-api'
-import { isMac } from '@/util/env'
-import AppHeaderLogo from './AppHeaderLogo.vue'
-import PackageAddButton from '../pkg/PackageAddButton.vue'
-import UserMenu from '../user/UserMenu.vue'
-import SearchOverlayAsyncState from '../search/SearchOverlayAsyncState.vue'
-const SearchOverlayLoading = {
-  render: h => h(SearchOverlayAsyncState, { props: { state: 'loading' } }),
-}
-const SearchOverlayError = {
-  render (h) {
-    return h(SearchOverlayAsyncState, { props: { state: 'error' }, on: this.$listeners })
-  },
-}
-const SearchOverlay = () => ({
-  component: import(
-    /* webpackChunkName: "SearchOverlay.vue" */
-    '../search/SearchOverlay.vue'
-  ),
-  // A component to use while the async component is loading
-  loading: SearchOverlayLoading,
-  // A component to use if the load fails
-  error: SearchOverlayError,
-  // Delay before showing the loading component. Default: 200ms.
-  delay: 200,
-  // The error component will be displayed if a timeout is
-  // provided and exceeded. Default: Infinity.
-  timeout: 3000,
-})
-
-export default {
-  components: {
-    AppHeaderLogo,
-    PackageAddButton,
-    SearchOverlay,
-    UserMenu,
-  },
-
-  setup () {
-    const openSearch = ref(false)
-    return {
-      openSearch,
-      isMac,
-    }
-  },
-}
-</script>

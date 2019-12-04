@@ -1,17 +1,3 @@
-<template>
-  <div id="app">
-    <AppHeader />
-
-    <div class="main-view px-4 my-4 lg:px-16 lg:my-8">
-      <router-view />
-    </div>
-
-    <AppFooter />
-
-    <AppServiceWorkerManager />
-  </div>
-</template>
-
 <script>
 import AppHeader from './app/AppHeader.vue'
 import AppFooter from './app/AppFooter.vue'
@@ -49,6 +35,20 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div id="app">
+    <AppHeader />
+
+    <div class="main-view px-4 my-4 lg:px-16 lg:my-8">
+      <router-view />
+    </div>
+
+    <AppFooter />
+
+    <AppServiceWorkerManager />
+  </div>
+</template>
 
 <style lang="postcss">
 @import '~@/assets/styles/tailwind.postcss';

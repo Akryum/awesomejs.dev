@@ -1,3 +1,31 @@
+<script>
+import PackageLogo from './PackageLogo.vue'
+import PackageCount from './PackageCount.vue'
+import { parseEmoji } from '@/util/emoji'
+
+export default {
+  components: {
+    PackageLogo,
+    PackageCount,
+  },
+
+  inheritAttrs: false,
+
+  props: {
+    pkg: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  setup () {
+    return {
+      parseEmoji,
+    }
+  },
+}
+</script>
+
 <template>
   <router-link
     v-bind="$attrs"
@@ -42,32 +70,6 @@
     <slot />
   </router-link>
 </template>
-
-<script>
-import PackageLogo from './PackageLogo.vue'
-import PackageCount from './PackageCount.vue'
-import { parseEmoji } from '@/util/emoji'
-
-export default {
-  components: {
-    PackageLogo,
-    PackageCount,
-  },
-
-  inheritAttrs: false,
-
-  props: {
-    pkg: {
-      type: Object,
-      required: true,
-    },
-  },
-
-  methods: {
-    parseEmoji,
-  },
-}
-</script>
 
 <style lang="postcss" scoped>
 .package-list-item.router-link-active {

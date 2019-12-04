@@ -1,7 +1,59 @@
+<script>
+import LoadingIndicator from '../LoadingIndicator.vue'
+import PackageGeneralInfo from './PackageGeneralInfo.vue'
+import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
+
+import gql from 'graphql-tag'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import { pkgProposalFragment } from './fragments'
+
+export default {
+  components: {
+    LoadingIndicator,
+    PackageGeneralInfo,
+    PackageProposalUpvoteButton,
+  },
+
+  props: {
+    packageId: {
+      type: String,
+      required: true,
+    },
+  },
+
+  setup (props) {
+    const { result, loading } = useQuery(gql`
+      query PackageProposal ($id: ID!) {
+        pkg: packageProposal (id: $id) {
+          ...pkgProposal
+        }
+      }
+      ${pkgProposalFragment}
+    `, () => ({
+      id: props.packageId,
+    }))
+    const pkg = useResult(result)
+
+    return {
+      pkg,
+      loading,
+    }
+  },
+
+  metaInfo () {
+    if (!this.pkg) return
+
+    return {
+      title: `[Proposal] ${this.pkg.name}`,
+    }
+  },
+}
+</script>
+
 <template>
   <div>
     <LoadingIndicator
-      v-if="$apollo.queries.pkg.loading"
+      v-if="loading"
       class="p-8"
     />
     <template v-else>
@@ -21,53 +73,3 @@
     </template>
   </div>
 </template>
-
-<script>
-import LoadingIndicator from '../LoadingIndicator.vue'
-import PackageGeneralInfo from './PackageGeneralInfo.vue'
-import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
-
-import gql from 'graphql-tag'
-import { pkgProposal } from './fragments'
-
-export default {
-  components: {
-    LoadingIndicator,
-    PackageGeneralInfo,
-    PackageProposalUpvoteButton,
-  },
-
-  props: {
-    packageId: {
-      type: String,
-      required: true,
-    },
-  },
-
-  apollo: {
-    pkg: {
-      query: gql`
-        query PackageProposal ($id: ID!) {
-          pkg: packageProposal (id: $id) {
-            ...pkgProposal
-          }
-        }
-        ${pkgProposal}
-      `,
-      variables () {
-        return {
-          id: this.packageId,
-        }
-      },
-    },
-  },
-
-  metaInfo () {
-    if (!this.pkg) return
-
-    return {
-      title: `[Proposal] ${this.pkg.name}`,
-    }
-  },
-}
-</script>

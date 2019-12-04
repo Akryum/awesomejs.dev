@@ -1,46 +1,6 @@
-<template>
-  <component
-    :is="component"
-    v-bind="$attrs"
-    :type="type"
-    :tabindex="ghost ? -1 : 0"
-    role="button"
-    :aria-disabled="ghost"
-    class="inline-block cursor-pointer relative rounded select-none outline-none"
-    :class="{
-      'pointer-events-none opacity-50': ghost,
-      'text-center': align === 'center',
-    }"
-    @click.capture="handleClick"
-    @click.capture.native="handleClick"
-  >
-    <div
-      class="flex items-center rounded"
-      :class="{
-        'opacity-0': loading,
-        'justify-center': align === 'center',
-      }"
-    >
-      <i
-        v-if="iconLeft"
-        class="material-icons text-lg mr-2"
-      >{{ iconLeft }}</i>
-      <slot />
-      <i
-        v-if="iconRight"
-        class="material-icons text-lg ml-2"
-      >{{ iconRight }}</i>
-    </div>
-
-    <SubmitAnimation
-      v-if="loading"
-      class="absolute inset-0"
-    />
-  </component>
-</template>
-
 <script>
 import SubmitAnimation from './SubmitAnimation.vue'
+import { computed } from '@vue/composition-api'
 
 export default {
   components: {
@@ -81,32 +41,75 @@ export default {
     },
   },
 
-  computed: {
-    component () {
-      if (this.$attrs.to) {
+  setup (props, { attrs, emit }) {
+    const component = computed(() => {
+      if (attrs.to) {
         return 'router-link'
-      } else if (this.$attrs.href) {
+      } else if (attrs.href) {
         return 'a'
       } else {
         return 'button'
       }
-    },
+    })
 
-    ghost () {
-      return this.disabled || this.loading
-    },
-  },
+    const ghost = computed(() => props.disabled || props.loading)
 
-  methods: {
-    handleClick (event) {
-      if (this.ghost) {
+    function handleClick (event) {
+      if (ghost.value) {
         event.preventDefault()
         event.stopPropagation()
         event.stopImmediatePropagation()
       } else {
-        this.$emit('click', event)
+        emit('click', event)
       }
-    },
+    }
+
+    return {
+      component,
+      ghost,
+      handleClick,
+    }
   },
 }
 </script>
+
+<template>
+  <component
+    :is="component"
+    v-bind="$attrs"
+    :type="type"
+    :tabindex="ghost ? -1 : 0"
+    role="button"
+    :aria-disabled="ghost"
+    class="inline-block cursor-pointer relative rounded select-none outline-none"
+    :class="{
+      'pointer-events-none opacity-50': ghost,
+      'text-center': align === 'center',
+    }"
+    @click.capture="handleClick"
+    @click.capture.native="handleClick"
+  >
+    <div
+      class="flex items-center rounded"
+      :class="{
+        'opacity-0': loading,
+        'justify-center': align === 'center',
+      }"
+    >
+      <i
+        v-if="iconLeft"
+        class="material-icons text-lg mr-2"
+      >{{ iconLeft }}</i>
+      <slot />
+      <i
+        v-if="iconRight"
+        class="material-icons text-lg ml-2"
+      >{{ iconRight }}</i>
+    </div>
+
+    <SubmitAnimation
+      v-if="loading"
+      class="absolute inset-0"
+    />
+  </component>
+</template>
