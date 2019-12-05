@@ -320,6 +320,9 @@ export const resolvers: IResolvers<any, Context> = {
             data: {
               info: input.info,
               github: input.github,
+              metadata: {
+                github: null,
+              },
             },
           }),
           q.Get(ref),
