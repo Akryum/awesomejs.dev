@@ -3,7 +3,7 @@ import { IResolvers } from 'graphql-tools'
 import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
 import * as Metadata from '../util/metadata'
-import { processReadme } from '@/util/readme'
+import { getReadme } from '@/util/readme'
 
 const getNpmMetadata = Metadata.getNpmMetadata('Packages')
 const getGithubMetadata = Metadata.getGithubMetadata('Packages', 'packages')
@@ -77,20 +77,7 @@ export const resolvers: IResolvers<any, Context> = {
         )),
       )
     },
-    readme: async (pkg, args, ctx) => {
-      const { slug, defaultBranch } = await getGithubMetadata(pkg, ctx)
-      if (slug) {
-        let { data }: { data: string } = await ctx.github.repos.getReadme({
-          owner: slug.owner,
-          repo: slug.repo,
-          headers: {
-            accept: 'application/vnd.github.3.html',
-          },
-        }) as any
-        data = processReadme(data, slug, defaultBranch)
-        return data
-      }
-    },
+    readme: async (pkg, args, ctx) => getReadme(pkg, getGithubMetadata, ctx),
   },
 
   ProjectType: {

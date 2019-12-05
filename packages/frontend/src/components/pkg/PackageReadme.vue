@@ -18,6 +18,11 @@ export default {
       type: String,
       required: true,
     },
+
+    query: {
+      type: Object,
+      default: null,
+    },
   },
 
   setup (props, { root }) {
@@ -25,7 +30,7 @@ export default {
     const expanded = computed(() => expand.value || root.$responsive.lg)
 
     // Pkg
-    const { result, loading } = useQuery(gql`
+    const { result, loading } = useQuery(() => props.query || gql`
       query PackageReadme ($id: ID!) {
         pkg: package (id: $id) {
           id

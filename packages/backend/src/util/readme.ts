@@ -1,3 +1,24 @@
+import { Context } from '@/context'
+
+export async function getReadme (
+  pkg: any,
+  getGithubMetadata: ((pkg: any, ctx: Context) => Promise<any>),
+  ctx: Context,
+) {
+  const { slug, defaultBranch } = await getGithubMetadata(pkg, ctx)
+  if (slug) {
+    let { data }: { data: string } = await ctx.github.repos.getReadme({
+      owner: slug.owner,
+      repo: slug.repo,
+      headers: {
+        accept: 'application/vnd.github.3.html',
+      },
+    }) as any
+    data = processReadme(data, slug, defaultBranch)
+    return data
+  }
+}
+
 export function processReadme (
   text: string,
   slug: { owner: string, repo: string },

@@ -5,6 +5,7 @@ import { query as q, values } from 'faunadb'
 import { ApolloError } from 'apollo-server-core'
 import * as Metadata from '../util/metadata'
 import { indexPackage } from '../util/package-index'
+import { getReadme } from '@/util/readme'
 
 const getNpmMetadata = Metadata.getNpmMetadata('PackageProposals')
 const getGithubMetadata = Metadata.getGithubMetadata('PackageProposals')
@@ -24,6 +25,7 @@ type PackageProposal {
   homepage: String
   license: String
   defaultLogo: String
+  readme: String
   info: PackageInfo!
 }
 
@@ -91,6 +93,7 @@ export const resolvers: IResolvers<any, Context> = {
     license: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).license,
     description: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).description ||
       (await getNpmMetadata(pkg, ctx)).description,
+    readme: (pkg, args, ctx) => getReadme(pkg, getGithubMetadata, ctx),
 
     upvoted: async (pkg, args, ctx) => {
       if (!ctx.user) { return false }
