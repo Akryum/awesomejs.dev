@@ -111,6 +111,7 @@ export default {
 
 <template>
   <BaseButton
+    :disabled="!proposal.repo"
     class="bg-red-800 hover:bg-red-700"
     @click="approve()"
   >
