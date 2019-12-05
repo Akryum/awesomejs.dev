@@ -42,10 +42,10 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="mt-4">
     <PackageLinks
       :pkg="pkg"
-      class="my-4"
+      class="mb-4"
     />
 
     <PackageTags
