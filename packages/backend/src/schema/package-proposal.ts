@@ -6,6 +6,7 @@ import { ApolloError } from 'apollo-server-core'
 import * as Metadata from '../util/metadata'
 import { indexPackage } from '../util/package-index'
 import { getReadme } from '@/util/readme'
+import { sanitizeTags } from '@/util/tags'
 
 const getNpmMetadata = Metadata.getNpmMetadata('PackageProposals')
 const getGithubMetadata = Metadata.getGithubMetadata('PackageProposals')
@@ -174,6 +175,8 @@ export const resolvers: IResolvers<any, Context> = {
 
   Mutation: {
     proposePackage: async (root, { input }, ctx) => {
+      input.tags = sanitizeTags(input.tags)
+
       if (await ctx.db.query(
         q.Exists(q.Match(q.Index('packageproposal_by_name'), input.packageName)),
       )) {
@@ -308,6 +311,8 @@ export const resolvers: IResolvers<any, Context> = {
     },
 
     editPackageProposalInfo: async (root, { input }, ctx) => {
+      input.info.tags = sanitizeTags(input.info.tags)
+
       const ref = q.Ref(q.Collection('PackageProposals'), input.proposalId)
       const { data } = await ctx.db.query(
         q.Update(ref, {
