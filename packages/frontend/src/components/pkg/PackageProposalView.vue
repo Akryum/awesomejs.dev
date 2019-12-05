@@ -3,6 +3,7 @@ import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageGeneralInfo from './PackageGeneralInfo.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 import PackageProposalApproveButton from './PackageProposalApproveButton.vue'
+import RouteTab from '../RouteTab.vue'
 
 import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
@@ -15,6 +16,7 @@ export default {
     PackageGeneralInfo,
     PackageProposalApproveButton,
     PackageProposalUpvoteButton,
+    RouteTab,
   },
 
   props: {
@@ -45,7 +47,7 @@ export default {
     return {
       pkg,
       loading,
-      currentUser: useCurrentUser().currentUser,
+      isAdmin: useCurrentUser().isAdmin,
     }
   },
 
@@ -77,11 +79,27 @@ export default {
         />
 
         <PackageProposalApproveButton
-          v-if="currentUser && currentUser.admin"
+          v-if="isAdmin"
           :project-type-id="projectTypeId"
           :proposal="pkg"
           class="px-8 py-4"
         />
+      </div>
+
+      <div>
+        <RouteTab
+          :to="{ name: 'package-proposal' }"
+          exact
+        >
+          General
+        </RouteTab>
+
+        <RouteTab
+          v-if="isAdmin"
+          :to="{ name: 'package-proposal-edit' }"
+        >
+          Edit
+        </RouteTab>
       </div>
 
       <div>

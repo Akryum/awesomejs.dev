@@ -43,6 +43,7 @@ extend type Mutation {
   proposePackage (input: ProposePackageInput!): PackageProposal @auth
   togglePackageProposalUpvote (input: TogglePackageProposalUpvoteInput!): PackageProposal @auth
   approvePackageProposal (input: ApprovePackageProposalInput!): Package @admin @auth
+  editPackageProposalInfo (input: EditPackageProposalInfoInput!): PackageProposal @admin @auth
 }
 
 input ProposePackageInput {
@@ -57,6 +58,12 @@ input TogglePackageProposalUpvoteInput {
 
 input ApprovePackageProposalInput {
   proposalId: ID!
+}
+
+input EditPackageProposalInfoInput {
+  proposalId: ID!
+  info: PackageInfoInput!
+  github: GitHubRepoInput
 }
 `
 export const resolvers: IResolvers<any, Context> = {
@@ -297,6 +304,23 @@ export const resolvers: IResolvers<any, Context> = {
       return {
         id: pkg.ref.id,
         ...pkg.data,
+      }
+    },
+
+    editPackageProposalInfo: async (root, { input }, ctx) => {
+      const ref = q.Ref(q.Collection('PackageProposals'), input.proposalId)
+      const { data } = await ctx.db.query(
+        q.Update(ref, {
+          data: {
+            info: input.info,
+            github: input.github,
+          },
+        }),
+        q.Get(ref),
+      )
+      return {
+        id: input.proposalId,
+        ...data,
       }
     },
   },

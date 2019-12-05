@@ -55,6 +55,15 @@ type Mutation {
 input TogglePackageBookmarkInput {
   packageId: ID!
 }
+
+input PackageInfoInput {
+  tags: [String!]!
+}
+
+input GitHubRepoInput {
+  owner: String!
+  repo: String!
+}
 `
 
 export const resolvers: IResolvers<any, Context> = {

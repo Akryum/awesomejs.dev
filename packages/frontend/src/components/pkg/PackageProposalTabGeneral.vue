@@ -45,7 +45,7 @@ export default {
   <div>
     <PackageLinks
       :pkg="pkg"
-      class="mb-4"
+      class="my-4"
     />
 
     <PackageTags
