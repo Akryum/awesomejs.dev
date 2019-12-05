@@ -30,7 +30,7 @@ export default {
     const formData = reactive({
       info: {
         ...omit(props.pkg.info, ['__typename']),
-        tags: props.pkg.info.tags.join(','),
+        tags: props.pkg.info.tags.join(', '),
       },
       github: {
         owner: '',
