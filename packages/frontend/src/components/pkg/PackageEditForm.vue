@@ -1,5 +1,5 @@
 <script>
-import { reactive } from '@vue/composition-api'
+import { reactive, ref, watch } from '@vue/composition-api'
 import omit from 'lodash/omit'
 
 import ErrorMessage from '../ErrorMessage.vue'
@@ -54,9 +54,23 @@ export default {
       emit('submit', result)
     }
 
+    // Auto split Github
+    const repoInput = ref()
+    watch(() => formData.github.owner, value => {
+      if (value.includes('/')) {
+        const [owner, repo] = value.split('/')
+        Object.assign(formData.github, {
+          owner,
+          repo,
+        })
+        repoInput.value.focus()
+      }
+    })
+
     return {
       formData,
       submit,
+      repoInput,
     }
   },
 }
@@ -81,6 +95,7 @@ export default {
       >
 
       <input
+        ref="repoInput"
         v-model="formData.github.repo"
         :required="!!formData.github.owner"
         placeholder="GitHub repository name"
