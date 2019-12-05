@@ -8,17 +8,12 @@ import EmptyMessage from '../EmptyMessage.vue'
 import PackageAddButton from './PackageAddButton.vue'
 import PackageListItem from './PackageListItem.vue'
 import LoadingIndicator from '../LoadingIndicator.vue'
-const PackageProposalApproveButton = () => import(
-  /* webpackChunkName: "PackageProposalApproveButton.vue" */
-  './PackageProposalApproveButton.vue'
-)
 
 export default {
   components: {
     EmptyMessage,
     PackageAddButton,
     PackageListItem,
-    PackageProposalApproveButton,
     LoadingIndicator,
   },
 
@@ -73,12 +68,11 @@ export default {
         }"
         class="mb-6"
       >
-        <PackageProposalApproveButton
-          v-if="currentUser && currentUser.admin"
-          :project-type-id="projectTypeId"
-          :proposal="pkg"
-          class="p-2 ml-4"
-        />
+        <i
+          v-if="!pkg.repo"
+          v-tooltip="'No repository found'"
+          class="material-icons text-lg mr-2 text-red-500"
+        >error</i>
       </PackageListItem>
     </template>
     <EmptyMessage v-else>

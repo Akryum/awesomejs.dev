@@ -55,6 +55,8 @@ export default {
       </div>
     </div>
 
+    <slot />
+
     <PackageCount
       v-if="pkg.upvotes != null"
       :count="pkg.upvotes"
@@ -66,8 +68,6 @@ export default {
       :count="pkg.stars"
       class="package-count"
     />
-
-    <slot />
   </router-link>
 </template>
 
