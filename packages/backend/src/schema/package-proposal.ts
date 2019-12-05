@@ -315,13 +315,15 @@ export const resolvers: IResolvers<any, Context> = {
 
       const ref = q.Ref(q.Collection('PackageProposals'), input.proposalId)
       const { data } = await ctx.db.query(
-        q.Update(ref, {
-          data: {
-            info: input.info,
-            github: input.github,
-          },
-        }),
-        q.Get(ref),
+        q.Do(
+          q.Update(ref, {
+            data: {
+              info: input.info,
+              github: input.github,
+            },
+          }),
+          q.Get(ref),
+        ),
       )
       return {
         id: input.proposalId,
