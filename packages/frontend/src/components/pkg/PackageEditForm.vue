@@ -77,7 +77,10 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="submit()">
+  <form
+    class="max-w-3xl"
+    @submit.prevent="submit()"
+  >
     <div class="flex items-baseline mt-8">
       <label
         for="github-owner"
