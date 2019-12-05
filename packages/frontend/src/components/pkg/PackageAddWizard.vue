@@ -174,7 +174,7 @@ export default {
 
       <ErrorMessage
         :error="error"
-        class="p-4 border border-red-700 rounded mt-8"
+        class="error-box mt-8"
       />
     </div>
   </div>

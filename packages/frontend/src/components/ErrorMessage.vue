@@ -28,11 +28,14 @@ export default {
 </script>
 
 <template>
-  <div
-    v-if="error"
-    class="text-red-500 mt-2"
-  >
+  <div v-if="error">
     <i class="material-icons text-lg mr-2">error</i>
     <span class="whitespace-pre">{{ message }}</span>
   </div>
 </template>
+
+<style lang="postcss">
+.error-box {
+  @apply p-4 text-red-500 border-2 border-red-900 rounded;
+}
+</style>
