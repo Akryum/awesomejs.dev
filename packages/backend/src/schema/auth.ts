@@ -16,7 +16,7 @@ export const schemaDirectives = {
     public visitFieldDefinition (field: GraphQLField<any, any>) {
       const { resolve = defaultFieldResolver } = field
       field.resolve = (root, args, context, info) => {
-        if (!context.user) { throw new ApolloError('Not logged in', ErrorCode.ERROR_UNAUTHORIZED) }
+        if (!context.user) { throw new ApolloError('Not logged in', ErrorCode.ERROR_GUEST) }
         return resolve(root, args, context, info)
       }
     }

@@ -1,7 +1,7 @@
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client'
 import { onError } from 'apollo-link-error'
 import { logErrorMessages } from '@vue/apollo-util'
-import { checkUnauthorized } from '@/util/error'
+import { checkNeedLogin } from '@/util/error'
 import { cache } from './cache'
 
 // Name of the localStorage item
@@ -54,7 +54,7 @@ const defaultOptions = {
 export function createClient (options = {}) {
   const link = onError(error => {
     logErrorMessages(error)
-    checkUnauthorized(error)
+    checkNeedLogin(error)
   })
 
   // Create apollo client

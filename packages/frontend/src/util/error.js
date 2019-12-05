@@ -1,7 +1,7 @@
 import router from '../router'
 
-export function checkUnauthorized (e) {
-  if (e.graphQLErrors && e.graphQLErrors.some(e => e.extensions.code === 'unauthorized')) {
+export function checkNeedLogin (e) {
+  if (e.graphQLErrors && e.graphQLErrors.some(e => e.extensions.code === 'guest')) {
     router.push({ name: 'login' })
   }
 }
