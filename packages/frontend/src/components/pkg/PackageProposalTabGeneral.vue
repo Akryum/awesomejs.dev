@@ -1,7 +1,6 @@
 <script>
 import { gql } from 'apollo-server-core'
 
-import ErrorMessage from '../ErrorMessage.vue'
 import PackageLinks from './PackageLinks.vue'
 import PackageTags from './PackageTags.vue'
 const PackageReadme = () => import(
@@ -11,7 +10,6 @@ const PackageReadme = () => import(
 
 export default {
   components: {
-    ErrorMessage,
     PackageLinks,
     PackageReadme,
     PackageTags,
@@ -52,14 +50,8 @@ export default {
       :pkg="pkg"
     />
 
-    <ErrorMessage
-      v-if="!pkg.repo"
-      error="No GitHub repository found"
-      class="error-box mt-8"
-    />
-
     <PackageReadme
-      v-else
+      v-if="pkg.repo"
       :package-id="pkg.id"
       :query="readmeQuery"
     />

@@ -1,4 +1,5 @@
 <script>
+import ErrorMessage from '../ErrorMessage.vue'
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageGeneralInfo from './PackageGeneralInfo.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
@@ -12,6 +13,7 @@ import { useCurrentUser } from '../user/useCurrentUser'
 
 export default {
   components: {
+    ErrorMessage,
     LoadingIndicator,
     PackageGeneralInfo,
     PackageProposalApproveButton,
@@ -101,6 +103,12 @@ export default {
           Edit
         </RouteTab>
       </div>
+
+      <ErrorMessage
+        v-if="!pkg.repo"
+        error="No GitHub repository found"
+        class="error-box mt-8"
+      />
 
       <div>
         <router-view :pkg="pkg" />
