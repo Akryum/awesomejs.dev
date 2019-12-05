@@ -22,6 +22,11 @@ export default {
           url: props.pkg.repo,
           label: 'Repository',
         })
+      } else if (props.pkg.__typename === 'PackageProposal') {
+        list.push({
+          url: `https://www.npmjs.com/search?q=${encodeURIComponent(props.pkg.name)}`,
+          label: 'Search on NPM',
+        })
       }
       return list
     })
