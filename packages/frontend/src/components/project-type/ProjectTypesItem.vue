@@ -1,6 +1,6 @@
 <script>
 import { useQuery, useResult } from '@vue/apollo-composable'
-import { gql } from 'apollo-server-core'
+import gql from 'graphql-tag'
 import { useCurrentUser } from '../user/useCurrentUser'
 
 export default {

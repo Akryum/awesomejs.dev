@@ -1,5 +1,5 @@
 <script>
-import { gql } from 'apollo-server-core'
+import gql from 'graphql-tag'
 
 import PackageLinks from './PackageLinks.vue'
 import PackageTags from './PackageTags.vue'
