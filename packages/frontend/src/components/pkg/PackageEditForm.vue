@@ -21,7 +21,7 @@ export default {
     },
 
     error: {
-      type: [String, Object],
+      type: [String, Object, Error],
       default: null,
     },
   },
