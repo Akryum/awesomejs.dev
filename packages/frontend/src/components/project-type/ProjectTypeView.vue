@@ -2,6 +2,7 @@
 import PageTitle from '../PageTitle.vue'
 import PackageList from '../pkg/PackageList.vue'
 import PackageTag from '../pkg/PackageTag.vue'
+import ProjectTypeAllTags from './ProjectTypeAllTags.vue'
 import ProjectTypeBookmarkButton from './ProjectTypeBookmarkButton.vue'
 import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
 
@@ -17,6 +18,7 @@ export default {
     PageTitle,
     PackageList,
     PackageTag,
+    ProjectTypeAllTags,
     ProjectTypeBookmarkButton,
     ProjectTypePackageProposalsButton,
   },
@@ -132,6 +134,12 @@ export default {
           :tag="tag.id"
           :selected="selectedTags.includes(tag.id)"
           @click="toggleTag(tag.id)"
+        />
+
+        <ProjectTypeAllTags
+          :project-type-id="projectType.id"
+          :selected-tags="selectedTags"
+          @select="toggleTag"
         />
       </div>
     </template>
