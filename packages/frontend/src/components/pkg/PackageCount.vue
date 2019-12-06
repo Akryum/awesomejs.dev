@@ -13,6 +13,11 @@ export default {
       type: String,
       default: 'star',
     },
+
+    color: {
+      type: String,
+      default: 'purple',
+    },
   },
 
   setup (props) {
@@ -26,7 +31,10 @@ export default {
 </script>
 
 <template>
-  <div class="flex text-purple-500">
+  <div
+    class="flex"
+    :class="`text-${color}-500`"
+  >
     <div class="mr-1 sm:mr-2">
       {{ formatted }}
     </div>

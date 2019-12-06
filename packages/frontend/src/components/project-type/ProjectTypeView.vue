@@ -5,7 +5,7 @@ import ProjectTypeBookmarkButton from './ProjectTypeBookmarkButton.vue'
 import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
 
 import gql from 'graphql-tag'
-import { watch, ref, onUnmounted } from '@vue/composition-api'
+import { watch, ref, onUnmounted, computed } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { projectTypeFragment } from './fragments'
 import { setFavicon, resetFavicon } from '@/util/favicon'
@@ -56,6 +56,11 @@ export default {
 
     // Tags
     const tags = useResult(result, [], data => data.projectType.popularTags)
+    const sortedTags = computed(() => tags.value.sort((a, b) => {
+      if (a === 'official') return -1
+      if (b === 'official') return 1
+      return 0
+    }))
     const selectedTags = ref([])
     function toggleTag (tag) {
       const index = selectedTags.value.indexOf(tag)
@@ -75,7 +80,7 @@ export default {
     return {
       projectType,
 
-      tags,
+      sortedTags,
       selectedTags,
       toggleTag,
 
@@ -110,15 +115,16 @@ export default {
       </PageTitle>
 
       <div
-        v-if="tags.length"
+        v-if="sortedTags.length"
         class="my-2 xl:mt-0 lg:my-4 xl:mb-8 flex flex-wrap justify-stretch -mr-2"
       >
         <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
         <BaseButton
-          v-for="tag of tags"
+          v-for="tag of sortedTags"
           :key="tag"
           class="mr-2 px-2 text-gray-500 bg-gray-800 hover:bg-gray-700 mb-2 flex-auto lg:flex-none xl:mb-0"
           :class="{
+            'text-orange-400 bg-yellow-900 hover:bg-yellow-800': tag === 'official',
             'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.includes(tag),
           }"
           @click="toggleTag(tag)"

@@ -2,6 +2,7 @@
 import PackageLogo from './PackageLogo.vue'
 import PackageCount from './PackageCount.vue'
 import { parseEmoji } from '@/util/emoji'
+import { computed } from '@vue/composition-api'
 
 export default {
   components: {
@@ -18,8 +19,11 @@ export default {
     },
   },
 
-  setup () {
+  setup (props) {
+    const isOfficial = computed(() => props.pkg.info.tags.includes('official'))
+
     return {
+      isOfficial,
       parseEmoji,
     }
   },
@@ -42,9 +46,12 @@ export default {
           {{ pkg.name }}
         </span>
 
-        <span v-if="pkg.maintainers">
-          by {{ pkg.maintainers.map(m => m.name).join(', ') }}
-        </span>
+        <!-- <span
+          v-if="isOfficial"
+          class="text-orange-400 bg-yellow-900 px-1 mx-1 rounded"
+        >
+          official
+        </span> -->
       </div>
 
       <div class="w-full truncate text-gray-500">
@@ -66,6 +73,7 @@ export default {
     <PackageCount
       v-else-if="pkg.stars != null"
       :count="pkg.stars"
+      :color="isOfficial ? 'orange' : 'purple'"
       class="package-count"
     />
   </router-link>
@@ -93,6 +101,10 @@ export default {
 
   .package-count {
     @apply text-purple-400;
+
+    &.text-orange-500 {
+      @apply text-orange-400;
+    }
   }
 }
 </style>
