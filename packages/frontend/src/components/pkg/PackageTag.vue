@@ -28,7 +28,7 @@ export default {
     v-on="$listeners"
   >
     <template v-if="tag.startsWith('version:')">
-      <span class="mr-1">version:</span>
+      <span>version<span class="opacity-50">:</span></span>
       <span class="font-bold">{{ tag.substr('version:'.length) }}</span>
     </template>
     <template v-else>
