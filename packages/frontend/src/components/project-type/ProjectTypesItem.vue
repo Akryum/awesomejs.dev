@@ -1,4 +1,8 @@
 <script>
+import { useQuery, useResult } from '@vue/apollo-composable'
+import { gql } from 'apollo-server-core'
+import { useCurrentUser } from '../user/useCurrentUser'
+
 export default {
   props: {
     projectType: {
@@ -10,6 +14,30 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  setup (props) {
+    const { isAdmin, loading: userLoading } = useCurrentUser()
+
+    const { result } = useQuery(gql`
+      query ProjectTypePackageProposalCount ($id: ID!) {
+        projectType (id: $id) {
+          id
+          slug
+          packageProposalCount
+        }
+      }
+    `, () => ({
+      id: props.projectType.id,
+    }), () => ({
+      fetchPolicy: 'cache-and-network',
+      enabled: !userLoading.value && isAdmin.value,
+    }))
+    const packageProposalCount = useResult(result, 0, data => data.projectType.packageProposalCount)
+
+    return {
+      packageProposalCount,
+    }
   },
 }
 </script>
@@ -46,6 +74,16 @@ export default {
       <i
         class="material-icons text-lg text-gray-600"
       >bookmark</i>
+    </div>
+
+    <div
+      v-if="packageProposalCount"
+      v-tooltip="'Proposed packages'"
+      class="absolute top-0 left-0 pt-1 pl-1"
+    >
+      <div class="text-xs text-gray-500 bg-gray-700 px-1 rounded">
+        {{ packageProposalCount }}
+      </div>
     </div>
   </div>
 </template>
