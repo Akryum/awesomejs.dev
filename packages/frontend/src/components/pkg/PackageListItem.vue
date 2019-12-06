@@ -20,7 +20,7 @@ export default {
   },
 
   setup (props) {
-    const { isOfficial } = useTags(props.pkg)
+    const { isOfficial } = useTags(() => props.pkg)
 
     return {
       isOfficial,

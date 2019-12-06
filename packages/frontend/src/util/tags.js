@@ -1,7 +1,10 @@
 import { computed } from '@vue/composition-api'
 
 export function useTags (pkg) {
-  const tags = computed(() => pkg._tags || pkg.info.tags)
+  if (typeof pkg === 'function') {
+    pkg = computed(pkg)
+  }
+  const tags = computed(() => pkg.value._tags || pkg.value.info.tags)
   const isOfficial = computed(() => tags.value.includes('official'))
 
   return {

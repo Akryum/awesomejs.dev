@@ -38,7 +38,7 @@ export default {
       })
     }
 
-    const { isOfficial } = useTags(props.pkg)
+    const { isOfficial } = useTags(() => props.pkg)
     async function toggleOfficial () {
       const tags = props.pkg.info.tags.slice()
       if (tags.includes('official')) {
