@@ -38,7 +38,10 @@ export default {
       query ProjectTypeAndPopularTags ($slug: String!) {
         projectType: projectTypeBySlug (slug: $slug) {
           ...projectType
-          popularTags
+          popularTags {
+            id
+            count
+          }
         }
       }
       ${projectTypeFragment}
@@ -60,8 +63,8 @@ export default {
     // Tags
     const tags = useResult(result, [], data => data.projectType.popularTags)
     const sortedTags = computed(() => tags.value.sort((a, b) => {
-      if (isSpecialTag(a)) return -1
-      if (isSpecialTag(b)) return 1
+      if (isSpecialTag(a.id)) return -1
+      if (isSpecialTag(b.id)) return 1
       return 0
     }))
     const selectedTags = ref([])
@@ -124,10 +127,11 @@ export default {
         <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
         <PackageTag
           v-for="tag of sortedTags"
-          :key="tag"
-          :tag="tag"
-          :selected="selectedTags.includes(tag)"
-          @click="toggleTag(tag)"
+          :key="tag.id"
+          v-tooltip="`${tag.count} package${tag.count > 1 ? 's' : ''}`"
+          :tag="tag.id"
+          :selected="selectedTags.includes(tag.id)"
+          @click="toggleTag(tag.id)"
         />
       </div>
     </template>

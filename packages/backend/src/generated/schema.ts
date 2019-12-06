@@ -149,7 +149,8 @@ export type ProjectType = {
   name: Scalars['String'],
   slug: Scalars['String'],
   logo: Scalars['String'],
-  popularTags: Array<Scalars['String']>,
+  popularTags: Array<Tag>,
+  tags: Array<Tag>,
   packageProposals: Array<PackageProposal>,
   packageProposalCount: Scalars['Int'],
   packages: Array<Package>,
@@ -207,6 +208,12 @@ export type QueryProjectTypeArgs = {
 
 export type QueryProjectTypeBySlugArgs = {
   slug: Scalars['String']
+};
+
+export type Tag = {
+   __typename?: 'Tag',
+  id: Scalars['ID'],
+  count: Scalars['Int'],
 };
 
 export type TogglePackageBookmarkInput = {
@@ -320,9 +327,10 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Package: ResolverTypeWrapper<Omit<Package, 'projectType'> & { projectType: ResolversTypes['ProjectType'] }>,
   ProjectType: ResolverTypeWrapper<DBProjectType>,
+  Tag: ResolverTypeWrapper<Tag>,
+  Int: ResolverTypeWrapper<Scalars['Int']>,
   PackageProposal: ResolverTypeWrapper<DBPackageProposal>,
   PackageMaintainer: ResolverTypeWrapper<PackageMaintainer>,
-  Int: ResolverTypeWrapper<Scalars['Int']>,
   PackageInfo: ResolverTypeWrapper<PackageInfo>,
   Mutation: ResolverTypeWrapper<{}>,
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
@@ -346,9 +354,10 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'],
   Package: Omit<Package, 'projectType'> & { projectType: ResolversParentTypes['ProjectType'] },
   ProjectType: DBProjectType,
+  Tag: Tag,
+  Int: Scalars['Int'],
   PackageProposal: DBPackageProposal,
   PackageMaintainer: PackageMaintainer,
-  Int: Scalars['Int'],
   PackageInfo: PackageInfo,
   Mutation: {},
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
@@ -428,7 +437,8 @@ export type ProjectTypeResolvers<ContextType = Context, ParentType extends Resol
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   logo?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  popularTags?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>,
+  popularTags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>,
+  tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>,
   packageProposals?: Resolver<Array<ResolversTypes['PackageProposal']>, ParentType, ContextType>,
   packageProposalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   packages?: Resolver<Array<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<ProjectTypePackagesArgs, 'tags'>>,
@@ -444,6 +454,11 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   projectType?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<QueryProjectTypeArgs, 'id'>>,
   projectTypeBySlug?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<QueryProjectTypeBySlugArgs, 'slug'>>,
+};
+
+export type TagResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
 };
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -472,6 +487,7 @@ export type Resolvers<ContextType = Context> = {
   PackageProposal?: PackageProposalResolvers<ContextType>,
   ProjectType?: ProjectTypeResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
+  Tag?: TagResolvers<ContextType>,
   User?: UserResolvers<ContextType>,
   UserAccount?: UserAccountResolvers<ContextType>,
 };

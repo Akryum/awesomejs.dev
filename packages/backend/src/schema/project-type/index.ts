@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
 import { query as q, values } from 'faunadb'
 import { Resolvers } from '@/generated/schema'
+import { DBProjectType } from './db-types'
 
 export const typeDefs = gql`
 type ProjectType {
@@ -8,7 +9,13 @@ type ProjectType {
   name: String!
   slug: String!
   logo: String!
-  popularTags: [String!]!
+  popularTags: [Tag!]!
+  tags: [Tag!]!
+}
+
+type Tag {
+  id: ID!
+  count: Int!
 }
 
 extend type Query {
@@ -18,14 +25,24 @@ extend type Query {
 }
 `
 
+function getSortedTags (projectType: DBProjectType) {
+  return Object.keys(projectType.tagMap).filter(
+    (key) => key !== projectType.name.toLowerCase(),
+  ).map((key) => ({
+    id: key,
+    count: projectType.tagMap[key],
+  })).sort(
+    (a, b) => b.count - a.count,
+  )
+}
+
 export const resolvers: Resolvers = {
   ProjectType: {
     popularTags: (projectType) => {
-      return Object.keys(projectType.tagMap).filter(
-        (key) => key !== projectType.name.toLowerCase(),
-      ).sort(
-        (a, b) => projectType.tagMap[b] - projectType.tagMap[a],
-      ).slice(0, 8)
+      return getSortedTags(projectType).slice(0, 8)
+    },
+    tags: (projectType) => {
+      return getSortedTags(projectType)
     },
   },
 
