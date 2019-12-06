@@ -91,18 +91,22 @@ export default {
 
     async function approve () {
       // Select next proposal
-      let index = proposals.value.findIndex(p => p.id === props.proposal.id)
-      if (index === proposals.value.length - 1) {
-        index = 0
+      if (proposals.value.length === 1) {
+        root.$router.push({ name: 'project-type-proposals' })
       } else {
-        index++
-      }
-      const nextProposal = proposals.value[index]
-      if (nextProposal) {
-        root.$router.push({
-          name: 'package-proposal',
-          params: { packageId: nextProposal.id },
-        })
+        let index = proposals.value.findIndex(p => p.id === props.proposal.id)
+        if (index === proposals.value.length - 1) {
+          index = 0
+        } else {
+          index++
+        }
+        const nextProposal = proposals.value[index]
+        if (nextProposal) {
+          root.$router.push({
+            name: 'package-proposal',
+            params: { packageId: nextProposal.id },
+          })
+        }
       }
 
       // Approve mutation
