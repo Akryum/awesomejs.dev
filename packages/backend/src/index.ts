@@ -3,6 +3,7 @@ import { bootstrap, printReady } from '@nodepack/app'
 import { Context } from './context'
 import morgan from 'morgan'
 import { hook } from '@nodepack/app-context'
+import { spawn } from 'child_process'
 
 if (process.env.NODEPACK_ENV === 'development') {
   hook('expressCreate', (ctx: Context) => {
@@ -14,4 +15,12 @@ if (process.env.NODEPACK_ENV === 'development') {
 
 bootstrap(() => {
   printReady()
+})
+
+// Auto-generate shcema code
+hook('apolloListen', () => {
+  spawn('yarn', ['schema-gen'], {
+    cwd: process.cwd(),
+    stdio: ['inherit', 'inherit', 'inherit'],
+  })
 })

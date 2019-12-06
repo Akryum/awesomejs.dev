@@ -1,8 +1,14 @@
 import { toIdValue } from 'apollo-utilities'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
 import gql from 'graphql-tag'
+import introspectionQueryResultData from 'backend/schema-fragment-matcher'
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData,
+})
 
 export const cache = new InMemoryCache({
+  fragmentMatcher,
   cacheRedirects: {
     Query: {
       projectTypeBySlug: (_, { slug }) => {

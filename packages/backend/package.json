@@ -7,7 +7,8 @@
     "build": "nodepack-service build --no-preInstall --no-maintenance",
     "lint": "nodepack-service lint",
     "now-build": "yarn run build",
-    "start": "node -r dotenv/config ./dist/app.js dotenv_config_path=.env.local"
+    "start": "node -r dotenv/config ./dist/app.js dotenv_config_path=.env.local",
+    "schema-gen": "graphql-codegen --config gql-codegen.yml"
   },
   "dependencies": {
     "@nodepack/app": "^0.7.0",
@@ -25,6 +26,9 @@
     "passport-github2": "^0.1.11"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.9.1",
+    "@graphql-codegen/fragment-matcher": "^1.9.1",
+    "@graphql-codegen/typescript": "^1.9.1",
     "@nodepack/plugin-apollo": "^0.7.2",
     "@nodepack/plugin-babel": "^0.7.0",
     "@nodepack/plugin-express": "^0.7.2",

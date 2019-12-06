@@ -1,0 +1,6 @@
+schema: http://localhost:4000/graphql
+generates:
+  src/generated/schema.ts:
+    - typescript
+  schema-fragment-matcher.js:
+    - fragment-matcher
