@@ -15,7 +15,7 @@ export function useCurrentUser () {
 
   const currentUser = useResult(result)
 
-  const isAdmin = computed(() => currentUser.value && currentUser.value.admin)
+  const isAdmin = computed(() => !!(currentUser.value && currentUser.value.admin))
 
   return {
     currentUser,
