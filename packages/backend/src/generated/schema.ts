@@ -31,10 +31,10 @@ export type Mutation = {
   indexPackages?: Maybe<Scalars['Boolean']>,
   indexPackage?: Maybe<Scalars['Boolean']>,
   resetProjectTypeTagCounters?: Maybe<Scalars['Boolean']>,
-  proposePackage?: Maybe<PackageProposal>,
-  togglePackageProposalUpvote?: Maybe<PackageProposal>,
   approvePackageProposal?: Maybe<Package>,
   editPackageProposalInfo?: Maybe<PackageProposal>,
+  proposePackage?: Maybe<PackageProposal>,
+  togglePackageProposalUpvote?: Maybe<PackageProposal>,
   toggleProjectTypeBookmark?: Maybe<ProjectType>,
 };
 
@@ -49,16 +49,6 @@ export type MutationIndexPackageArgs = {
 };
 
 
-export type MutationProposePackageArgs = {
-  input: ProposePackageInput
-};
-
-
-export type MutationTogglePackageProposalUpvoteArgs = {
-  input: TogglePackageProposalUpvoteInput
-};
-
-
 export type MutationApprovePackageProposalArgs = {
   input: ApprovePackageProposalInput
 };
@@ -66,6 +56,16 @@ export type MutationApprovePackageProposalArgs = {
 
 export type MutationEditPackageProposalInfoArgs = {
   input: EditPackageProposalInfoInput
+};
+
+
+export type MutationProposePackageArgs = {
+  input: ProposePackageInput
+};
+
+
+export type MutationTogglePackageProposalUpvoteArgs = {
+  input: TogglePackageProposalUpvoteInput
 };
 
 
@@ -112,8 +112,6 @@ export type PackageProposal = {
   name: Scalars['String'],
   projectType: ProjectType,
   user?: Maybe<User>,
-  upvotes: Scalars['Int'],
-  upvoted: Scalars['Boolean'],
   maintainers: Array<PackageMaintainer>,
   description?: Maybe<Scalars['String']>,
   stars?: Maybe<Scalars['Int']>,
@@ -123,6 +121,8 @@ export type PackageProposal = {
   defaultLogo?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
   info: PackageInfo,
+  upvotes: Scalars['Int'],
+  upvoted: Scalars['Boolean'],
 };
 
 export type ProjectType = {
