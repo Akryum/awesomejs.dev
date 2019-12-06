@@ -3,10 +3,12 @@ import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageGeneralInfo from './PackageGeneralInfo.vue'
 import PackageBookmarkButton from './PackageBookmarkButton.vue'
 import PackageShareButton from './PackageShareButton.vue'
+import RouteTab from '../RouteTab.vue'
 
 import gql from 'graphql-tag'
 import { pkgFragment } from './fragments'
 import { useQuery, useResult } from '@vue/apollo-composable'
+import { useCurrentUser } from '../user/useCurrentUser'
 
 export default {
   components: {
@@ -14,10 +16,16 @@ export default {
     PackageGeneralInfo,
     PackageBookmarkButton,
     PackageShareButton,
+    RouteTab,
   },
 
   props: {
     packageId: {
+      type: String,
+      required: true,
+    },
+
+    routePrefix: {
       type: String,
       required: true,
     },
@@ -37,6 +45,7 @@ export default {
     return {
       pkg,
       loading,
+      isAdmin: useCurrentUser().isAdmin,
     }
   },
 
@@ -82,6 +91,22 @@ export default {
         <PackageShareButton
           :pkg="pkg"
         />
+      </div>
+
+      <div>
+        <RouteTab
+          :to="{ name: `${routePrefix}package` }"
+          exact
+        >
+          General
+        </RouteTab>
+
+        <RouteTab
+          v-if="isAdmin"
+          :to="{ name: `${routePrefix}package-edit` }"
+        >
+          Edit
+        </RouteTab>
       </div>
 
       <div>

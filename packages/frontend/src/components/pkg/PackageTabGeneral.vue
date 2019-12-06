@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="mt-4">
     <PackageLinks
       :pkg="pkg"
       class="mb-4"

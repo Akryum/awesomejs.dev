@@ -4,7 +4,7 @@ import { query as q } from 'faunadb'
 export async function updateProjectTypeTags (projectTypeId: string, ctx: Context) {
   const projectTypeRef = q.Ref(q.Collection('ProjectTypes'), projectTypeId)
   const { data: packages } = await ctx.db.query(q.Map(
-    q.Paginate(q.Match(q.Index('packages_projecttypeid'), projectTypeRef), { size: 100000 }),
+    q.Paginate(q.Match(q.Index('packages_projecttypeid'), projectTypeId), { size: 100000 }),
     q.Lambda('ref', q.Get(q.Var('ref'))),
   ))
   const counters = new Map<string, number>()

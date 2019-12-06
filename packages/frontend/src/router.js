@@ -8,7 +8,10 @@ Vue.use(Router)
 const packageRoute = (namePrefix = '') => ({
   path: 'pkg/:packageId',
   component: () => import(/* webpackChunkName: "package-view" */ './components/pkg/PackageView.vue'),
-  props: true,
+  props: route => ({
+    ...route.params,
+    routePrefix: namePrefix,
+  }),
   meta: {
     keepScroll: true,
   },
@@ -17,6 +20,11 @@ const packageRoute = (namePrefix = '') => ({
       path: '',
       name: `${namePrefix}package`,
       component: () => import(/* webpackChunkName: "package-tab-general" */ './components/pkg/PackageTabGeneral.vue'),
+    },
+    {
+      path: 'edit',
+      name: `${namePrefix}package-edit`,
+      component: () => import(/* webpackChunkName: "package-tab-edit" */ './components/pkg/PackageTabEdit.vue'),
     },
   ],
 })
