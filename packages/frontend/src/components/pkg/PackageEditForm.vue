@@ -81,10 +81,10 @@ export default {
     class="max-w-3xl"
     @submit.prevent="submit()"
   >
-    <div class="flex items-baseline mt-8">
+    <div class="lg:flex items-baseline mt-8">
       <label
         for="github-owner"
-        class="flex-none mr-8 text-gray-500"
+        class="flex-none lg:mr-8 text-gray-500"
       >
         Override GitHub repo:
       </label>
@@ -94,7 +94,7 @@ export default {
         v-model="formData.github.owner"
         placeholder="GitHub owner name"
         maxlength="200"
-        class="bg-black px-8 py-4 rounded w-full"
+        class="mt-2 lg:mt-0 bg-black px-8 py-4 rounded w-full"
       >
 
       <input
@@ -103,7 +103,7 @@ export default {
         :required="!!formData.github.owner"
         placeholder="GitHub repository name"
         maxlength="200"
-        class="ml-8 bg-black px-8 py-4 rounded w-full"
+        class="mt-4 lg:mt-0 lg:ml-8 bg-black px-8 py-4 rounded w-full"
       >
     </div>
 
