@@ -3,6 +3,7 @@ import { Resolvers } from '@/generated/schema'
 import { query as q } from 'faunadb'
 import { sanitizeTags } from '@/util/tags'
 import { updateProjectTypeTags } from '@/util/tag-map'
+import { updatePackage } from '@/util/package-index'
 
 export const typeDefs = gql`
 extend type Mutation {
@@ -22,7 +23,7 @@ export const resolvers: Resolvers = {
       input.info.tags = sanitizeTags(input.info.tags)
 
       const ref = q.Ref(q.Collection('Packages'), input.packageId)
-      const { data } = await ctx.db.query(
+      const pkg: any = await ctx.db.query(
         q.Do(
           q.Update(ref, {
             data: {
@@ -37,11 +38,16 @@ export const resolvers: Resolvers = {
         ),
       )
 
-      await updateProjectTypeTags(data.projectTypeId, ctx)
+      await updateProjectTypeTags(pkg.data.projectTypeId, ctx)
+
+      const projectType = await ctx.db.query(
+        q.Get(q.Ref(q.Collection('ProjectTypes'), pkg.data.projectTypeId)),
+      )
+      await updatePackage(ctx, pkg, projectType)
 
       return {
         id: input.packageId,
-        ...data,
+        ...pkg.data,
       }
     },
   },

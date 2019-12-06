@@ -46,3 +46,12 @@ export async function indexPackage (
   const index = ctx.algolia.initIndex('packages')
   return index.addObject(await getIndexObject(ctx, pkg, projectType))
 }
+
+export async function updatePackage (
+  ctx: Context,
+  pkg: any,
+  projectType: any,
+) {
+  const index = ctx.algolia.initIndex('packages')
+  return index.saveObject(await getIndexObject(ctx, pkg, projectType))
+}
