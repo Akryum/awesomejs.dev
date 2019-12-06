@@ -91,9 +91,9 @@ export type Package = {
   homepage?: Maybe<Scalars['String']>,
   license?: Maybe<Scalars['String']>,
   defaultLogo?: Maybe<Scalars['String']>,
-  bookmarked?: Maybe<Scalars['Boolean']>,
   readme?: Maybe<Scalars['String']>,
   info: PackageInfo,
+  bookmarked?: Maybe<Scalars['Boolean']>,
 };
 
 export type PackageInfo = {
@@ -375,9 +375,9 @@ export type PackageResolvers<ContextType = Context, ParentType extends Resolvers
   homepage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   license?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
+  bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
 };
 
 export type PackageInfoResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageInfo'] = ResolversParentTypes['PackageInfo']> = {
