@@ -86,7 +86,7 @@ export default {
     class="h-6"
     @update:open="value => isOpen = value"
   >
-    <BaseButton>
+    <BaseButton v-tooltip="'See all tags'">
       <PackageTag tag="...">
         <i class="material-icons">more_horiz</i>
       </PackageTag>
