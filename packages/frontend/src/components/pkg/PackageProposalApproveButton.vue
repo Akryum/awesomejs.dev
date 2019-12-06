@@ -42,48 +42,52 @@ export default {
         }
       }
       ${pkgFragment}
-    `, () => ({
-      variables: {
-        input: {
-          proposalId: props.proposal.id,
+    `, () => {
+      // Save current proposal ID as it will change since we immediately select another proposal
+      const currentProposalId = props.proposal.id
+      return {
+        variables: {
+          input: {
+            proposalId: currentProposalId,
+          },
         },
-      },
-      update: (cache) => {
-        const query = {
-          query: gql`
-            query ProjectTypePackages ($id: ID!) {
-              projectType (id: $id) {
-                id
-                packageProposals {
-                  ...pkgProposal
+        update: (cache, { data: { approvePackageProposal } }) => {
+          const query = {
+            query: gql`
+              query ProjectTypePackages ($id: ID!) {
+                projectType (id: $id) {
+                  id
+                  packageProposals {
+                    ...pkgProposal
+                  }
                 }
               }
-            }
-            ${pkgProposalFragment}
-          `,
-          variables: {
-            id: props.projectTypeId,
-          },
-        }
-        const data = cache.readQuery(query)
-        const list = data.projectType.packageProposals
-        const index = list.findIndex(p => p.id === props.proposal.id)
-        if (index !== -1) {
-          list.splice(index, 1)
-          cache.writeQuery({
-            ...query,
-            data,
-          })
-        }
-      },
-      optimisticResponse: {
-        __typename: 'Mutation',
-        approvePackageProposal: {
-          __typename: 'Package',
-          ...props.proposal,
+              ${pkgProposalFragment}
+            `,
+            variables: {
+              id: props.projectTypeId,
+            },
+          }
+          const data = cache.readQuery(query)
+          const list = data.projectType.packageProposals
+          const index = list.findIndex(p => p.id === currentProposalId)
+          if (index !== -1) {
+            list.splice(index, 1)
+            cache.writeQuery({
+              ...query,
+              data,
+            })
+          }
         },
-      },
-    }))
+        optimisticResponse: {
+          __typename: 'Mutation',
+          approvePackageProposal: {
+            __typename: 'Package',
+            ...props.proposal,
+          },
+        },
+      }
+    })
 
     async function approve () {
       // Select next proposal
