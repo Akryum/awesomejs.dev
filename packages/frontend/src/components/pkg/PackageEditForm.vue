@@ -1,5 +1,5 @@
 <script>
-import { reactive, ref, watch } from '@vue/composition-api'
+import { ref, watch } from '@vue/composition-api'
 import omit from 'lodash/omit'
 
 import ErrorMessage from '../ErrorMessage.vue'
@@ -27,39 +27,52 @@ export default {
   },
 
   setup (props, { emit }) {
-    const formData = reactive({
-      info: {
-        ...omit(props.pkg.info, ['__typename']),
-        tags: props.pkg.info.tags.join(', '),
-      },
-      github: {
-        owner: '',
-        repo: '',
-        ...omit(props.pkg.github, ['__typename']),
-      },
+    const formData = ref()
+
+    function reset () {
+      formData.value = {
+        info: {
+          ...omit(props.pkg.info, ['__typename']),
+          tags: props.pkg.info.tags.join(', '),
+        },
+        github: {
+          owner: '',
+          repo: '',
+          ...omit(props.pkg.github, ['__typename']),
+        },
+      }
+    }
+    reset()
+    // Auto reset after submit
+    watch(() => props.submitting, value => {
+      if (!value && !props.error) {
+        reset()
+      }
+    }, {
+      lazy: true,
     })
 
     function submit () {
       const result = {
-        info: formData.info,
+        info: formData.value.info,
       }
 
       // Tags
       result.info.tags = result.info.tags.split(',')
 
       // Github
-      if (formData.github.owner && formData.github.repo) {
-        result.github = formData.github
+      if (formData.value.github.owner && formData.value.github.repo) {
+        result.github = formData.value.github
       }
       emit('submit', result)
     }
 
     // Auto split Github
     const repoInput = ref()
-    watch(() => formData.github.owner, value => {
+    watch(() => formData.value.github.owner, value => {
       if (value.includes('/')) {
         const [owner, repo] = value.split('/')
-        Object.assign(formData.github, {
+        Object.assign(formData.value.github, {
           owner,
           repo,
         })
@@ -115,6 +128,8 @@ export default {
     >
 
     <div class="mt-8 flex items-center justify-end">
+      <slot name="actions" />
+
       <BaseButton
         :loading="submitting"
         type="submit"
