@@ -2,7 +2,7 @@
 import PackageLogo from './PackageLogo.vue'
 import PackageCount from './PackageCount.vue'
 import { parseEmoji } from '@/util/emoji'
-import { computed } from '@vue/composition-api'
+import { useTags } from '@/util/tags'
 
 export default {
   components: {
@@ -20,7 +20,7 @@ export default {
   },
 
   setup (props) {
-    const isOfficial = computed(() => props.pkg.info.tags.includes('official'))
+    const { isOfficial } = useTags(props.pkg)
 
     return {
       isOfficial,

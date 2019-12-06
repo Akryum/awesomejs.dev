@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 import { useMutation } from '@vue/apollo-composable'
 import { pkgFragment } from './fragments'
 import omit from 'lodash/omit'
-import { computed } from '@vue/composition-api'
+import { useTags } from '@/util/tags'
 
 export default {
   components: {
@@ -38,7 +38,7 @@ export default {
       })
     }
 
-    const isOfficial = computed(() => props.pkg.info.tags.includes('official'))
+    const { isOfficial } = useTags(props.pkg)
     async function toggleOfficial () {
       const tags = props.pkg.info.tags.slice()
       if (tags.includes('official')) {
