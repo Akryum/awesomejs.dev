@@ -51,27 +51,30 @@ export default {
       update: (cache) => {
         const query = {
           query: gql`
-              query ProjectTypePackages ($id: ID!) {
-                projectType (id: $id) {
-                  id
-                  packageProposals {
-                    ...pkgProposal
-                  }
+            query ProjectTypePackages ($id: ID!) {
+              projectType (id: $id) {
+                id
+                packageProposals {
+                  ...pkgProposal
                 }
               }
-              ${pkgProposalFragment}
-            `,
+            }
+            ${pkgProposalFragment}
+          `,
           variables: {
             id: props.projectTypeId,
           },
         }
         const data = cache.readQuery(query)
         const list = data.projectType.packageProposals
-        list.splice(list.findIndex(p => p.id === props.proposal.id), 1)
-        cache.writeQuery({
-          ...query,
-          data,
-        })
+        const index = list.findIndex(p => p.id === props.proposal.id)
+        if (index !== -1) {
+          list.splice(index, 1)
+          cache.writeQuery({
+            ...query,
+            data,
+          })
+        }
       },
       optimisticResponse: {
         __typename: 'Mutation',
