@@ -1,7 +1,6 @@
 import gql from 'graphql-tag'
-import { IResolvers } from 'graphql-tools'
-import { Context } from '@/context'
 import { query as q } from 'faunadb'
+import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`
 extend type PackageProposal {
@@ -18,11 +17,11 @@ input TogglePackageProposalUpvoteInput {
 }
 `
 
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   PackageProposal: {
     upvoted: async (pkg, args, ctx) => {
       if (!ctx.user) { return false }
-      return ctx.db.query(
+      return !!await ctx.db.query(
         q.Exists(q.Match(
           q.Index('packageproposalupvotes_by_proposal_and_user'),
           q.Ref(q.Collection('Users'), ctx.user.id),

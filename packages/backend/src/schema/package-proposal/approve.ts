@@ -1,8 +1,7 @@
 import gql from 'graphql-tag'
-import { IResolvers } from 'graphql-tools'
-import { Context } from '@/context'
 import { query as q } from 'faunadb'
 import { indexPackage } from '@/util/package-index'
+import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`
 extend type Mutation {
@@ -14,7 +13,7 @@ input ApprovePackageProposalInput {
 }
 `
 
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   Mutation: {
     approvePackageProposal: async (root, { input }, ctx) => {
       const pkgProposal: any = await ctx.db.query(

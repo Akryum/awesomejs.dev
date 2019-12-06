@@ -1,10 +1,10 @@
-import { SchemaDirectiveVisitor, IResolvers } from 'graphql-tools'
+import { SchemaDirectiveVisitor } from 'graphql-tools'
 import { defaultFieldResolver, GraphQLField } from 'graphql'
 import { gql, ApolloError } from 'apollo-server-core'
 import { ErrorCode } from '@/const/error-codes'
-import { Context } from '@/context'
 import { query as q } from 'faunadb'
 import { getIndexObject, indexPackage } from '../util/package-index'
+import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`
 """
@@ -32,7 +32,7 @@ export const schemaDirectives = {
   },
 }
 
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   Mutation: {
     // Used to index all packages by admin
     indexPackages: async (root, args, ctx) => {

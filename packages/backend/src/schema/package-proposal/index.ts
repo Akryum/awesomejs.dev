@@ -1,9 +1,8 @@
 import gql from 'graphql-tag'
-import { IResolvers } from 'graphql-tools'
-import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
 import * as Metadata from '../../util/metadata'
 import { getReadme } from '@/util/readme'
+import { Resolvers } from '@/generated/schema'
 
 const getNpmMetadata = Metadata.getNpmMetadata('PackageProposals')
 const getGithubMetadata = Metadata.getGithubMetadata('PackageProposals')
@@ -35,7 +34,7 @@ extend type Query {
   packageProposalByName (name: String!): PackageProposal
 }
 `
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   PackageProposal: {
     projectType: async (proposal, args, ctx) => {
       const { ref: { id }, data } = await ctx.db.query(

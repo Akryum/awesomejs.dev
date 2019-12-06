@@ -1,6 +1,5 @@
 import gql from 'graphql-tag'
-import { IResolvers } from 'graphql-tools'
-import { Context } from '@/context'
+import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`
 type User {
@@ -25,8 +24,9 @@ type Query {
 }
 `
 
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   Query: {
+    // @ts-ignore
     currentUser: (root, args, ctx) => ctx.user,
   },
 }

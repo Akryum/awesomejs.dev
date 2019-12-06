@@ -1,9 +1,8 @@
 import gql from 'graphql-tag'
-import { IResolvers } from 'graphql-tools'
-import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
 import * as Metadata from '../util/metadata'
 import { getReadme } from '@/util/readme'
+import { Resolvers } from '@/generated/schema'
 
 const getNpmMetadata = Metadata.getNpmMetadata('Packages')
 const getGithubMetadata = Metadata.getGithubMetadata('Packages', 'packages')
@@ -66,7 +65,7 @@ input GitHubRepoInput {
 }
 `
 
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   Package: {
     stars: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).stars,
     repo: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).htmlUrl,
@@ -78,7 +77,7 @@ export const resolvers: IResolvers<any, Context> = {
       (await getNpmMetadata(pkg, ctx)).description,
     bookmarked: async (pkg, args, ctx) => {
       if (!ctx.user) { return false }
-      return ctx.db.query(
+      return !!await ctx.db.query(
         q.Exists(q.Match(
           q.Index('packagebookmarks_by_package_and_user'),
           q.Ref(q.Collection('Users'), ctx.user.id),

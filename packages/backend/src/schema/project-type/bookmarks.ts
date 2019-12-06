@@ -1,7 +1,6 @@
-import { IResolvers } from 'graphql-tools'
-import { Context } from '@/context'
 import gql from 'graphql-tag'
 import { query as q } from 'faunadb'
+import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`
 extend type ProjectType {
@@ -17,7 +16,7 @@ input ToggleProjectTypeBookmarkInput {
 }
 `
 
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   ProjectType: {
     bookmarked: (projectType, args, ctx) => {
       return ctx.user && ctx.user.projectTypeBookmarks &&

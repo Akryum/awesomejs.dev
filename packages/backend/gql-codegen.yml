@@ -1,6 +1,13 @@
 schema: http://localhost:4000/graphql
 generates:
   src/generated/schema.ts:
-    - typescript
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      contextType: '@/context#Context'
+      mappers:
+        PackageProposal: '@/schema/package-proposal/db-types#DBPackageProposal'
+        ProjectType: '@/schema/project-type/db-types#DBProjectType'
   schema-fragment-matcher.js:
     - fragment-matcher

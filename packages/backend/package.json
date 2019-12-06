@@ -11,6 +11,7 @@
     "schema-gen": "graphql-codegen --config gql-codegen.yml"
   },
   "dependencies": {
+    "@graphql-codegen/typescript-resolvers": "^1.9.1",
     "@nodepack/app": "^0.7.0",
     "@nodepack/app-context": "0.7.0",
     "@octokit/rest": "^16.30.1",

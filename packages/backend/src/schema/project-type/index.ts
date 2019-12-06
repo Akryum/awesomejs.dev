@@ -1,7 +1,6 @@
 import gql from 'graphql-tag'
-import { IResolvers } from 'graphql-tools'
-import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
+import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`
 type ProjectType {
@@ -19,7 +18,7 @@ extend type Query {
 }
 `
 
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   ProjectType: {
     popularTags: (projectType) => {
       return Object.keys(projectType.tagMap).filter(

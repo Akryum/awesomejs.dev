@@ -1062,7 +1062,18 @@
     import-from "3.0.0"
     tslib "1.10.0"
 
-"@graphql-codegen/typescript@^1.9.1":
+"@graphql-codegen/typescript-resolvers@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-resolvers/-/typescript-resolvers-1.9.1.tgz#aa5c3919ecaa0296ce3ee47a230b8d2c79ccdec8"
+  integrity sha512-ZKCPvDndb3udxp3XuuQx475a4m5+DxO4MHRewsZw26wGAUedM9e/N9s2z4mbzmXAJYmUi6ADJus+lnO1PlsToA==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "1.9.1"
+    "@graphql-codegen/typescript" "1.9.1"
+    "@graphql-codegen/visitor-plugin-common" "1.9.1"
+    "@graphql-toolkit/common" "0.7.4"
+    tslib "1.10.0"
+
+"@graphql-codegen/typescript@1.9.1", "@graphql-codegen/typescript@^1.9.1":
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript/-/typescript-1.9.1.tgz#9bbc7fdd66885b768f2d6d3d926d6375f71de4b8"
   integrity sha512-72MUrf/JW5euFjeHjW4jJwtWepIrhxNWMVH/sKo8ZZxa7CcNDwPffb/He9Jpx2qvJIhVgwkcnZZl/iEroYxdNQ==

@@ -1,8 +1,7 @@
 import gql from 'graphql-tag'
 import { sanitizeTags } from '@/util/tags'
-import { IResolvers } from 'graphql-tools'
-import { Context } from '@/context'
 import { query as q } from 'faunadb'
+import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`
 extend type Mutation {
@@ -16,7 +15,7 @@ input EditPackageProposalInfoInput {
 }
 `
 
-export const resolvers: IResolvers<any, Context> = {
+export const resolvers: Resolvers = {
   Mutation: {
     editPackageProposalInfo: async (root, { input }, ctx) => {
       input.info.tags = sanitizeTags(input.info.tags)
