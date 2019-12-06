@@ -1,3 +1,3 @@
 export function sanitizeTags (tags: string[]) {
-  return tags.map((t) => t.trim()).filter((t) => t.length)
+  return Array.from(new Set(tags.map((t) => t.trim()).filter((t) => t.length)))
 }
