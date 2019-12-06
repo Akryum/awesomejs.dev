@@ -1,6 +1,7 @@
 <script>
 import PageTitle from '../PageTitle.vue'
 import PackageList from '../pkg/PackageList.vue'
+import PackageTag from '../pkg/PackageTag.vue'
 import ProjectTypeBookmarkButton from './ProjectTypeBookmarkButton.vue'
 import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
 
@@ -9,11 +10,13 @@ import { watch, ref, onUnmounted, computed } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { projectTypeFragment } from './fragments'
 import { setFavicon, resetFavicon } from '@/util/favicon'
+import { isSpecialTag } from '@/util/tags'
 
 export default {
   components: {
     PageTitle,
     PackageList,
+    PackageTag,
     ProjectTypeBookmarkButton,
     ProjectTypePackageProposalsButton,
   },
@@ -57,8 +60,8 @@ export default {
     // Tags
     const tags = useResult(result, [], data => data.projectType.popularTags)
     const sortedTags = computed(() => tags.value.sort((a, b) => {
-      if (a === 'official') return -1
-      if (b === 'official') return 1
+      if (isSpecialTag(a)) return -1
+      if (isSpecialTag(b)) return 1
       return 0
     }))
     const selectedTags = ref([])
@@ -119,18 +122,13 @@ export default {
         class="my-2 xl:mt-0 lg:my-4 xl:mb-8 flex flex-wrap justify-stretch -mr-2"
       >
         <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
-        <BaseButton
+        <PackageTag
           v-for="tag of sortedTags"
           :key="tag"
-          class="mr-2 px-2 text-gray-500 bg-gray-800 hover:bg-gray-700 mb-2 flex-auto lg:flex-none xl:mb-0"
-          :class="{
-            'text-orange-400 bg-yellow-900 hover:bg-yellow-800': tag === 'official',
-            'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.includes(tag),
-          }"
+          :tag="tag"
+          :selected="selectedTags.includes(tag)"
           @click="toggleTag(tag)"
-        >
-          {{ tag }}
-        </BaseButton>
+        />
       </div>
     </template>
 
