@@ -1,6 +1,7 @@
 <script>
 import AppHeader from './app/AppHeader.vue'
 import AppFooter from './app/AppFooter.vue'
+import AppGlobalLoading from './app/AppGlobalLoading.vue'
 import AppServiceWorkerManager from './app/AppServiceWorkerManager.vue'
 
 const title = 'Awesome JS'
@@ -9,6 +10,7 @@ export default {
   components: {
     AppHeader,
     AppFooter,
+    AppGlobalLoading,
     AppServiceWorkerManager,
   },
 
@@ -38,6 +40,8 @@ export default {
 
 <template>
   <div id="app">
+    <AppGlobalLoading />
+
     <AppHeader />
 
     <div class="main-view px-4 my-4 lg:px-16 lg:my-8">
