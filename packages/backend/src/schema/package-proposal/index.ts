@@ -92,14 +92,16 @@ export const resolvers: Resolvers = {
 
     packageProposalCount: async (projectType, args, ctx) => {
       const { data } = await ctx.db.query(
-        q.Paginate(
-          q.Match(
-            q.Index('packageproposals_by_projecttyperef_sort_by_upvote'),
-            q.Ref(q.Collection('ProjectTypes'), projectType.id),
+        q.Count(
+          q.Paginate(
+            q.Match(
+              q.Index('packageproposals_by_projecttyperef_sort_by_upvote'),
+              q.Ref(q.Collection('ProjectTypes'), projectType.id),
+            ),
           ),
         ),
       )
-      return data.length
+      return data[0]
     },
   },
 
