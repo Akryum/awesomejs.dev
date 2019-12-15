@@ -35,7 +35,7 @@ export async function updateMetadata (
   return result
 }
 
-const NPM_METADATA_VERSION = 4
+const NPM_METADATA_VERSION = 5
 
 export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: Context): Promise<any> => {
   try {
@@ -93,7 +93,7 @@ export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: 
   cacheKey: (pkg) => pkg.id,
 })
 
-const GITHUB_METADATA_VERSION = 6
+const GITHUB_METADATA_VERSION = 7
 
 export const getGithubDataSource = async (pkg: any, collection: string, ctx: Context) => {
   let owner: string
