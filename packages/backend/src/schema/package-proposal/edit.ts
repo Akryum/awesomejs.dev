@@ -26,7 +26,9 @@ export const resolvers: Resolvers = {
           q.Update(ref, {
             data: {
               info: input.info,
-              github: input.github,
+              dataSources: {
+                github: input.github,
+              },
               metadata: {
                 github: null,
               },
