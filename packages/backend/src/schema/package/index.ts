@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { query as q, values } from 'faunadb'
+import { query as q, values, Expr } from 'faunadb'
 import * as Metadata from '../../util/metadata'
 import { getReadme } from '@/util/readme'
 import { Resolvers } from '@/generated/schema'
@@ -34,7 +34,12 @@ type PackageInfo {
 }
 
 extend type ProjectType {
-  packages (tags: [String!] = null): [Package!]!
+  packages (tags: [String!] = null, after: JSON = null): PackagesPage!
+}
+
+type PackagesPage {
+  items: [Package!]!
+  after: JSON
 }
 
 extend type Query {
@@ -66,29 +71,33 @@ export const resolvers: Resolvers = {
   },
 
   ProjectType: {
-    packages: async (projectType, { tags }, ctx) => {
-      const { data } = await ctx.db.query(
+    packages: async (projectType, input, ctx) => {
+      const { data, after } = await ctx.db.query(
         q.Map(
           q.Paginate(
-            tags && tags.length
+            input.tags && input.tags.length
               ? q.Join(
                 q.Intersection(
                   q.Match(q.Index('packages_projecttypeid'), projectType.id),
                   q.Union(
-                    ...tags.map((tag: string) => q.Match(q.Index('packages_by_tag'), tag)),
+                    ...input.tags.map((tag: string) => q.Match(q.Index('packages_by_tag'), tag)),
                   ),
                 ),
                 q.Index('packages_by_ref_sort_by_stars_desc'),
               )
               : q.Match(q.Index('packages_sort_by_stars_desc'), projectType.id),
+            { size: 12, after: input.after ? new Expr(input.after) : null },
           ),
           q.Lambda(['stars', 'ref'], q.Get(q.Var('ref'))),
         ),
       )
-      return data.map((doc: values.Document) => ({
-        id: doc.ref.id,
-        ...doc.data,
-      }))
+      return {
+        items: data.map((doc: values.Document) => ({
+          id: doc.ref.id,
+          ...doc.data,
+        })),
+        after,
+      }
     },
   },
 

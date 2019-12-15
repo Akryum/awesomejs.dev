@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { DBPackageProposal } from '@/schema/package-proposal/db-types';
 import { DBProjectType } from '@/schema/project-type/db-types';
 import { Context } from '@/context';
@@ -12,6 +12,8 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: any,
 };
 
 
@@ -36,6 +38,7 @@ export type GitHubRepoInput = {
   owner: Scalars['String'],
   repo: Scalars['String'],
 };
+
 
 export type Mutation = {
    __typename?: 'Mutation',
@@ -143,6 +146,12 @@ export type PackageProposal = {
   upvoted: Scalars['Boolean'],
 };
 
+export type PackagesPage = {
+   __typename?: 'PackagesPage',
+  items: Array<Package>,
+  after?: Maybe<Scalars['JSON']>,
+};
+
 export type ProjectType = {
    __typename?: 'ProjectType',
   id: Scalars['ID'],
@@ -153,13 +162,14 @@ export type ProjectType = {
   tags: Array<Tag>,
   packageProposals: Array<PackageProposal>,
   packageProposalCount: Scalars['Int'],
-  packages: Array<Package>,
+  packages: PackagesPage,
   bookmarked?: Maybe<Scalars['Boolean']>,
 };
 
 
 export type ProjectTypePackagesArgs = {
-  tags?: Maybe<Array<Scalars['String']>>
+  tags?: Maybe<Array<Scalars['String']>>,
+  after?: Maybe<Scalars['JSON']>
 };
 
 export type ProposePackageInput = {
@@ -332,6 +342,8 @@ export type ResolversTypes = {
   PackageProposal: ResolverTypeWrapper<DBPackageProposal>,
   PackageMaintainer: ResolverTypeWrapper<PackageMaintainer>,
   PackageInfo: ResolverTypeWrapper<PackageInfo>,
+  JSON: ResolverTypeWrapper<Scalars['JSON']>,
+  PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
   Mutation: ResolverTypeWrapper<{}>,
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -359,6 +371,8 @@ export type ResolversParentTypes = {
   PackageProposal: DBPackageProposal,
   PackageMaintainer: PackageMaintainer,
   PackageInfo: PackageInfo,
+  JSON: Scalars['JSON'],
+  PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
   Mutation: {},
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -374,6 +388,10 @@ export type ResolversParentTypes = {
 export type AdminDirectiveResolver<Result, Parent, ContextType = Context, Args = {  }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AuthDirectiveResolver<Result, Parent, ContextType = Context, Args = {  }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
+  name: 'JSON'
+}
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   togglePackageBookmark?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationTogglePackageBookmarkArgs, 'input'>>,
@@ -432,6 +450,11 @@ export type PackageProposalResolvers<ContextType = Context, ParentType extends R
   upvoted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };
 
+export type PackagesPageResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackagesPage'] = ResolversParentTypes['PackagesPage']> = {
+  items?: Resolver<Array<ResolversTypes['Package']>, ParentType, ContextType>,
+  after?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
+};
+
 export type ProjectTypeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['ProjectType'] = ResolversParentTypes['ProjectType']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -441,7 +464,7 @@ export type ProjectTypeResolvers<ContextType = Context, ParentType extends Resol
   tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>,
   packageProposals?: Resolver<Array<ResolversTypes['PackageProposal']>, ParentType, ContextType>,
   packageProposalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
-  packages?: Resolver<Array<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<ProjectTypePackagesArgs, 'tags'>>,
+  packages?: Resolver<ResolversTypes['PackagesPage'], ParentType, ContextType, RequireFields<ProjectTypePackagesArgs, 'tags' | 'after'>>,
   bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
 };
 
@@ -480,11 +503,13 @@ export type UserAccountResolvers<ContextType = Context, ParentType extends Resol
 };
 
 export type Resolvers<ContextType = Context> = {
+  JSON?: GraphQLScalarType,
   Mutation?: MutationResolvers<ContextType>,
   Package?: PackageResolvers<ContextType>,
   PackageInfo?: PackageInfoResolvers<ContextType>,
   PackageMaintainer?: PackageMaintainerResolvers<ContextType>,
   PackageProposal?: PackageProposalResolvers<ContextType>,
+  PackagesPage?: PackagesPageResolvers<ContextType>,
   ProjectType?: ProjectTypeResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   Tag?: TagResolvers<ContextType>,

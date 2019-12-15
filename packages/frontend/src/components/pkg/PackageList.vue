@@ -6,6 +6,8 @@ import LoadingIndicator from '../LoadingIndicator.vue'
 
 import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
+import { ref, computed } from '@vue/composition-api'
+import mergeWith from 'lodash/mergeWith'
 import { pkgFragment } from './fragments'
 
 export default {
@@ -29,12 +31,16 @@ export default {
   },
 
   setup (props) {
-    const { result, loading } = useQuery(gql`
-      query ProjectTypePackages ($slug: String!, $tags: [String!]) {
+    const { result, loading, fetchMore } = useQuery(gql`
+      query ProjectTypePackages ($slug: String!, $tags: [String!], $after: JSON) {
         projectType: projectTypeBySlug (slug: $slug) {
           id
-          packages (tags: $tags) {
-            ...pkg
+          packages (tags: $tags, after: $after)
+              @connection(key: "ProjectTypePackages_packages", filter: ["tags"]) {
+            items {
+              ...pkg
+            }
+            after
           }
         }
       }
@@ -43,11 +49,38 @@ export default {
       slug: props.projectTypeSlug,
       tags: props.tags,
     }))
-    const packages = useResult(result, [], data => data.projectType.packages)
+    const packages = useResult(result, [], data => data.projectType.packages.items)
+
+    // Pagination
+    const afterCursor = computed(() => result.value ? result.value.projectType.packages.after : null)
+    const hasMore = computed(() => !!afterCursor.value)
+    const loadingMore = ref(false)
+    async function loadMore () {
+      if (loadingMore.value) return
+      if (afterCursor.value) {
+        loadingMore.value = true
+        await fetchMore({
+          variables: {
+            after: afterCursor.value,
+          },
+          updateQuery: (previousResult, { fetchMoreResult }) => {
+            return mergeWith({}, previousResult, fetchMoreResult, (target, source, key) => {
+              if (key !== 'after' && Array.isArray(target)) {
+                return target.concat(source)
+              }
+            })
+          },
+        })
+        loadingMore.value = false
+      }
+    }
 
     return {
       packages,
       loading,
+      hasMore,
+      loadMore,
+      loadingMore,
     }
   },
 }
@@ -70,6 +103,14 @@ export default {
         :pkg="pkg"
         class="mb-4 sm:mb-6"
       />
+      <BaseButton
+        v-if="hasMore"
+        :loading="loadingMore"
+        class="w-full bg-gray-800 text-purple-300 rounded px-6 py-4 hover:bg-gray-700"
+        @click="loadMore()"
+      >
+        Load more
+      </BaseButton>
     </template>
     <EmptyMessage v-else>
       No package yet
