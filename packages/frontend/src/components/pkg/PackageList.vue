@@ -9,6 +9,7 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import { ref, computed } from '@vue/composition-api'
 import mergeWith from 'lodash/mergeWith'
 import { pkgFragment } from './fragments'
+import { onScrollBottom } from '@/util/scroll'
 
 export default {
   components: {
@@ -75,19 +76,24 @@ export default {
       }
     }
 
+    // Autoload when scrolling
+    const el = ref()
+    onScrollBottom(loadMore, el, 600)
+
     return {
       packages,
       loading,
       hasMore,
       loadMore,
       loadingMore,
+      el,
     }
   },
 }
 </script>
 
 <template>
-  <div>
+  <div ref="el">
     <LoadingIndicator
       v-if="loading && !packages.length"
       class="py-8"
