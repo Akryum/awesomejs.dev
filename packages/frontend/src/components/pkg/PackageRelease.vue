@@ -2,7 +2,13 @@
 import { DateTime } from 'luxon'
 import { computed } from '@vue/composition-api'
 
+import PackageReleaseAsset from './PackageReleaseAsset.vue'
+
 export default {
+  components: {
+    PackageReleaseAsset,
+  },
+
   props: {
     release: {
       type: Object,
@@ -36,10 +42,29 @@ export default {
       <div class="text-3xl text-purple-300">
         {{ release.title }}
       </div>
-      <div class="text-gray-700 ml-2">
+      <div class="text-gray-600 ml-2">
         <i class="material-icons text-base">local_offer</i>
         {{ release.tagName }}
       </div>
+
+      <div
+        v-if="release.prerelease"
+        class="ml-2 text-orange-500 border border-yellow-900 rounded px-2"
+      >
+        prerelease
+      </div>
+    </div>
+
+    <div
+      v-if="release.assets.length"
+      class="my-8"
+    >
+      <PackageReleaseAsset
+        v-for="(asset, index) of release.assets"
+        :key="index"
+        :asset="asset"
+        class="mb-4"
+      />
     </div>
 
     <div
