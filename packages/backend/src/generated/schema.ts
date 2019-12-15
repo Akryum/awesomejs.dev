@@ -28,16 +28,16 @@ export type ApprovePackageProposalInput = {
 export type EditPackageInfoInput = {
   packageId: Scalars['ID'],
   info: PackageInfoInput,
-  github?: Maybe<GitHubRepoInput>,
+  github?: Maybe<GithubDataSourceInput>,
 };
 
 export type EditPackageProposalInfoInput = {
   proposalId: Scalars['ID'],
   info: PackageInfoInput,
-  github?: Maybe<GitHubRepoInput>,
+  github?: Maybe<GithubDataSourceInput>,
 };
 
-export type GitHubRepoInput = {
+export type GithubDataSourceInput = {
   owner: Scalars['String'],
   repo: Scalars['String'],
 };
@@ -382,7 +382,7 @@ export type ResolversTypes = {
   ApprovePackageProposalInput: ApprovePackageProposalInput,
   EditPackageProposalInfoInput: EditPackageProposalInfoInput,
   PackageInfoInput: PackageInfoInput,
-  GitHubRepoInput: GitHubRepoInput,
+  GithubDataSourceInput: GithubDataSourceInput,
   ProposePackageInput: ProposePackageInput,
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
@@ -415,7 +415,7 @@ export type ResolversParentTypes = {
   ApprovePackageProposalInput: ApprovePackageProposalInput,
   EditPackageProposalInfoInput: EditPackageProposalInfoInput,
   PackageInfoInput: PackageInfoInput,
-  GitHubRepoInput: GitHubRepoInput,
+  GithubDataSourceInput: GithubDataSourceInput,
   ProposePackageInput: ProposePackageInput,
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,

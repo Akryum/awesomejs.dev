@@ -13,7 +13,7 @@ extend type Mutation {
 input EditPackageInfoInput {
   packageId: ID!
   info: PackageInfoInput!
-  github: GitHubRepoInput
+  github: GithubDataSourceInput
 }
 `
 

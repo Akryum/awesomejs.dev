@@ -11,7 +11,7 @@ extend type Mutation {
 input EditPackageProposalInfoInput {
   proposalId: ID!
   info: PackageInfoInput!
-  github: GitHubRepoInput
+  github: GithubDataSourceInput
 }
 `
 

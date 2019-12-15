@@ -51,7 +51,7 @@ input PackageInfoInput {
   tags: [String!]!
 }
 
-input GitHubRepoInput {
+input GithubDataSourceInput {
   owner: String!
   repo: String!
 }
