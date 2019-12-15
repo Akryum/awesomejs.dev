@@ -7,7 +7,7 @@ export default {
 <template>
   <BaseButton
     v-bind="$attrs"
-    class="tab px-8 pt-4 pb-3 border-transparent border-b-2 hover:bg-purple-900"
+    class="tab px-4 md:px-8 pt-4 pb-3 border-transparent border-b-2 hover:bg-purple-900"
   >
     <slot />
   </BaseButton>
