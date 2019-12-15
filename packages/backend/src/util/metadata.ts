@@ -12,6 +12,7 @@ export async function updateMetadata (
   type: string,
   data: any,
   version: number,
+  additionalData: any = {},
 ) {
   const result = {
     version,
@@ -26,6 +27,7 @@ export async function updateMetadata (
           metadata: {
             [type]: result,
           },
+          ...additionalData,
         },
       },
     ),
@@ -37,26 +39,54 @@ const NPM_METADATA_VERSION = 4
 
 export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: Context): Promise<any> => {
   try {
-    let result = pkg.metadata?.npm
-    if (!result || result.version !== NPM_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
-      const data = await ctx.npm(`/${encodeURIComponent(pkg.name)}`)
-      console.log('REQUEST npm', pkg.name)
-      // Add new data props to be saved here
-      // and increment NPM_METADATA_VERSION
-      result = await updateMetadata(ctx, pkg.id, collection, 'npm', {
-        maintainers: data.maintainers,
-        repository: data.repository,
-        homepage: data.homepage,
-        license: data.license,
-        description: data.description,
-      }, NPM_METADATA_VERSION)
+    if (pkg.dataSources?.npm !== 'error') {
+      let result = pkg.metadata?.npm
+      if (!result || result.version !== NPM_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
+        let npmName: string
+
+        if (pkg.dataSources?.npm) {
+          npmName = pkg.dataSources.npm.name
+        } else {
+          npmName = pkg.name
+        }
+
+        const data = await ctx.npm(`/${encodeURIComponent(npmName)}`)
+        console.log('REQUEST npm', npmName)
+        // Add new data props to be saved here
+        // and increment NPM_METADATA_VERSION
+        result = await updateMetadata(ctx, pkg.id, collection, 'npm', {
+          maintainers: data.maintainers,
+          repository: data.repository,
+          homepage: data.homepage,
+          license: data.license,
+          description: data.description,
+        }, NPM_METADATA_VERSION, {
+          dataSources: {
+            npm: {
+              name: npmName,
+            },
+          },
+        })
+      }
+      return result.data
     }
-    return result.data
   } catch (e) {
     console.error(e)
-    return {
-      maintainers: [],
-    }
+    await ctx.db.query(
+      q.Update(
+        q.Ref(q.Collection(collection), pkg.id),
+        {
+          data: {
+            dataSources: {
+              npm: 'error',
+            },
+          },
+        },
+      ),
+    )
+  }
+  return {
+    maintainers: [],
   }
 }, {
   maxAge: ms('1s'),
