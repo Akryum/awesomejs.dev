@@ -62,7 +62,7 @@ export const resolvers: Resolvers = {
 
     stars: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).stars,
     repo: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).htmlUrl,
-    defaultLogo: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).owner.avatar,
+    defaultLogo: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).owner?.avatar,
     maintainers: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).maintainers,
     homepage: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).homepage,
     license: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).license,
