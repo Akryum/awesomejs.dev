@@ -5,6 +5,16 @@ import { computed } from '@vue/composition-api'
 export default {
   components: {
     SubmitAnimation,
+    CustomRouterLink: {
+      functional: true,
+      render (h, { data, children, listeners }) {
+        if (listeners['!click']) {
+          data.nativeOn = data.nativeOn || {}
+          data.nativeOn['!click'] = listeners['!click']
+        }
+        return h('router-link', data, children)
+      },
+    },
   },
 
   inheritAttrs: false,
@@ -44,7 +54,7 @@ export default {
   setup (props, { attrs, emit }) {
     const component = computed(() => {
       if (attrs.to) {
-        return 'router-link'
+        return 'CustomRouterLink'
       } else if (attrs.href) {
         return 'a'
       } else {
@@ -87,7 +97,6 @@ export default {
       'text-center': align === 'center',
     }"
     @click.capture="handleClick"
-    @click.capture.native="handleClick"
   >
     <div
       class="flex items-center rounded"
