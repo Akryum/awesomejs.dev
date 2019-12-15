@@ -52,6 +52,11 @@ export const resolvers: Resolvers = {
               info: {
                 tags: input.tags,
               },
+              dataSources: {
+                npm: {
+                  name: input.packageName,
+                },
+              },
             },
           },
         ),
