@@ -102,6 +102,12 @@ export default {
         </RouteTab>
 
         <RouteTab
+          :to="{ name: `${routePrefix}package-releases` }"
+        >
+          Releases
+        </RouteTab>
+
+        <RouteTab
           :to="{ name: `${routePrefix}package-data-sources` }"
         >
           Data sources

@@ -31,6 +31,11 @@ const packageRoute = (namePrefix = '') => ({
       name: `${namePrefix}package-data-sources`,
       component: () => import(/* webpackChunkName: "package-tab-data-sources" */ './components/pkg/PackageTabDataSources.vue'),
     },
+    {
+      path: 'releases',
+      name: `${namePrefix}package-releases`,
+      component: () => import(/* webpackChunkName: "package-tab-releases" */ './components/pkg/PackageTabReleases.vue'),
+    },
   ],
 })
 

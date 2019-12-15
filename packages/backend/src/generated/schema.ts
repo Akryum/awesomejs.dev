@@ -14,6 +14,8 @@ export type Scalars = {
   Float: number,
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any,
+  /** Date timestamp. It's serialized as a time number in ms, for example `1550923964562`. */
+  Date: any,
 };
 
 
@@ -21,6 +23,7 @@ export type Scalars = {
 export type ApprovePackageProposalInput = {
   proposalId: Scalars['ID'],
 };
+
 
 export type EditPackageInfoInput = {
   packageId: Scalars['ID'],
@@ -110,6 +113,7 @@ export type Package = {
   info: PackageInfo,
   bookmarked?: Maybe<Scalars['Boolean']>,
   dataSources: Array<PackageDataSource>,
+  releases: Array<PackageRelease>,
 };
 
 export type PackageDataSource = {
@@ -151,6 +155,24 @@ export type PackageProposal = {
   info: PackageInfo,
   upvotes: Scalars['Int'],
   upvoted: Scalars['Boolean'],
+};
+
+export type PackageRelease = {
+   __typename?: 'PackageRelease',
+  id: Scalars['ID'],
+  date?: Maybe<Scalars['Date']>,
+  title?: Maybe<Scalars['String']>,
+  tagName?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  prerelease?: Maybe<Scalars['Boolean']>,
+  assets: Array<PackageReleaseAsset>,
+};
+
+export type PackageReleaseAsset = {
+   __typename?: 'PackageReleaseAsset',
+  name: Scalars['String'],
+  downloadUrl: Scalars['String'],
+  size: Scalars['Int'],
 };
 
 export type PackagesPage = {
@@ -352,6 +374,9 @@ export type ResolversTypes = {
   JSON: ResolverTypeWrapper<Scalars['JSON']>,
   PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
   PackageDataSource: ResolverTypeWrapper<PackageDataSource>,
+  PackageRelease: ResolverTypeWrapper<PackageRelease>,
+  Date: ResolverTypeWrapper<Scalars['Date']>,
+  PackageReleaseAsset: ResolverTypeWrapper<PackageReleaseAsset>,
   Mutation: ResolverTypeWrapper<{}>,
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -382,6 +407,9 @@ export type ResolversParentTypes = {
   JSON: Scalars['JSON'],
   PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
   PackageDataSource: PackageDataSource,
+  PackageRelease: PackageRelease,
+  Date: Scalars['Date'],
+  PackageReleaseAsset: PackageReleaseAsset,
   Mutation: {},
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -397,6 +425,10 @@ export type ResolversParentTypes = {
 export type AdminDirectiveResolver<Result, Parent, ContextType = Context, Args = {  }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AuthDirectiveResolver<Result, Parent, ContextType = Context, Args = {  }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date'
+}
 
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON'
@@ -430,6 +462,7 @@ export type PackageResolvers<ContextType = Context, ParentType extends Resolvers
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
   dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
+  releases?: Resolver<Array<ResolversTypes['PackageRelease']>, ParentType, ContextType>,
 };
 
 export type PackageDataSourceResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageDataSource'] = ResolversParentTypes['PackageDataSource']> = {
@@ -463,6 +496,22 @@ export type PackageProposalResolvers<ContextType = Context, ParentType extends R
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   upvotes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   upvoted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+};
+
+export type PackageReleaseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageRelease'] = ResolversParentTypes['PackageRelease']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  date?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>,
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  tagName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  prerelease?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
+  assets?: Resolver<Array<ResolversTypes['PackageReleaseAsset']>, ParentType, ContextType>,
+};
+
+export type PackageReleaseAssetResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageReleaseAsset'] = ResolversParentTypes['PackageReleaseAsset']> = {
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  downloadUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
 };
 
 export type PackagesPageResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackagesPage'] = ResolversParentTypes['PackagesPage']> = {
@@ -518,6 +567,7 @@ export type UserAccountResolvers<ContextType = Context, ParentType extends Resol
 };
 
 export type Resolvers<ContextType = Context> = {
+  Date?: GraphQLScalarType,
   JSON?: GraphQLScalarType,
   Mutation?: MutationResolvers<ContextType>,
   Package?: PackageResolvers<ContextType>,
@@ -525,6 +575,8 @@ export type Resolvers<ContextType = Context> = {
   PackageInfo?: PackageInfoResolvers<ContextType>,
   PackageMaintainer?: PackageMaintainerResolvers<ContextType>,
   PackageProposal?: PackageProposalResolvers<ContextType>,
+  PackageRelease?: PackageReleaseResolvers<ContextType>,
+  PackageReleaseAsset?: PackageReleaseAssetResolvers<ContextType>,
   PackagesPage?: PackagesPageResolvers<ContextType>,
   ProjectType?: ProjectTypeResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,

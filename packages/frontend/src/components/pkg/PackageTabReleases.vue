@@ -3,12 +3,12 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 
 import LoadingIndicator from '../LoadingIndicator.vue'
-import PackageDataSource from './PackageDataSource.vue'
+import PackageRelease from './PackageRelease.vue'
 
 export default {
   components: {
     LoadingIndicator,
-    PackageDataSource,
+    PackageRelease,
   },
 
   props: {
@@ -20,23 +20,32 @@ export default {
 
   setup (props) {
     const { result, loading } = useQuery(gql`
-      query PackageDataSources ($id: ID!) {
+      query PackageReleases ($id: ID!) {
         pkg: package (id: $id) {
           id
-          dataSources {
-            type
-            data
+          releases {
+            id
+            date
+            title
+            tagName
+            description
+            prerelease
+            assets {
+              name
+              downloadUrl
+              size
+            }
           }
         }
       }
     `, () => ({
       id: props.pkg.id,
     }))
-    const dataSources = useResult(result, [], data => data.pkg.dataSources)
+    const releases = useResult(result, [], data => data.pkg.releases)
 
     return {
       loading,
-      dataSources,
+      releases,
     }
   },
 }
@@ -50,10 +59,10 @@ export default {
     />
 
     <div>
-      <PackageDataSource
-        v-for="dataSource of dataSources"
-        :key="dataSource.type"
-        :data-source="dataSource"
+      <PackageRelease
+        v-for="release of releases"
+        :key="release.id"
+        :release="release"
       />
     </div>
   </div>
