@@ -37,7 +37,7 @@ const NPM_METADATA_VERSION = 4
 
 export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: Context): Promise<any> => {
   try {
-    let result = pkg.metadata && pkg.metadata.npm
+    let result = pkg.metadata?.npm
     if (!result || result.version !== NPM_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
       const data = await ctx.npm(`/${encodeURIComponent(pkg.name)}`)
       console.log('REQUEST npm', pkg.name)
@@ -65,77 +65,122 @@ export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: 
 
 const GITHUB_METADATA_VERSION = 6
 
+export const getGithubDataSource = async (pkg: any, collection: string, ctx: Context) => {
+  let owner: string
+  let repo: string
+  if (pkg.dataSources?.github) {
+    owner = pkg.dataSources.github.owner
+    repo = pkg.dataSources.github.repo
+  } else if (pkg.github) {
+    // @TODO legacy
+    owner = pkg.github.owner
+    repo = pkg.github.repo
+
+    await ctx.db.query(
+      q.Update(
+        q.Ref(q.Collection(collection), pkg.id),
+        {
+          data: {
+            github: null,
+            dataSources: {
+              github: {
+                owner,
+                repo,
+              },
+            },
+          },
+        },
+      ),
+    )
+
+    console.log('Migrated from `github` to `dataSources.github`.')
+  } else {
+    const npmData = await getNpmMetadata(collection)(pkg, ctx)
+    let githubUrl
+
+    if (npmData.repository?.type === 'git' && npmData.repository?.url.includes('github.com')) {
+      githubUrl = npmData.repository.url
+    } else if (npmData.bugs?.url.includes('github.com')) {
+      githubUrl = npmData.bugs.url
+    } else if (npmData.homepage?.includes('github.com')) {
+      githubUrl = npmData.homepage
+    }
+
+    if (githubUrl) {
+      const [, o, r] = /github\.com\/([a-z0-9_-]+)\/([a-z0-9_-]+)/i.exec(githubUrl)
+      owner = o
+      repo = r
+
+      await ctx.db.query(
+        q.Update(
+          q.Ref(q.Collection(collection), pkg.id),
+          {
+            data: {
+              dataSources: {
+                github: {
+                  owner,
+                  repo,
+                },
+              },
+            },
+          },
+        ),
+      )
+    }
+  }
+
+  return {
+    owner,
+    repo,
+  }
+}
+
 export const getGithubMetadata = (
   collection: string,
   updateAlgoliaIndex: string = null,
 ) => mem(async (pkg: any, ctx: Context): Promise<any> => {
   try {
-    let result = pkg.metadata && pkg.metadata.github
+    let result = pkg.metadata?.github
     if (!result || result.version !== GITHUB_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
       let data
-      let owner: string
-      let repo: string
 
-      if (pkg.github) {
-        owner = pkg.github.owner
-        repo = pkg.github.repo
-      } else {
-        const npmData = await getNpmMetadata(collection)(pkg, ctx)
-        let githubUrl
+      const { owner, repo } = await getGithubDataSource(pkg, collection, ctx)
 
-        if (npmData.repository && npmData.repository.type === 'git' && npmData.repository.url.includes('github.com')) {
-          githubUrl = npmData.repository.url
-        } else if (npmData.bugs && npmData.bugs.url.includes('github.com')) {
-          githubUrl = npmData.bugs.url
-        } else if (npmData.homepage && npmData.homepage.includes('github.com')) {
-          githubUrl = npmData.homepage
-        }
-
-        if (githubUrl) {
-          const [, o, r] = /github\.com\/([a-z0-9_-]+)\/([a-z0-9_-]+)/i.exec(githubUrl)
-          owner = o
-          repo = r
-        } else {
-          data = {
-            slug: {},
-            owner: {},
-          }
-        }
+      if (!repo) {
+        return {}
       }
 
-      if (!data) {
-        const { data: githubData } = await ctx.github.repos.get({
+      const { data: githubData } = await ctx.github.repos.get({
+        owner,
+        repo,
+      })
+      console.log('REQUEST github', pkg.name)
+      // Add new data props to be saved here
+      // and increment GITHUB_METADATA_VERSION
+      data = {
+        slug: {
           owner,
           repo,
-        })
-        console.log('REQUEST github', pkg.name)
-        // Add new data props to be saved here
-        // and increment GITHUB_METADATA_VERSION
-        data = {
-          slug: {
-            owner,
-            repo,
-          },
-          stars: githubData.stargazers_count,
-          htmlUrl: githubData.html_url,
-          owner: {
-            avatar: githubData.owner.avatar_url,
-          },
-          description: githubData.description,
-          defaultBranch: githubData.default_branch,
-        }
+        },
+        stars: githubData.stargazers_count,
+        htmlUrl: githubData.html_url,
+        owner: {
+          avatar: githubData.owner.avatar_url,
+        },
+        description: githubData.description,
+        defaultBranch: githubData.default_branch,
+      }
 
-        if (updateAlgoliaIndex) {
-          const index = ctx.algolia.initIndex(updateAlgoliaIndex)
-          await index.partialUpdateObject({
-            objectID: pkg.id,
-            stars: githubData.stargazers_count,
-            defaultLogo: githubData.owner.avatar_url,
-            ...(githubData.description ? {
-              description: githubData.description,
-            } : {}),
-          })
-        }
+      if (updateAlgoliaIndex) {
+        const index = ctx.algolia.initIndex(updateAlgoliaIndex)
+        await index.partialUpdateObject({
+          objectID: pkg.id,
+          stars: githubData.stargazers_count,
+          defaultLogo: githubData.owner.avatar_url,
+          ...(githubData.description ? {
+            description: githubData.description,
+          } : {}),
+        })
       }
       result = await updateMetadata(ctx, pkg.id, collection, 'github', data, GITHUB_METADATA_VERSION)
     }
