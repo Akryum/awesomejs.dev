@@ -14,6 +14,7 @@ export default {
     const src = ref(null)
 
     watch(() => props.pkg.id, id => {
+      src.value = null
       const img = new Image()
       img.onload = () => {
         if (id !== props.pkg.id) return
