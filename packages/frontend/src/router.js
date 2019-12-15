@@ -26,6 +26,11 @@ const packageRoute = (namePrefix = '') => ({
       name: `${namePrefix}package-edit`,
       component: () => import(/* webpackChunkName: "package-tab-edit" */ './components/pkg/PackageTabEdit.vue'),
     },
+    {
+      path: 'data-sources',
+      name: `${namePrefix}package-data-sources`,
+      component: () => import(/* webpackChunkName: "package-tab-data-sources" */ './components/pkg/PackageTabDataSources.vue'),
+    },
   ],
 })
 

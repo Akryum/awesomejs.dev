@@ -102,6 +102,12 @@ export default {
         </RouteTab>
 
         <RouteTab
+          :to="{ name: `${routePrefix}package-data-sources` }"
+        >
+          Data sources
+        </RouteTab>
+
+        <RouteTab
           v-if="isAdmin"
           :to="{ name: `${routePrefix}package-edit` }"
         >

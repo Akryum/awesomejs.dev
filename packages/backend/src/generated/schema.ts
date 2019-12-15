@@ -109,6 +109,13 @@ export type Package = {
   readme?: Maybe<Scalars['String']>,
   info: PackageInfo,
   bookmarked?: Maybe<Scalars['Boolean']>,
+  dataSources: Array<PackageDataSource>,
+};
+
+export type PackageDataSource = {
+   __typename?: 'PackageDataSource',
+  type: Scalars['String'],
+  data?: Maybe<Scalars['JSON']>,
 };
 
 export type PackageInfo = {
@@ -344,6 +351,7 @@ export type ResolversTypes = {
   PackageInfo: ResolverTypeWrapper<PackageInfo>,
   JSON: ResolverTypeWrapper<Scalars['JSON']>,
   PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
+  PackageDataSource: ResolverTypeWrapper<PackageDataSource>,
   Mutation: ResolverTypeWrapper<{}>,
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -373,6 +381,7 @@ export type ResolversParentTypes = {
   PackageInfo: PackageInfo,
   JSON: Scalars['JSON'],
   PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
+  PackageDataSource: PackageDataSource,
   Mutation: {},
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -420,6 +429,12 @@ export type PackageResolvers<ContextType = Context, ParentType extends Resolvers
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
+  dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
+};
+
+export type PackageDataSourceResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageDataSource'] = ResolversParentTypes['PackageDataSource']> = {
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  data?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>,
 };
 
 export type PackageInfoResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageInfo'] = ResolversParentTypes['PackageInfo']> = {
@@ -506,6 +521,7 @@ export type Resolvers<ContextType = Context> = {
   JSON?: GraphQLScalarType,
   Mutation?: MutationResolvers<ContextType>,
   Package?: PackageResolvers<ContextType>,
+  PackageDataSource?: PackageDataSourceResolvers<ContextType>,
   PackageInfo?: PackageInfoResolvers<ContextType>,
   PackageMaintainer?: PackageMaintainerResolvers<ContextType>,
   PackageProposal?: PackageProposalResolvers<ContextType>,
