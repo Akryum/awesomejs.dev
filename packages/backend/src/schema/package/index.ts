@@ -50,11 +50,6 @@ extend type Query {
 input PackageInfoInput {
   tags: [String!]!
 }
-
-input GithubDataSourceInput {
-  owner: String!
-  repo: String!
-}
 `
 
 export const resolvers: Resolvers = {

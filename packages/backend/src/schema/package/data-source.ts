@@ -10,6 +10,11 @@ type PackageDataSource {
   type: String!
   data: JSON
 }
+
+input GithubDataSourceInput {
+  owner: String!
+  repo: String!
+}
 `
 
 export const resolvers: Resolvers = {
