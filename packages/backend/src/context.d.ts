@@ -14,5 +14,4 @@ export interface DBUserAccount extends UserAccount {
 
 export interface Context extends BaseContext {
   user: User
-  github: Octokit
 }
