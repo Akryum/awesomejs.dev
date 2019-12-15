@@ -38,7 +38,7 @@ export const resolvers: Resolvers = {
           },
         })
         return data.filter((i) => !i.draft).map((item) => ({
-          id: item.id,
+          id: item.id.toString(),
           date: item.published_at,
           title: item.name || item.tag_name,
           tagName: item.tag_name,
