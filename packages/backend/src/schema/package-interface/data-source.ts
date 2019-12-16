@@ -2,7 +2,15 @@ import gql from 'graphql-tag'
 import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`
+extend interface PackageInterface {
+  dataSources: [PackageDataSource!]!
+}
+
 extend type Package {
+  dataSources: [PackageDataSource!]!
+}
+
+extend type PackageProposal {
   dataSources: [PackageDataSource!]!
 }
 
@@ -15,11 +23,17 @@ input GithubDataSourceInput {
   owner: String!
   repo: String!
 }
+
+input NpmDataSourceInput {
+  name: String!
+}
 `
 
 export const resolvers: Resolvers = {
-  Package: {
+  // @ts-ignore
+  PackageInterface: {
     dataSources: async (pkg) => {
+      console.log(pkg)
       return Object.keys(pkg.dataSources || {}).map((key) => ({
         type: key,
         // @ts-ignore

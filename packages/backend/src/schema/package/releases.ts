@@ -27,7 +27,7 @@ extend type Package {
 export const resolvers: Resolvers = {
   Package: {
     releases: async (pkg, args, ctx) => {
-      const { owner, repo } = await getGithubDataSource(pkg, 'Packages', ctx)
+      const { owner, repo } = await getGithubDataSource(pkg, ctx)
 
       if (repo) {
         const { data } = await ctx.github.repos.listReleases({

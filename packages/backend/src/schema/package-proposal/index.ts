@@ -1,27 +1,10 @@
 import gql from 'graphql-tag'
 import { query as q, values } from 'faunadb'
-import * as Metadata from '../../util/metadata'
-import { getReadme } from '@/util/readme'
 import { Resolvers } from '@/generated/schema'
 
-const getNpmMetadata = Metadata.getNpmMetadata('PackageProposals')
-const getGithubMetadata = Metadata.getGithubMetadata('PackageProposals')
-
 export const typeDefs = gql`
-type PackageProposal {
-  id: ID!
-  name: String!
-  projectType: ProjectType!
+extend type PackageProposal {
   user: User
-  maintainers: [PackageMaintainer!]!
-  description: String
-  stars: Int
-  repo: String
-  homepage: String
-  license: String
-  defaultLogo: String
-  readme: String
-  info: PackageInfo!
 }
 
 extend type ProjectType {
@@ -59,16 +42,6 @@ export const resolvers: Resolvers = {
         // Nothing
       }
     },
-
-    stars: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).stars,
-    repo: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).htmlUrl,
-    defaultLogo: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).owner?.avatar,
-    maintainers: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).maintainers,
-    homepage: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).homepage,
-    license: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).license,
-    description: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).description ||
-      (await getNpmMetadata(pkg, ctx)).description,
-    readme: (pkg, args, ctx) => getReadme(pkg, getGithubMetadata, ctx),
   },
 
   ProjectType: {
@@ -86,6 +59,7 @@ export const resolvers: Resolvers = {
       )
       return data.map((doc: values.Document) => ({
         id: doc.ref.id,
+        collection: doc.ref.collection.id,
         ...doc.data,
       }))
     },
@@ -107,22 +81,24 @@ export const resolvers: Resolvers = {
 
   Query: {
     packageProposal: async (root, { id }, ctx) => {
-      const { data } = await ctx.db.query(
+      const { ref, data } = await ctx.db.query(
         q.Get(q.Ref(q.Collection('PackageProposals'), id)),
       )
       return {
         id,
+        collection: ref.collection.id,
         ...data,
       }
     },
 
     packageProposalByName: async (root, { name }, ctx) => {
       try {
-        const { ref: { id }, data } = await ctx.db.query(
+        const { ref: { id, collection }, data } = await ctx.db.query(
           q.Get(q.Match(q.Index('packageproposal_by_name'), name)),
         )
         return {
           id,
+          collection: collection.id,
           ...data,
         }
       } catch (e) {

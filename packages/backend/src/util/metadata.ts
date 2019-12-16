@@ -5,6 +5,11 @@ import { query as q } from 'faunadb'
 
 const METADATA_MAX_AGE = ms('6h')
 
+const ALGOLIA_INDEX: { [key: string]: string } = {
+  Packages: 'packages',
+  PackageProposals: null,
+}
+
 export async function updateMetadata (
   ctx: Context,
   id: string,
@@ -37,7 +42,7 @@ export async function updateMetadata (
 
 const NPM_METADATA_VERSION = 5
 
-export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: Context): Promise<any> => {
+export const getNpmMetadata = mem(async (pkg: any, ctx: Context): Promise<any> => {
   try {
     if (pkg.dataSources?.npm !== 'error') {
       let result = pkg.metadata?.npm
@@ -54,7 +59,7 @@ export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: 
         console.log('REQUEST npm', npmName)
         // Add new data props to be saved here
         // and increment NPM_METADATA_VERSION
-        result = await updateMetadata(ctx, pkg.id, collection, 'npm', {
+        result = await updateMetadata(ctx, pkg.id, pkg.collection, 'npm', {
           maintainers: data.maintainers,
           repository: data.repository,
           homepage: data.homepage,
@@ -74,7 +79,7 @@ export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: 
     console.error(e)
     await ctx.db.query(
       q.Update(
-        q.Ref(q.Collection(collection), pkg.id),
+        q.Ref(q.Collection(pkg.collection), pkg.id),
         {
           data: {
             dataSources: {
@@ -95,7 +100,7 @@ export const getNpmMetadata = (collection: string) => mem(async (pkg: any, ctx: 
 
 const GITHUB_METADATA_VERSION = 7
 
-export const getGithubDataSource = async (pkg: any, collection: string, ctx: Context) => {
+export const getGithubDataSource = async (pkg: any, ctx: Context) => {
   let owner: string
   let repo: string
   if (pkg.dataSources?.github) {
@@ -108,7 +113,7 @@ export const getGithubDataSource = async (pkg: any, collection: string, ctx: Con
 
     await ctx.db.query(
       q.Update(
-        q.Ref(q.Collection(collection), pkg.id),
+        q.Ref(q.Collection(pkg.collection), pkg.id),
         {
           data: {
             github: null,
@@ -125,7 +130,7 @@ export const getGithubDataSource = async (pkg: any, collection: string, ctx: Con
 
     console.log('Migrated from `github` to `dataSources.github`.')
   } else {
-    const npmData = await getNpmMetadata(collection)(pkg, ctx)
+    const npmData = await getNpmMetadata(pkg, ctx)
     let githubUrl
 
     if (npmData.repository?.type === 'git' && npmData.repository?.url.includes('github.com')) {
@@ -143,7 +148,7 @@ export const getGithubDataSource = async (pkg: any, collection: string, ctx: Con
 
       await ctx.db.query(
         q.Update(
-          q.Ref(q.Collection(collection), pkg.id),
+          q.Ref(q.Collection(pkg.collection), pkg.id),
           {
             data: {
               dataSources: {
@@ -165,16 +170,13 @@ export const getGithubDataSource = async (pkg: any, collection: string, ctx: Con
   }
 }
 
-export const getGithubMetadata = (
-  collection: string,
-  updateAlgoliaIndex: string = null,
-) => mem(async (pkg: any, ctx: Context): Promise<any> => {
+export const getGithubMetadata = mem(async (pkg: any, ctx: Context): Promise<any> => {
   try {
     let result = pkg.metadata?.github
     if (!result || result.version !== GITHUB_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
       let data
 
-      const { owner, repo } = await getGithubDataSource(pkg, collection, ctx)
+      const { owner, repo } = await getGithubDataSource(pkg, ctx)
 
       if (!repo) {
         return {}
@@ -201,8 +203,9 @@ export const getGithubMetadata = (
         defaultBranch: githubData.default_branch,
       }
 
-      if (updateAlgoliaIndex) {
-        const index = ctx.algolia.initIndex(updateAlgoliaIndex)
+      const algoliaIndex = ALGOLIA_INDEX[pkg.collection]
+      if (algoliaIndex) {
+        const index = ctx.algolia.initIndex(algoliaIndex)
         await index.partialUpdateObject({
           objectID: pkg.id,
           stars: githubData.stargazers_count,
@@ -212,7 +215,7 @@ export const getGithubMetadata = (
           } : {}),
         })
       }
-      result = await updateMetadata(ctx, pkg.id, collection, 'github', data, GITHUB_METADATA_VERSION)
+      result = await updateMetadata(ctx, pkg.id, pkg.collection, 'github', data, GITHUB_METADATA_VERSION)
     }
     return result.data
   } catch (e) {

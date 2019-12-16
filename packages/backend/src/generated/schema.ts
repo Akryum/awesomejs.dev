@@ -29,12 +29,14 @@ export type EditPackageInfoInput = {
   packageId: Scalars['ID'],
   info: PackageInfoInput,
   github?: Maybe<GithubDataSourceInput>,
+  npm?: Maybe<NpmDataSourceInput>,
 };
 
 export type EditPackageProposalInfoInput = {
   proposalId: Scalars['ID'],
   info: PackageInfoInput,
   github?: Maybe<GithubDataSourceInput>,
+  npm?: Maybe<NpmDataSourceInput>,
 };
 
 export type GithubDataSourceInput = {
@@ -97,22 +99,26 @@ export type MutationToggleProjectTypeBookmarkArgs = {
   input: ToggleProjectTypeBookmarkInput
 };
 
-export type Package = {
+export type NpmDataSourceInput = {
+  name: Scalars['String'],
+};
+
+export type Package = PackageInterface & {
    __typename?: 'Package',
   id: Scalars['ID'],
   name: Scalars['String'],
   projectType: ProjectType,
-  maintainers: Array<PackageMaintainer>,
-  description?: Maybe<Scalars['String']>,
+  info: PackageInfo,
+  dataSources: Array<PackageDataSource>,
   stars?: Maybe<Scalars['Int']>,
   repo?: Maybe<Scalars['String']>,
+  defaultLogo?: Maybe<Scalars['String']>,
+  maintainers: Array<PackageMaintainer>,
   homepage?: Maybe<Scalars['String']>,
   license?: Maybe<Scalars['String']>,
-  defaultLogo?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
-  info: PackageInfo,
   bookmarked?: Maybe<Scalars['Boolean']>,
-  dataSources: Array<PackageDataSource>,
   releases: Array<PackageRelease>,
 };
 
@@ -131,6 +137,22 @@ export type PackageInfoInput = {
   tags: Array<Scalars['String']>,
 };
 
+export type PackageInterface = {
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  projectType: ProjectType,
+  info: PackageInfo,
+  dataSources: Array<PackageDataSource>,
+  stars?: Maybe<Scalars['Int']>,
+  repo?: Maybe<Scalars['String']>,
+  defaultLogo?: Maybe<Scalars['String']>,
+  maintainers: Array<PackageMaintainer>,
+  homepage?: Maybe<Scalars['String']>,
+  license?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  readme?: Maybe<Scalars['String']>,
+};
+
 export type PackageMaintainer = {
    __typename?: 'PackageMaintainer',
   name?: Maybe<Scalars['String']>,
@@ -138,21 +160,22 @@ export type PackageMaintainer = {
   avatar?: Maybe<Scalars['String']>,
 };
 
-export type PackageProposal = {
+export type PackageProposal = PackageInterface & {
    __typename?: 'PackageProposal',
   id: Scalars['ID'],
   name: Scalars['String'],
   projectType: ProjectType,
-  user?: Maybe<User>,
-  maintainers: Array<PackageMaintainer>,
-  description?: Maybe<Scalars['String']>,
+  info: PackageInfo,
+  dataSources: Array<PackageDataSource>,
   stars?: Maybe<Scalars['Int']>,
   repo?: Maybe<Scalars['String']>,
+  defaultLogo?: Maybe<Scalars['String']>,
+  maintainers: Array<PackageMaintainer>,
   homepage?: Maybe<Scalars['String']>,
   license?: Maybe<Scalars['String']>,
-  defaultLogo?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
-  info: PackageInfo,
+  user?: Maybe<User>,
   upvotes: Scalars['Int'],
   upvoted: Scalars['Boolean'],
 };
@@ -365,15 +388,16 @@ export type ResolversTypes = {
   UserAccount: ResolverTypeWrapper<UserAccount>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Package: ResolverTypeWrapper<Omit<Package, 'projectType'> & { projectType: ResolversTypes['ProjectType'] }>,
+  PackageInterface: ResolverTypeWrapper<Omit<PackageInterface, 'projectType'> & { projectType: ResolversTypes['ProjectType'] }>,
   ProjectType: ResolverTypeWrapper<DBProjectType>,
   Tag: ResolverTypeWrapper<Tag>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   PackageProposal: ResolverTypeWrapper<DBPackageProposal>,
-  PackageMaintainer: ResolverTypeWrapper<PackageMaintainer>,
   PackageInfo: ResolverTypeWrapper<PackageInfo>,
-  JSON: ResolverTypeWrapper<Scalars['JSON']>,
-  PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
   PackageDataSource: ResolverTypeWrapper<PackageDataSource>,
+  JSON: ResolverTypeWrapper<Scalars['JSON']>,
+  PackageMaintainer: ResolverTypeWrapper<PackageMaintainer>,
+  PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
   PackageRelease: ResolverTypeWrapper<PackageRelease>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
   PackageReleaseAsset: ResolverTypeWrapper<PackageReleaseAsset>,
@@ -383,6 +407,7 @@ export type ResolversTypes = {
   EditPackageProposalInfoInput: EditPackageProposalInfoInput,
   PackageInfoInput: PackageInfoInput,
   GithubDataSourceInput: GithubDataSourceInput,
+  NpmDataSourceInput: NpmDataSourceInput,
   ProposePackageInput: ProposePackageInput,
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
@@ -398,15 +423,16 @@ export type ResolversParentTypes = {
   UserAccount: UserAccount,
   Boolean: Scalars['Boolean'],
   Package: Omit<Package, 'projectType'> & { projectType: ResolversParentTypes['ProjectType'] },
+  PackageInterface: Omit<PackageInterface, 'projectType'> & { projectType: ResolversParentTypes['ProjectType'] },
   ProjectType: DBProjectType,
   Tag: Tag,
   Int: Scalars['Int'],
   PackageProposal: DBPackageProposal,
-  PackageMaintainer: PackageMaintainer,
   PackageInfo: PackageInfo,
-  JSON: Scalars['JSON'],
-  PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
   PackageDataSource: PackageDataSource,
+  JSON: Scalars['JSON'],
+  PackageMaintainer: PackageMaintainer,
+  PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
   PackageRelease: PackageRelease,
   Date: Scalars['Date'],
   PackageReleaseAsset: PackageReleaseAsset,
@@ -416,6 +442,7 @@ export type ResolversParentTypes = {
   EditPackageProposalInfoInput: EditPackageProposalInfoInput,
   PackageInfoInput: PackageInfoInput,
   GithubDataSourceInput: GithubDataSourceInput,
+  NpmDataSourceInput: NpmDataSourceInput,
   ProposePackageInput: ProposePackageInput,
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
@@ -451,17 +478,17 @@ export type PackageResolvers<ContextType = Context, ParentType extends Resolvers
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   projectType?: Resolver<ResolversTypes['ProjectType'], ParentType, ContextType>,
-  maintainers?: Resolver<Array<ResolversTypes['PackageMaintainer']>, ParentType, ContextType>,
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
+  dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
   stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   repo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  maintainers?: Resolver<Array<ResolversTypes['PackageMaintainer']>, ParentType, ContextType>,
   homepage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   license?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
-  dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
   releases?: Resolver<Array<ResolversTypes['PackageRelease']>, ParentType, ContextType>,
 };
 
@@ -474,6 +501,23 @@ export type PackageInfoResolvers<ContextType = Context, ParentType extends Resol
   tags?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>,
 };
 
+export type PackageInterfaceResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageInterface'] = ResolversParentTypes['PackageInterface']> = {
+  __resolveType: TypeResolveFn<'Package' | 'PackageProposal', ParentType, ContextType>,
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  projectType?: Resolver<ResolversTypes['ProjectType'], ParentType, ContextType>,
+  info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
+  dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
+  stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  repo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  maintainers?: Resolver<Array<ResolversTypes['PackageMaintainer']>, ParentType, ContextType>,
+  homepage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  license?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+};
+
 export type PackageMaintainerResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageMaintainer'] = ResolversParentTypes['PackageMaintainer']> = {
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -484,16 +528,17 @@ export type PackageProposalResolvers<ContextType = Context, ParentType extends R
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   projectType?: Resolver<ResolversTypes['ProjectType'], ParentType, ContextType>,
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
-  maintainers?: Resolver<Array<ResolversTypes['PackageMaintainer']>, ParentType, ContextType>,
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
+  dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
   stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   repo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  maintainers?: Resolver<Array<ResolversTypes['PackageMaintainer']>, ParentType, ContextType>,
   homepage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   license?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
   upvotes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   upvoted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };
@@ -573,6 +618,7 @@ export type Resolvers<ContextType = Context> = {
   Package?: PackageResolvers<ContextType>,
   PackageDataSource?: PackageDataSourceResolvers<ContextType>,
   PackageInfo?: PackageInfoResolvers<ContextType>,
+  PackageInterface?: PackageInterfaceResolvers,
   PackageMaintainer?: PackageMaintainerResolvers<ContextType>,
   PackageProposal?: PackageProposalResolvers<ContextType>,
   PackageRelease?: PackageReleaseResolvers<ContextType>,

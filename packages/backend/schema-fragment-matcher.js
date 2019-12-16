@@ -1,7 +1,20 @@
 
       export default {
   "__schema": {
-    "types": []
+    "types": [
+      {
+        "kind": "INTERFACE",
+        "name": "PackageInterface",
+        "possibleTypes": [
+          {
+            "name": "Package"
+          },
+          {
+            "name": "PackageProposal"
+          }
+        ]
+      }
+    ]
   }
 }
     

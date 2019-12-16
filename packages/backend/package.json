@@ -31,7 +31,7 @@
     "@graphql-codegen/cli": "^1.9.1",
     "@graphql-codegen/fragment-matcher": "^1.9.1",
     "@graphql-codegen/typescript": "^1.9.1",
-    "@nodepack/plugin-apollo": "^0.7.2",
+    "@nodepack/plugin-apollo": "^0.7.4",
     "@nodepack/plugin-babel": "^0.7.0",
     "@nodepack/plugin-express": "^0.7.2",
     "@nodepack/plugin-passport": "^0.7.2",
