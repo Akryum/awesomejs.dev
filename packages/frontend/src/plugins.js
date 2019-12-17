@@ -15,6 +15,9 @@ Vue.use(Responsive, {
     md () {
       return this.width < 768
     },
+    mobile () {
+      return this.width <= 768
+    },
     lg () {
       return this.width < 1024
     },

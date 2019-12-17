@@ -3,6 +3,8 @@ import AppHeader from './app/AppHeader.vue'
 import AppFooter from './app/AppFooter.vue'
 import AppGlobalLoading from './app/AppGlobalLoading.vue'
 import AppServiceWorkerManager from './app/AppServiceWorkerManager.vue'
+import { watch, ref } from '@vue/composition-api'
+import { useResponsive } from '@/util/responsive'
 
 const title = 'Awesome JS'
 
@@ -12,6 +14,44 @@ export default {
     AppFooter,
     AppGlobalLoading,
     AppServiceWorkerManager,
+  },
+
+  setup (props, { root }) {
+    const transitionName = ref()
+
+    const { mobile } = useResponsive()
+
+    function computeDepthWeight (route) {
+      return route.matched.reduce((total, m) => {
+        if (m.meta.depthWeight) {
+          total += m.meta.depthWeight
+        } else {
+          total++
+        }
+        return total
+      }, 0)
+    }
+
+    // Mobile page transition
+    watch(() => root.$route, (value, oldValue) => {
+      if (!mobile.value) {
+        transitionName.value = null
+      } else {
+        const newDepthWeight = computeDepthWeight(value)
+        const oldDepthWeight = computeDepthWeight(oldValue)
+        if (newDepthWeight < oldDepthWeight) {
+          transitionName.value = 'page-zoom-parent'
+        } else if (newDepthWeight > oldDepthWeight) {
+          transitionName.value = 'page-zoom-child'
+        } else {
+          transitionName.value = null
+        }
+      }
+    }, { lazy: true, flush: 'pre' })
+
+    return {
+      transitionName,
+    }
   },
 
   metaInfo: {
@@ -42,13 +82,19 @@ export default {
   <div id="app">
     <AppGlobalLoading />
 
-    <AppHeader />
+    <transition
+      :name="transitionName"
+    >
+      <div :key="transitionName ? $route.fullPath : 'static'">
+        <AppHeader />
 
-    <div class="main-view px-4 my-4 lg:px-16 lg:my-8">
-      <router-view />
-    </div>
+        <div class="main-view px-4 my-4 lg:px-16 lg:my-8">
+          <router-view />
+        </div>
 
-    <AppFooter />
+        <AppFooter />
+      </div>
+    </transition>
 
     <AppServiceWorkerManager />
   </div>

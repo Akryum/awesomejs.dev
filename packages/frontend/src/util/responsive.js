@@ -1,4 +1,8 @@
+import { computed } from '@vue/composition-api'
+
 export let responsive
+
+let computedFields
 
 export default {
   install (Vue, options) {
@@ -16,6 +20,8 @@ export default {
       computed: finalOptions.computed,
     })
 
+    computedFields = Object.keys(finalOptions.computed)
+
     Object.defineProperty(Vue.prototype, '$responsive', {
       get: () => responsive,
     })
@@ -25,4 +31,15 @@ export default {
       responsive.height = window.innerHeight
     })
   },
+}
+
+export function useResponsive () {
+  return {
+    width: computed(() => responsive.width),
+    height: computed(() => responsive.height),
+    ...computedFields.reduce((obj, key) => {
+      obj[key] = computed(() => responsive[key])
+      return obj
+    }, {}),
+  }
 }

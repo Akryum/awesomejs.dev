@@ -95,6 +95,9 @@ export default new Router({
       path: '/proposed/:projectTypeSlug',
       component: () => import(/* webpackChunkName: "project-type-package-proposals" */ './components/project-type/ProjectTypePackageProposalsView.vue'),
       props: true,
+      meta: {
+        depthWeight: 2,
+      },
       children: [
         {
           path: '',

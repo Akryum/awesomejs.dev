@@ -25,3 +25,40 @@
     transform: scale(.9);
   }
 }
+
+/* Page */
+
+.page-zoom-child-enter-active,
+.page-zoom-child-leave-active,
+.page-zoom-parent-enter-active,
+.page-zoom-parent-leave-active {
+  transition: opacity .2s cubic-bezier(0, 1, .5, 1), transform .4s cubic-bezier(0, 1, .5, 1);
+  transform-origin: calc(50vw) calc(50vh);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: absolute;
+  z-index: 0;
+}
+
+.page-zoom-child-enter-active {
+  z-index: 1;
+  background: theme('colors.gray.900');
+}
+
+.page-zoom-child-enter,
+.page-zoom-child-leave-to,
+.page-zoom-parent-enter,
+.page-zoom-parent-leave-to {
+  opacity: 0;
+}
+
+.page-zoom-child-enter,
+.page-zoom-parent-leave-to {
+  transform: scale(.9);
+}
+
+.page-zoom-child-leave-to,
+.page-zoom-parent-enter {
+  transform: scale(1.1);
+}
