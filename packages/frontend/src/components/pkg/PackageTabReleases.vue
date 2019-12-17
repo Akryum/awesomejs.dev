@@ -3,11 +3,13 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { releaseFragment } from './fragments'
 
+import EmptyMessage from '../EmptyMessage.vue'
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageRelease from './PackageRelease.vue'
 
 export default {
   components: {
+    EmptyMessage,
     LoadingIndicator,
     PackageRelease,
   },
@@ -50,12 +52,19 @@ export default {
       class="p-8"
     />
 
-    <div>
+    <div v-else>
       <PackageRelease
         v-for="release of releases"
         :key="release.id"
         :release="release"
       />
+
+      <EmptyMessage
+        v-if="!releases.length"
+        icon="access_time"
+      >
+        No releases found
+      </EmptyMessage>
     </div>
   </div>
 </template>
