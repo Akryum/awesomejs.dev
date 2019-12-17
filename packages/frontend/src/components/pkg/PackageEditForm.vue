@@ -115,7 +115,7 @@ export default {
     <div class="lg:flex items-baseline mt-8">
       <label
         for="github-owner"
-        class="flex-none lg:mr-8 text-gray-500"
+        class="flex-none lg:mr-8 lg:w-40 text-gray-500"
       >
         GitHub DataSource:
       </label>
@@ -141,7 +141,7 @@ export default {
     <div class="lg:flex items-baseline mt-8">
       <label
         for="npm-name"
-        class="flex-none lg:mr-8 text-gray-500"
+        class="flex-none lg:mr-8 lg:w-40 text-gray-500"
       >
         NPM DataSource:
       </label>
@@ -155,12 +155,22 @@ export default {
       >
     </div>
 
-    <input
-      v-model="formData.info.tags"
-      placeholder="Enter a list of tags separated with commas"
-      maxlength="200"
-      class="mt-8 bg-black px-8 py-4 rounded w-full"
-    >
+    <div class="lg:flex items-baseline mt-8">
+      <label
+        for="tags"
+        class="flex-none lg:mr-8 lg:w-40 text-gray-500"
+      >
+        Tags:
+      </label>
+
+      <input
+        id="tags"
+        v-model="formData.info.tags"
+        placeholder="Enter a list of tags separated with commas"
+        maxlength="200"
+        class="mt-2 lg:mt-0 bg-black px-8 py-4 rounded w-full"
+      >
+    </div>
 
     <div class="mt-8 flex items-center justify-end">
       <slot name="actions" />
