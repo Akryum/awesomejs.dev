@@ -20,7 +20,7 @@ export const resolvers: Resolvers = {
       const item = await editPackageCommon(ref, input.common, ctx)
       return {
         id: input.common.id,
-        ref: item.data,
+        ref: item.ref,
         ...item.data,
       }
     },
