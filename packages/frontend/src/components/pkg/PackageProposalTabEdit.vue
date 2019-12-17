@@ -1,12 +1,14 @@
 <script>
-import PackageEditForm from './PackageEditForm.vue'
-
 import gql from 'graphql-tag'
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 import { pkgProposalFragment } from './fragments'
 
+import LoadingIndicator from '../LoadingIndicator.vue'
+import PackageEditForm from './PackageEditForm.vue'
+
 export default {
   components: {
+    LoadingIndicator,
     PackageEditForm,
   },
 
