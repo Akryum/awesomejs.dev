@@ -51,9 +51,11 @@ export default {
     const transitionIsActive = ref(false)
     watch(transitionIsActive, value => {
       if (value) {
-        document.body.classList.add('overflow-hidden')
+        document.body.classList.add('overflow-hidden', 'absolute', 'w-screen', 'h-screen')
+        document.documentElement.classList.add('overflow-hidden')
       } else {
-        document.body.classList.remove('overflow-hidden')
+        document.body.classList.remove('overflow-hidden', 'absolute', 'w-screen', 'h-screen')
+        document.documentElement.classList.remove('overflow-hidden')
       }
     })
 
