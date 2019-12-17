@@ -48,9 +48,18 @@ export default {
         }
       }
     }, { lazy: true, flush: 'pre' })
+    const transitionIsActive = ref(false)
+    watch(transitionIsActive, value => {
+      if (value) {
+        document.body.classList.add('overflow-hidden')
+      } else {
+        document.body.classList.remove('overflow-hidden')
+      }
+    })
 
     return {
       transitionName,
+      transitionIsActive,
     }
   },
 
@@ -84,6 +93,8 @@ export default {
 
     <transition
       :name="transitionName"
+      @before-enter="transitionIsActive = true"
+      @after-enter="transitionIsActive = false"
     >
       <div :key="transitionName ? $route.fullPath : 'static'">
         <AppHeader />
