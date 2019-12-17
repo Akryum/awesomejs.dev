@@ -119,6 +119,11 @@ export default new Router({
               name: `package-proposal-edit`,
               component: () => import(/* webpackChunkName: "package-proposal-tab-edit" */ './components/pkg/PackageProposalTabEdit.vue'),
             },
+            {
+              path: 'releases',
+              name: `package-proposal-releases`,
+              component: () => import(/* webpackChunkName: "package-proposal-tab-releases" */ './components/pkg/PackageProposalTabReleases.vue'),
+            },
           ],
         },
       ],

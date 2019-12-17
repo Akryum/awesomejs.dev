@@ -123,8 +123,8 @@ export type Package = PackageInterface & {
   license?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
-  bookmarked?: Maybe<Scalars['Boolean']>,
   releases: Array<PackageRelease>,
+  bookmarked?: Maybe<Scalars['Boolean']>,
 };
 
 export type PackageDataSource = {
@@ -156,6 +156,7 @@ export type PackageInterface = {
   license?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
+  releases: Array<PackageRelease>,
 };
 
 export type PackageMaintainer = {
@@ -180,6 +181,7 @@ export type PackageProposal = PackageInterface & {
   license?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
+  releases: Array<PackageRelease>,
   user?: Maybe<User>,
   upvotes: Scalars['Int'],
   upvoted: Scalars['Boolean'],
@@ -402,10 +404,10 @@ export type ResolversTypes = {
   PackageDataSource: ResolverTypeWrapper<PackageDataSource>,
   JSON: ResolverTypeWrapper<Scalars['JSON']>,
   PackageMaintainer: ResolverTypeWrapper<PackageMaintainer>,
-  PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
   PackageRelease: ResolverTypeWrapper<PackageRelease>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
   PackageReleaseAsset: ResolverTypeWrapper<PackageReleaseAsset>,
+  PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
   Mutation: ResolverTypeWrapper<{}>,
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -439,10 +441,10 @@ export type ResolversParentTypes = {
   PackageDataSource: PackageDataSource,
   JSON: Scalars['JSON'],
   PackageMaintainer: PackageMaintainer,
-  PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
   PackageRelease: PackageRelease,
   Date: Scalars['Date'],
   PackageReleaseAsset: PackageReleaseAsset,
+  PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
   Mutation: {},
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -497,8 +499,8 @@ export type PackageResolvers<ContextType = Context, ParentType extends Resolvers
   license?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
-  bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
   releases?: Resolver<Array<ResolversTypes['PackageRelease']>, ParentType, ContextType>,
+  bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
 };
 
 export type PackageDataSourceResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageDataSource'] = ResolversParentTypes['PackageDataSource']> = {
@@ -525,6 +527,7 @@ export type PackageInterfaceResolvers<ContextType = Context, ParentType extends 
   license?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  releases?: Resolver<Array<ResolversTypes['PackageRelease']>, ParentType, ContextType>,
 };
 
 export type PackageMaintainerResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageMaintainer'] = ResolversParentTypes['PackageMaintainer']> = {
@@ -547,6 +550,7 @@ export type PackageProposalResolvers<ContextType = Context, ParentType extends R
   license?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
+  releases?: Resolver<Array<ResolversTypes['PackageRelease']>, ParentType, ContextType>,
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
   upvotes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   upvoted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,

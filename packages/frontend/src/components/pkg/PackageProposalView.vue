@@ -97,6 +97,12 @@ export default {
         </RouteTab>
 
         <RouteTab
+          :to="{ name: 'package-proposal-releases' }"
+        >
+          Releases
+        </RouteTab>
+
+        <RouteTab
           v-if="isAdmin"
           :to="{ name: 'package-proposal-edit' }"
         >

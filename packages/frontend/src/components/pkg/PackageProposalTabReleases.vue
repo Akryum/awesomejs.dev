@@ -22,7 +22,7 @@ export default {
   setup (props) {
     const { result, loading } = useQuery(gql`
       query PackageReleases ($id: ID!) {
-        pkg: package (id: $id) {
+        pkg: packageProposal (id: $id) {
           id
           releases {
             ...release

@@ -40,3 +40,19 @@ fragment pkgProposal on PackageProposal {
   }
 }
 `
+
+export const releaseFragment = gql`
+fragment release on PackageRelease {
+  id
+  date
+  title
+  tagName
+  description
+  prerelease
+  assets {
+    name
+    downloadUrl
+    size
+  }
+}
+`
