@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
-import { sanitizeTags } from '@/util/tags'
 import { query as q } from 'faunadb'
 import { Resolvers } from '@/generated/schema'
+import { editPackageCommon } from '../package-interface/edit'
 
 export const typeDefs = gql`
 extend type Mutation {
@@ -9,37 +9,19 @@ extend type Mutation {
 }
 
 input EditPackageProposalInfoInput {
-  proposalId: ID!
-  info: PackageInfoInput!
-  github: GithubDataSourceInput
+  common: EditPackageInterfaceInput!
 }
 `
 
 export const resolvers: Resolvers = {
   Mutation: {
     editPackageProposalInfo: async (root, { input }, ctx) => {
-      input.info.tags = sanitizeTags(input.info.tags)
-
-      const ref = q.Ref(q.Collection('PackageProposals'), input.proposalId)
-      const { data } = await ctx.db.query(
-        q.Do(
-          q.Update(ref, {
-            data: {
-              info: input.info,
-              dataSources: {
-                github: input.github,
-              },
-              metadata: {
-                github: null,
-              },
-            },
-          }),
-          q.Get(ref),
-        ),
-      )
+      const ref = q.Ref(q.Collection('PackageProposals'), input.common.id)
+      const item = await editPackageCommon(ref, input.common, ctx)
       return {
-        id: input.proposalId,
-        ...data,
+        id: input.common.id,
+        ref: item.data,
+        ...item.data,
       }
     },
   },

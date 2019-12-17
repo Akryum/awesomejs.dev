@@ -1,14 +1,16 @@
 <script>
+import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageEditForm from './PackageEditForm.vue'
 
 import gql from 'graphql-tag'
-import { useMutation } from '@vue/apollo-composable'
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 import { pkgFragment } from './fragments'
 import omit from 'lodash/omit'
 import { useTags } from '@/util/tags'
 
 export default {
   components: {
+    LoadingIndicator,
     PackageEditForm,
   },
 
@@ -20,6 +22,24 @@ export default {
   },
 
   setup (props) {
+    const { result, loading } = useQuery(gql`
+      query PackageEditInfo ($id: ID!) {
+        package (id: $id) {
+          id
+          info {
+            tags
+          }
+          dataSources {
+            type
+            data
+          }
+        }
+      }
+    `, () => ({
+      id: props.pkg.id,
+    }))
+    const pkgEditInfo = useResult(result, { dataSources: [] })
+
     const { mutate, loading: submitting, error } = useMutation(gql`
       mutation EditPackageInfo ($input: EditPackageInfoInput!) {
         editPackageInfo (input: $input) {
@@ -32,8 +52,10 @@ export default {
     async function editProposal (data) {
       await mutate({
         input: {
-          packageId: props.pkg.id,
-          ...data,
+          common: {
+            id: props.pkg.id,
+            ...data,
+          },
         },
       })
     }
@@ -59,6 +81,9 @@ export default {
     }
 
     return {
+      loading,
+      pkgEditInfo,
+
       editProposal,
       submitting,
       error,
@@ -71,8 +96,14 @@ export default {
 </script>
 
 <template>
+  <LoadingIndicator
+    v-if="loading"
+    class="mt-8"
+  />
+
   <PackageEditForm
-    :pkg="pkg"
+    v-else
+    :pkg="pkgEditInfo"
     :submitting="submitting"
     :error="error"
     @submit="editProposal"

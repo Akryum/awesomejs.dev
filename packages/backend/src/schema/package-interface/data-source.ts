@@ -19,6 +19,11 @@ type PackageDataSource {
   data: JSON
 }
 
+input DataSourcesInput {
+  github: GithubDataSourceInput
+  npm: NpmDataSourceInput
+}
+
 input GithubDataSourceInput {
   owner: String!
   repo: String!

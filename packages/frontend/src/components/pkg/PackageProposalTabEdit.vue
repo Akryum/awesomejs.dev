@@ -2,7 +2,7 @@
 import PackageEditForm from './PackageEditForm.vue'
 
 import gql from 'graphql-tag'
-import { useMutation } from '@vue/apollo-composable'
+import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
 import { pkgProposalFragment } from './fragments'
 
 export default {
@@ -18,6 +18,24 @@ export default {
   },
 
   setup (props) {
+    const { result, loading } = useQuery(gql`
+      query PackageEditInfo ($id: ID!) {
+        packageProposal (id: $id) {
+          id
+          info {
+            tags
+          }
+          dataSources {
+            type
+            data
+          }
+        }
+      }
+    `, () => ({
+      id: props.pkg.id,
+    }))
+    const pkgEditInfo = useResult(result, { dataSources: [] })
+
     const { mutate, loading: submitting, error } = useMutation(gql`
       mutation EditPackageProposalInfo ($input: EditPackageProposalInfoInput!) {
         editPackageProposalInfo (input: $input) {
@@ -30,13 +48,18 @@ export default {
     async function editProposal (data) {
       await mutate({
         input: {
-          proposalId: props.pkg.id,
-          ...data,
+          common: {
+            id: props.pkg.id,
+            ...data,
+          },
         },
       })
     }
 
     return {
+      loading,
+      pkgEditInfo,
+
       editProposal,
       submitting,
       error,
@@ -46,8 +69,14 @@ export default {
 </script>
 
 <template>
+  <LoadingIndicator
+    v-if="loading"
+    class="mt-8"
+  />
+
   <PackageEditForm
-    :pkg="pkg"
+    v-else
+    :pkg="pkgEditInfo"
     :submitting="submitting"
     :error="error"
     @submit="editProposal"

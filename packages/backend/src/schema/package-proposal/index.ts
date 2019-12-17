@@ -59,7 +59,7 @@ export const resolvers: Resolvers = {
       )
       return data.map((doc: values.Document) => ({
         id: doc.ref.id,
-        collection: doc.ref.collection.id,
+        ref: doc.ref,
         ...doc.data,
       }))
     },
@@ -85,20 +85,20 @@ export const resolvers: Resolvers = {
         q.Get(q.Ref(q.Collection('PackageProposals'), id)),
       )
       return {
-        id,
-        collection: ref.collection.id,
+        id: ref.id,
+        ref,
         ...data,
       }
     },
 
     packageProposalByName: async (root, { name }, ctx) => {
       try {
-        const { ref: { id, collection }, data } = await ctx.db.query(
+        const { ref, data } = await ctx.db.query(
           q.Get(q.Match(q.Index('packageproposal_by_name'), name)),
         )
         return {
-          id,
-          collection: collection.id,
+          id: ref.id,
+          ref,
           ...data,
         }
       } catch (e) {

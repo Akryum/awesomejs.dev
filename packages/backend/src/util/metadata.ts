@@ -1,7 +1,7 @@
 import mem from 'p-memoize'
 import ms from 'ms'
 import { Context } from '@/context'
-import { query as q } from 'faunadb'
+import { query as q, values } from 'faunadb'
 
 const METADATA_MAX_AGE = ms('6h')
 
@@ -12,8 +12,7 @@ const ALGOLIA_INDEX: { [key: string]: string } = {
 
 export async function updateMetadata (
   ctx: Context,
-  id: string,
-  collection: string,
+  ref: values.Ref,
   type: string,
   data: any,
   version: number,
@@ -26,7 +25,7 @@ export async function updateMetadata (
   }
   await ctx.db.query(
     q.Update(
-      q.Ref(q.Collection(collection), id),
+      q.Ref(q.Collection(ref.collection.id), ref.id),
       {
         data: {
           metadata: {
@@ -59,7 +58,7 @@ export const getNpmMetadata = mem(async (pkg: any, ctx: Context): Promise<any> =
         console.log('REQUEST npm', npmName)
         // Add new data props to be saved here
         // and increment NPM_METADATA_VERSION
-        result = await updateMetadata(ctx, pkg.id, pkg.collection, 'npm', {
+        result = await updateMetadata(ctx, pkg.ref, 'npm', {
           maintainers: data.maintainers,
           repository: data.repository,
           homepage: data.homepage,
@@ -79,7 +78,7 @@ export const getNpmMetadata = mem(async (pkg: any, ctx: Context): Promise<any> =
     console.error(e)
     await ctx.db.query(
       q.Update(
-        q.Ref(q.Collection(pkg.collection), pkg.id),
+        q.Ref(q.Collection(pkg.ref.collection.id), pkg.ref.id),
         {
           data: {
             dataSources: {
@@ -113,7 +112,7 @@ export const getGithubDataSource = async (pkg: any, ctx: Context) => {
 
     await ctx.db.query(
       q.Update(
-        q.Ref(q.Collection(pkg.collection), pkg.id),
+        q.Ref(q.Collection(pkg.ref.collection.id), pkg.ref.id),
         {
           data: {
             github: null,
@@ -148,7 +147,7 @@ export const getGithubDataSource = async (pkg: any, ctx: Context) => {
 
       await ctx.db.query(
         q.Update(
-          q.Ref(q.Collection(pkg.collection), pkg.id),
+          q.Ref(q.Collection(pkg.ref.collection.id), pkg.ref.id),
           {
             data: {
               dataSources: {
@@ -203,7 +202,7 @@ export const getGithubMetadata = mem(async (pkg: any, ctx: Context): Promise<any
         defaultBranch: githubData.default_branch,
       }
 
-      const algoliaIndex = ALGOLIA_INDEX[pkg.collection]
+      const algoliaIndex = ALGOLIA_INDEX[pkg.ref.collection.id]
       if (algoliaIndex) {
         const index = ctx.algolia.initIndex(algoliaIndex)
         await index.partialUpdateObject({
@@ -215,7 +214,7 @@ export const getGithubMetadata = mem(async (pkg: any, ctx: Context): Promise<any
           } : {}),
         })
       }
-      result = await updateMetadata(ctx, pkg.id, pkg.collection, 'github', data, GITHUB_METADATA_VERSION)
+      result = await updateMetadata(ctx, pkg.ref, 'github', data, GITHUB_METADATA_VERSION)
     }
     return result.data
   } catch (e) {

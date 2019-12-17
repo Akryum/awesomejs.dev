@@ -41,8 +41,8 @@ input PackageInfoInput {
 export const resolvers: Resolvers = {
   PackageInterface: {
     __resolveType: (pkg: any) => {
-      if (pkg.collection === 'Packages') { return 'Package' }
-      if (pkg.collection === 'PackageProposals') { return 'PackageProposal' }
+      if (pkg.ref.collection.id === 'Packages') { return 'Package' }
+      if (pkg.ref.collection.id === 'PackageProposals') { return 'PackageProposal' }
       return null
     },
   },

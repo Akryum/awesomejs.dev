@@ -47,7 +47,7 @@ export async function indexPackage (
   return index.addObject(await getIndexObject(ctx, pkg, projectType))
 }
 
-export async function updatePackage (
+export async function updatePackageIndex (
   ctx: Context,
   pkg: any,
   projectType: any,

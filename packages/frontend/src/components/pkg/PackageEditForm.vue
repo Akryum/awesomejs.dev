@@ -29,16 +29,27 @@ export default {
   setup (props, { emit }) {
     const formData = ref()
 
+    function findDataSource (type) {
+      const dataSource = props.pkg.dataSources.find(d => d.type === type)
+      return dataSource ? dataSource.data : {}
+    }
+
     function reset () {
       formData.value = {
         info: {
           ...omit(props.pkg.info, ['__typename']),
           tags: props.pkg.info.tags.join(', '),
         },
-        github: {
-          owner: '',
-          repo: '',
-          ...omit(props.pkg.github, ['__typename']),
+        dataSources: {
+          github: {
+            owner: '',
+            repo: '',
+            ...omit(findDataSource('github'), ['__typename']),
+          },
+          npm: {
+            name: '',
+            ...omit(findDataSource('npm'), ['__typename']),
+          },
         },
       }
     }
@@ -55,24 +66,31 @@ export default {
     function submit () {
       const result = {
         info: formData.value.info,
+        dataSources: {},
       }
 
       // Tags
       result.info.tags = result.info.tags.split(',')
 
       // Github
-      if (formData.value.github.owner && formData.value.github.repo) {
-        result.github = formData.value.github
+      if (formData.value.dataSources.github.owner && formData.value.dataSources.github.repo) {
+        result.dataSources.github = formData.value.dataSources.github
       }
+
+      // NPM
+      if (formData.value.dataSources.npm.name) {
+        result.dataSources.npm = formData.value.dataSources.npm
+      }
+
       emit('submit', result)
     }
 
     // Auto split Github
     const repoInput = ref()
-    watch(() => formData.value.github.owner, value => {
+    watch(() => formData.value.dataSources.github.owner, value => {
       if (value.includes('/')) {
         const [owner, repo] = value.split('/')
-        Object.assign(formData.value.github, {
+        Object.assign(formData.value.dataSources.github, {
           owner,
           repo,
         })
@@ -99,12 +117,12 @@ export default {
         for="github-owner"
         class="flex-none lg:mr-8 text-gray-500"
       >
-        Override GitHub repo:
+        GitHub DataSource:
       </label>
 
       <input
         id="github-owner"
-        v-model="formData.github.owner"
+        v-model="formData.dataSources.github.owner"
         placeholder="GitHub owner name"
         maxlength="200"
         class="mt-2 lg:mt-0 bg-black px-8 py-4 rounded w-full"
@@ -112,11 +130,28 @@ export default {
 
       <input
         ref="repoInput"
-        v-model="formData.github.repo"
-        :required="!!formData.github.owner"
+        v-model="formData.dataSources.github.repo"
+        :required="!!formData.dataSources.github.owner"
         placeholder="GitHub repository name"
         maxlength="200"
         class="mt-4 lg:mt-0 lg:ml-8 bg-black px-8 py-4 rounded w-full"
+      >
+    </div>
+
+    <div class="lg:flex items-baseline mt-8">
+      <label
+        for="npm-name"
+        class="flex-none lg:mr-8 text-gray-500"
+      >
+        NPM DataSource:
+      </label>
+
+      <input
+        id="npm-name"
+        v-model="formData.dataSources.npm.name"
+        placeholder="Package name on registry"
+        maxlength="200"
+        class="mt-2 lg:mt-0 bg-black px-8 py-4 rounded w-full"
       >
     </div>
 
