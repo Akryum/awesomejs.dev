@@ -88,9 +88,10 @@ export default {
         />
       </div>
 
-      <div>
+      <div class="overflow-x-auto flex">
         <RouteTab
           :to="{ name: 'package-proposal' }"
+          class="flex-none"
           exact
         >
           General
@@ -98,12 +99,14 @@ export default {
 
         <RouteTab
           :to="{ name: 'package-proposal-releases' }"
+          class="flex-none"
         >
           Releases
         </RouteTab>
 
         <RouteTab
           :to="{ name: 'package-proposal-data-sources' }"
+          class="flex-none"
         >
           Data sources
         </RouteTab>
@@ -111,6 +114,7 @@ export default {
         <RouteTab
           v-if="isAdmin"
           :to="{ name: 'package-proposal-edit' }"
+          class="flex-none"
         >
           Edit
         </RouteTab>
