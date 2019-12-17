@@ -19,9 +19,9 @@ export default {
   },
 
   setup (props) {
-    const { result, loading } = useQuery(gql`
+    const { result, loading } = useQuery(() => gql`
       query PackageDataSources ($id: ID!) {
-        pkg: package (id: $id) {
+        pkg: ${props.pkg.__typename === 'Package' ? 'package' : 'packageProposal'} (id: $id) {
           id
           dataSources {
             type

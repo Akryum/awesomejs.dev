@@ -122,12 +122,12 @@ export default new Router({
             {
               path: 'data-sources',
               name: `package-proposal-data-sources`,
-              component: () => import(/* webpackChunkName: "package-proposal-tab-data-sources" */ './components/pkg/PackageProposalTabDataSources.vue'),
+              component: () => import(/* webpackChunkName: "package-tab-data-sources" */ './components/pkg/PackageTabDataSources.vue'),
             },
             {
               path: 'releases',
               name: `package-proposal-releases`,
-              component: () => import(/* webpackChunkName: "package-proposal-tab-releases" */ './components/pkg/PackageProposalTabReleases.vue'),
+              component: () => import(/* webpackChunkName: "package-tab-releases" */ './components/pkg/PackageTabReleases.vue'),
             },
           ],
         },
