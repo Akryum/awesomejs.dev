@@ -36,7 +36,7 @@ export default {
     }"
   >
     <div
-      class="bar bg-purple-400"
+      class="bar bg-purple-600"
       :class="{
         animate: progress > 0,
       }"
@@ -54,7 +54,7 @@ export default {
 
 .bar {
   height: 2px;
-  box-shadow: 0 2px 6px theme('colors.purple.300'), 0 2px 6px theme('colors.purple.300');
+  box-shadow: 0 2px 6px theme('colors.purple.300');
 
   &.animate {
     transition: width .2s ease-out;
