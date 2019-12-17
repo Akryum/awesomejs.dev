@@ -103,6 +103,12 @@ export default {
         </RouteTab>
 
         <RouteTab
+          :to="{ name: 'package-proposal-data-sources' }"
+        >
+          Data sources
+        </RouteTab>
+
+        <RouteTab
           v-if="isAdmin"
           :to="{ name: 'package-proposal-edit' }"
         >

@@ -120,6 +120,11 @@ export default new Router({
               component: () => import(/* webpackChunkName: "package-proposal-tab-edit" */ './components/pkg/PackageProposalTabEdit.vue'),
             },
             {
+              path: 'data-sources',
+              name: `package-proposal-data-sources`,
+              component: () => import(/* webpackChunkName: "package-proposal-tab-data-sources" */ './components/pkg/PackageProposalTabDataSources.vue'),
+            },
+            {
               path: 'releases',
               name: `package-proposal-releases`,
               component: () => import(/* webpackChunkName: "package-proposal-tab-releases" */ './components/pkg/PackageProposalTabReleases.vue'),
