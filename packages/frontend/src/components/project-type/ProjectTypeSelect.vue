@@ -128,7 +128,7 @@ export default {
         Select project type
       </template>
 
-      <div class="flex justify-center mb-8">
+      <div class="flex justify-center mb-2 lg:mb-8">
         <input
           ref="input"
           v-model="searchText"

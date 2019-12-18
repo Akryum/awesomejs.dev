@@ -156,7 +156,7 @@ export default {
             :value="searchText"
             placeholder="Search..."
             maxlength="80"
-            class="bg-transparent w-0 px-8 py-4 flex-1"
+            class="bg-transparent w-0 px-4 lg:px-8 py-4 flex-1"
             @input="searchText = $event.currentTarget.value"
             @keydown.up="focusPrevious()"
             @keydown.down="focusNext()"
