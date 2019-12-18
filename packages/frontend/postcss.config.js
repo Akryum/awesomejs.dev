@@ -18,6 +18,7 @@ module.exports = {
         /-(leave|enter|appear)(|-(to|from|active))$/,
         /^(?!(|.*?:)cursor-move).+-move$/,
         /^router-link(|-exact)-active$/,
+        /^v-popper/,
       ],
     }),
     require('autoprefixer')(),

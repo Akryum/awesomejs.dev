@@ -28,7 +28,7 @@ export default {
           <img
             :src="currentUser.avatar || require('@/assets/user.svg')"
             alt="User"
-            class="max-w-full max-h-full rounded-full bg-gray-700 border-2 border-gray-700 hover:border-gray-600"
+            class="avatar max-w-full max-h-full rounded-full bg-gray-700 border-2 border-gray-700 hover:border-gray-600"
           >
         </BaseButton>
 
@@ -88,7 +88,7 @@ export default {
 
 <style lang="postcss" scoped>
 .v-popper--open {
-  .border-gray-700 {
+  .avatar {
     @apply border-yellow-800;
   }
 }
