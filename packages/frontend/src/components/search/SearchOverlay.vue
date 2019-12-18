@@ -38,9 +38,20 @@ export default {
       }
     }
 
+    // Filters
+
     // Project type filter
     const projectTypeSlug = ref(null)
     watch(projectTypeSlug, () => focusInput())
+
+    const hasFilters = computed(
+      () => !!searchText.value || projectTypeSlug.value != null
+    )
+
+    function clearFilters () {
+      searchText.value = ''
+      projectTypeSlug.value = null
+    }
 
     // Algolia
 
@@ -121,6 +132,8 @@ export default {
       focusNext,
       selectFocused,
       projectTypeSlug,
+      hasFilters,
+      clearFilters,
     }
   },
 }
@@ -165,9 +178,17 @@ export default {
 
           <ProjectTypeSelect
             :project-type-slug.sync="projectTypeSlug"
-            placeholder="Any Project type"
+            placeholder="All types"
             class="flex-none mx-2"
             button-class="bg-gray-800 hover:bg-gray-700 px-4 py-2"
+          />
+
+          <BaseButton
+            v-tooltip="'Clear search'"
+            :disabled="!hasFilters"
+            icon-left="backspace"
+            class="bg-gray-800 hover:bg-gray-700 w-10 h-10 mr-2"
+            @click="clearFilters()"
           />
         </div>
 

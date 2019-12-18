@@ -93,7 +93,7 @@ export default {
     :aria-disabled="ghost"
     class="inline-block cursor-pointer relative rounded select-none outline-none"
     :class="{
-      'pointer-events-none opacity-50': ghost,
+      'pointer-events-none opacity-75': ghost,
       'text-center': align === 'center',
     }"
     @click.capture="handleClick"
@@ -102,17 +102,24 @@ export default {
       class="flex items-center rounded"
       :class="{
         'opacity-0': loading,
+        'opacity-50': !loading && ghost,
         'justify-center': align === 'center',
       }"
     >
       <i
         v-if="iconLeft"
-        class="material-icons text-lg mr-2"
+        class="material-icons text-lg"
+        :class="{
+          'mr-2': $slots.default,
+        }"
       >{{ iconLeft }}</i>
       <slot />
       <i
         v-if="iconRight"
-        class="material-icons text-lg ml-2"
+        class="material-icons text-lg"
+        :class="{
+          'ml-2': $slots.default,
+        }"
       >{{ iconRight }}</i>
     </div>
 
