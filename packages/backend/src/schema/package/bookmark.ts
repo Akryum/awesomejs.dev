@@ -44,6 +44,7 @@ export const resolvers: Resolvers = {
       )
       return data.map((doc: values.Document) => ({
         id: doc.ref.id,
+        ref: doc.ref,
         ...doc.data,
       }))
     },
