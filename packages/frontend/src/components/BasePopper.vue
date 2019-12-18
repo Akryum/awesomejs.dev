@@ -1,5 +1,5 @@
 <script>
-import { ref, watch, getCurrentInstance } from '@vue/composition-api'
+import { ref, watch, getCurrentInstance, onUnmounted } from '@vue/composition-api'
 
 const shownUids = new Set()
 
@@ -14,18 +14,24 @@ export default {
 
     /* Animation */
 
+    function triggerHide () {
+      shownUids.delete(vm._uid)
+      if (!shownUids.size) {
+        document.body.classList.remove('popper-open')
+      }
+    }
+
     watch(shown, value => {
       if (value) {
         shownUids.add(vm._uid)
         document.body.classList.add('popper-open')
         animate()
       } else {
-        shownUids.delete(vm._uid)
-        if (!shownUids.size) {
-          document.body.classList.remove('popper-open')
-        }
+        triggerHide()
       }
     }, { lazy: true })
+
+    onUnmounted(triggerHide)
 
     function animate () {
       const trigger = popper.value.$refs.trigger
