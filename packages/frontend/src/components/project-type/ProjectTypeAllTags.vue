@@ -32,6 +32,10 @@ export default {
       query ProjectTypeAllTags ($id: ID!) {
         projectType (id: $id) {
           id
+          popularTags {
+            id
+            count
+          }
           tags {
             id
             count
@@ -49,6 +53,9 @@ export default {
       if (isSpecialTag(b.id)) return 1
       return 0
     }))
+
+    const popularTags = useResult(result, [], data => data.projectType.popularTags)
+    const otherSelectedTags = computed(() => props.selectedTags.filter(id => !popularTags.value.find(t => t.id === id)))
 
     const searchText = ref('')
     const filteredTags = computed(() => {
@@ -72,6 +79,8 @@ export default {
     return {
       isOpen,
       filteredTags,
+      popularTags,
+      otherSelectedTags,
       loading,
       searchText,
       searchInput,
@@ -92,7 +101,7 @@ export default {
       <PackageTag
         tag="..."
         :class="{
-          'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.length,
+          'text-purple-300 bg-purple-800 hover:bg-purple-700': otherSelectedTags.length,
         }"
       >
         <i class="material-icons">more_horiz</i>
