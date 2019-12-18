@@ -1,6 +1,6 @@
 <script>
 import gql from 'graphql-tag'
-import { computed } from '@vue/composition-api'
+import { computed, ref } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { getNamedParents } from '@/util/router'
 import { projectTypeFragment } from '../project-type/fragments'
@@ -42,21 +42,47 @@ export default {
       return { name: 'home' }
     })
 
+    // Back button
+    const hover = ref(false)
+    const showBack = computed(() => hover.value && root.$route.matched.length > 1)
+
     return {
       route,
       src,
+      hover,
+      showBack,
     }
   },
 }
 </script>
 
 <template>
-  <router-link :to="route">
-    <img
-      v-if="src"
-      :src="src"
-      class="w-8 h-8 rounded"
-      alt="Logo"
+  <BaseButton
+    class="link"
+    :to="route"
+    @mouseenter.native="hover = true"
+    @mouseleave.native="hover = false"
+  >
+    <transition-group
+      name="fade"
+      class="relative w-8 h-8"
+      tag="div"
     >
-  </router-link>
+      <img
+        v-if="src"
+        v-show="!showBack"
+        key="image"
+        :src="src"
+        class="w-full h-full rounded"
+        alt="Logo"
+      >
+      <div
+        v-show="showBack"
+        key="arrow"
+        class="absolute inset-0 bg-yellow-900 text-yellow-300 rounded-full flex items-center justify-center"
+      >
+        <i class="material-icons text-xl">home</i>
+      </div>
+    </transition-group>
+  </BaseButton>
 </template>
