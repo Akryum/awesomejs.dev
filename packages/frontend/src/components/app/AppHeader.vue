@@ -49,7 +49,7 @@ export default {
 
 <template>
   <header>
-    <div class="flex items-center px-4 pt-4 mb-4 lg:px-16 lg:my-8 relative">
+    <div class="flex items-center px-4 pt-4 pb-0 lg:px-16 lg:pt-0 lg:my-8 relative">
       <AppHeaderLogo class="flex-none" />
 
       <div class="flex-1" />
