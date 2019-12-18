@@ -20,7 +20,8 @@ export default {
       v-if="currentUser"
       class="w-10 h-10 flex items-center justify-center"
     >
-      <VDropdown
+      <BasePopper
+        theme="yellow-arrow"
         placement="bottom-end"
         class="h-10"
       >
@@ -28,25 +29,24 @@ export default {
           <img
             :src="currentUser.avatar || require('@/assets/user.svg')"
             alt="User"
-            class="max-w-full max-h-full rounded-full bg-gray-700 border-2 border-gray-700"
+            class="max-w-full max-h-full rounded-full bg-gray-700 border-2 border-gray-700 hover:border-gray-600"
           >
         </BaseButton>
 
         <template #popper>
-          <div class="flex flex-col items-stretch">
-            <div class="px-3 pb-2 mr-2 text-gray-500">
+          <div class="flex flex-col items-stretch pb-4">
+            <div class="px-6 py-3 mb-4 text-yellow-500 bg-yellow-900 rounded-t">
               <i class="material-icons text-lg mr-1">account_circle</i>
               {{ currentUser.nickname }}
             </div>
-
-            <hr class="-mx-4 mt-2 mb-4 border-t-2 border-gray-800">
 
             <BaseButton
               v-close-popper
               :to="{ name: 'user-dashboard' }"
               icon-left="dashboard"
               align="left"
-              class="px-3 py-2 hover:bg-gray-800"
+              class="px-6 py-2 hover:bg-gray-800"
+              square
             >
               Dashboard
             </BaseButton>
@@ -56,7 +56,8 @@ export default {
               :to="{ name: 'user-bookmarks' }"
               icon-left="bookmark"
               align="left"
-              class="px-3 py-2 hover:bg-gray-800"
+              class="px-6 py-2 hover:bg-gray-800"
+              square
             >
               Bookmarks
             </BaseButton>
@@ -65,13 +66,14 @@ export default {
               :href="`${baseUrl}/auth/logout`"
               icon-left="power_settings_new"
               align="left"
-              class="px-3 py-2 hover:bg-gray-800"
+              class="px-6 py-2 hover:bg-gray-800"
+              square
             >
               Logout
             </BaseButton>
           </div>
         </template>
-      </VDropdown>
+      </BasePopper>
     </div>
     <div v-else>
       <BaseButton
@@ -88,7 +90,7 @@ export default {
 <style lang="postcss" scoped>
 .v-popper--open {
   .border-gray-700 {
-    @apply border-purple-800;
+    @apply border-yellow-800;
   }
 }
 </style>

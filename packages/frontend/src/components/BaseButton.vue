@@ -49,6 +49,11 @@ export default {
       type: String,
       default: 'center',
     },
+
+    square: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup (props, { attrs, emit }) {
@@ -91,10 +96,11 @@ export default {
     :tabindex="ghost ? -1 : 0"
     role="button"
     :aria-disabled="ghost"
-    class="inline-block cursor-pointer relative rounded select-none outline-none"
+    class="inline-block cursor-pointer relative select-none outline-none"
     :class="{
       'pointer-events-none opacity-75': ghost,
       'text-center': align === 'center',
+      'rounded': !square,
     }"
     @click.capture="handleClick"
   >

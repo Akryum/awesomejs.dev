@@ -81,19 +81,26 @@ export default {
 </script>
 
 <template>
-  <VDropdown
+  <BasePopper
     placement="bottom-end"
     class="h-6"
     @update:open="value => isOpen = value"
   >
-    <BaseButton v-tooltip="'See all tags'">
-      <PackageTag tag="...">
+    <BaseButton
+      v-tooltip="'See all tags'"
+    >
+      <PackageTag
+        tag="..."
+        :class="{
+          'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.length,
+        }"
+      >
         <i class="material-icons">more_horiz</i>
       </PackageTag>
     </BaseButton>
 
     <template #popper>
-      <div>
+      <div class="p-2">
         <input
           ref="searchInput"
           v-model="searchText"
@@ -111,7 +118,7 @@ export default {
             <BaseButton
               v-for="tag of filteredTags"
               :key="tag.id"
-              class="px-4 py-2 text-gray-500 bg-gray-800 hover:bg-gray-700 rounded flex-none mb-2"
+              class="px-4 py-2 text-gray-500 hover:bg-gray-800 rounded flex-none mb-2"
               :class="{
                 'text-purple-300 bg-purple-800 hover:bg-purple-700': selectedTags.includes(tag.id),
               }"
@@ -126,7 +133,7 @@ export default {
         </div>
       </div>
     </template>
-  </VDropdown>
+  </BasePopper>
 </template>
 
 <style lang="postcss" scoped>

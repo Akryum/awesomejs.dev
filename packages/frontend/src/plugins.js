@@ -44,6 +44,9 @@ Vue.use(VTooltip, {
       },
       offset: 8,
     },
+    'yellow-arrow': {
+      $extend: 'dropdown',
+    },
   },
 })
 

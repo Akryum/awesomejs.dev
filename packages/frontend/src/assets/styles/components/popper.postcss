@@ -1,0 +1,56 @@
+/* purgecss start ignore */
+
+.v-popper__popper {
+  &.v-popper--theme-tooltip {
+    .v-popper__inner {
+      @apply bg-white text-gray-900;
+    }
+
+    .v-popper__arrow {
+      @apply border-white;
+    }
+  }
+
+  &.v-popper--theme-dropdown {
+    .v-popper__inner {
+      @apply p-0 bg-gray-900;
+      color: inherit;
+      box-shadow: 0 42px 64px rgba(0, 0, 0, .3), 0 0 12px rgba(0, 0, 0, .3);
+    }
+
+    .v-popper__arrow {
+      @apply border-gray-900;
+    }
+  }
+
+  &.v-popper--theme-yellow-arrow {
+    .v-popper__arrow {
+      @apply border-yellow-900;
+    }
+  }
+}
+
+/* App backdrop when popper is open */
+
+#app {
+  &::before {
+    @apply fixed inset-0 bg-gray-900 pointer-events-none opacity-0;
+    content: '';
+    z-index: 50;
+    transition: opacity .15s linear;
+  }
+}
+
+body.popper-open {
+  #app {
+    &::before {
+      opacity: .5;
+    }
+  }
+
+  .v-popper--open {
+    z-index: 51;
+  }
+}
+
+/* purgecss end ignore */
