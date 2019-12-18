@@ -7,13 +7,18 @@ export default {
   inheritAttrs: false,
 
   setup () {
+    const popper = ref()
+
     const shown = ref()
     const vm = getCurrentInstance()
+
+    /* Animation */
 
     watch(shown, value => {
       if (value) {
         shownUids.add(vm._uid)
         document.body.classList.add('popper-open')
+        animate()
       } else {
         shownUids.delete(vm._uid)
         if (!shownUids.size) {
@@ -22,7 +27,27 @@ export default {
       }
     }, { lazy: true })
 
+    function animate () {
+      const trigger = popper.value.$refs.trigger
+      const triggerBounds = trigger.getBoundingClientRect()
+
+      const popperContent = popper.value.$refs.popperContent
+      const wrapper = popperContent.$el.querySelector('.v-popper__wrapper')
+      wrapper.classList.remove('animate')
+      const wrapperBounds = wrapper.getBoundingClientRect()
+
+      // Compute popover wrapper <div> transformOrigin
+      const x = (triggerBounds.left + triggerBounds.width / 2) - wrapperBounds.left
+      const y = (triggerBounds.top + triggerBounds.height / 2) - wrapperBounds.top
+
+      wrapper.style.transformOrigin = `${x}px ${y}px`
+      requestAnimationFrame(() => {
+        wrapper.classList.add('animate')
+      })
+    }
+
     return {
+      popper,
       shown,
     }
   },
@@ -31,6 +56,7 @@ export default {
 
 <template>
   <VDropdown
+    ref="popper"
     v-bind="$attrs"
     v-on="$listeners"
     @apply-show="shown = true"

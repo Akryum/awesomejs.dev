@@ -23,7 +23,6 @@ export default {
       <BasePopper
         theme="yellow-arrow"
         placement="bottom-end"
-        class="h-10"
       >
         <BaseButton>
           <img

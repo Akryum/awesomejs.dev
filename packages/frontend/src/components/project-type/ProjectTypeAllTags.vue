@@ -91,8 +91,7 @@ export default {
 
 <template>
   <BasePopper
-    placement="bottom-end"
-    class="h-6"
+    placement="bottom"
     @update:open="value => isOpen = value"
   >
     <BaseButton

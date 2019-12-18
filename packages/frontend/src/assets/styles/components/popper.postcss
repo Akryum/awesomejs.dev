@@ -1,5 +1,12 @@
 /* purgecss start ignore */
 
+.v-popper {
+  .v-popper__trigger {
+    /* Fix height */
+    line-height: 0;
+  }
+}
+
 .v-popper__popper {
   &.v-popper--theme-tooltip {
     .v-popper__inner {
@@ -21,6 +28,12 @@
     .v-popper__arrow {
       @apply border-gray-900;
     }
+
+    .v-popper__wrapper {
+      &.animate {
+        animation: dropdown-animation .15s cubic-bezier(0, 1, .5, 1);
+      }
+    }
   }
 
   &.v-popper--theme-yellow-arrow {
@@ -30,15 +43,30 @@
   }
 }
 
+
+@keyframes dropdown-animation {
+  0% {
+    transform: scale(.6);
+  }
+  100% {
+    transform: none;
+  }
+}
+
 /* App backdrop when popper is open */
 
 #app {
   &::before {
-    @apply fixed inset-0 bg-gray-900 pointer-events-none opacity-0;
+    @apply fixed inset-0 bg-black pointer-events-none opacity-0;
     content: '';
     z-index: 50;
     transition: opacity .15s linear;
   }
+}
+
+.v-popper {
+  transition: z-index 0s 1s;
+  z-index: 1;
 }
 
 body.popper-open {
@@ -48,8 +76,11 @@ body.popper-open {
     }
   }
 
-  .v-popper--open {
-    z-index: 51;
+  .v-popper {
+    &.v-popper--open {
+      transition: none;
+      z-index: 51;
+    }
   }
 }
 
