@@ -79,7 +79,7 @@ export default {
       <div
         v-show="showBack"
         key="arrow"
-        class="absolute inset-0 bg-yellow-900 text-yellow-300 rounded-full flex items-center justify-center"
+        class="absolute inset-0 text-yellow-900 bg-yellow-400 rounded-full flex items-center justify-center"
       >
         <i class="material-icons text-xl">home</i>
       </div>
