@@ -1,7 +1,7 @@
 <script>
 import PackageLogo from './PackageLogo.vue'
 import PackageCount from './PackageCount.vue'
-import { parseEmoji } from '@/util/emoji'
+import { useEmoji } from '@/util/emoji'
 import { useTags } from '@/util/tags'
 
 export default {
@@ -21,10 +21,11 @@ export default {
 
   setup (props) {
     const { isOfficial } = useTags(() => props.pkg)
+    const { parsedText: parsedDescription } = useEmoji(() => props.pkg.description)
 
     return {
       isOfficial,
-      parseEmoji,
+      parsedDescription,
     }
   },
 }
@@ -56,7 +57,7 @@ export default {
 
       <div class="w-full truncate text-gray-500">
         <span v-if="pkg.description">
-          {{ parseEmoji(pkg.description) }}
+          {{ parsedDescription }}
         </span>
         <span v-else>No description</span>
       </div>
