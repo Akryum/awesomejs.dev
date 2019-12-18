@@ -19,12 +19,15 @@ export default {
   },
 
   setup (props, { emit, root }) {
+    // Close
     function close () {
       emit('close')
     }
     watch(() => root.$route, () => close(), {
       lazy: true,
     })
+
+    // Input
 
     const input = ref(null)
 
@@ -35,9 +38,11 @@ export default {
       }
     }
 
+    // Project type filter
     const projectTypeSlug = ref(null)
-
     watch(projectTypeSlug, () => focusInput())
+
+    // Algolia
 
     const searchParams = computed(() => ({
       facetFilters: [
@@ -46,6 +51,8 @@ export default {
     }))
 
     const { searchText, result } = useSearch('packages', searchParams)
+
+    // Search results
 
     function getRoute (hit) {
       return {
@@ -90,6 +97,8 @@ export default {
     }
 
     useLockScroll()
+
+    // Open overlay
 
     function onOpen () {
       projectTypeSlug.value = root.$route.params.projectTypeSlug
@@ -141,13 +150,13 @@ export default {
           </BaseButton>
         </div>
 
-        <div class="flex w-full mt-2 sm:mt-4 lg:mt-0 mb-4">
+        <div class="flex items-center w-full mt-2 sm:mt-4 lg:mt-0 mb-4 bg-black rounded">
           <input
             ref="input"
             :value="searchText"
             placeholder="Search..."
             maxlength="80"
-            class="bg-black px-8 py-4 rounded w-full flex-1 mr-4"
+            class="bg-transparent w-0 px-8 py-4 flex-1"
             @input="searchText = $event.currentTarget.value"
             @keydown.up="focusPrevious()"
             @keydown.down="focusNext()"
@@ -157,8 +166,8 @@ export default {
           <ProjectTypeSelect
             :project-type-slug.sync="projectTypeSlug"
             placeholder="Any Project type"
-            class="flex-none"
-            button-class="bg-black hover:bg-purple-900 px-4 py-4"
+            class="flex-none mx-2"
+            button-class="bg-gray-800 hover:bg-gray-700 px-4 py-2"
           />
         </div>
 
