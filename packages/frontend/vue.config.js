@@ -51,5 +51,13 @@ module.exports = {
 
   chainWebpack (config) {
     config.resolve.symlinks(false)
+
+    config.plugin('prefetch').tap(options => {
+      if (!options[0].fileBlacklist) {
+        options[0].fileBlacklist = []
+      }
+      options[0].fileBlacklist.push(/emoji-toolkit(.)+?\.js$/)
+      return options
+    })
   },
 }

@@ -3,8 +3,6 @@ import { ref, computed, watch } from '@vue/composition-api'
 const joypixels = () => import(
   /* webpackChunkName: "emoji-toolkit" */
   /* webpackMode: "lazy" */
-  /* webpackPrefetch: 100 */
-  /* webpackPreload: 100 */
   'emoji-toolkit'
 )
 
