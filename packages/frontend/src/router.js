@@ -62,6 +62,9 @@ export default new Router({
           path: '',
           name: 'user-dashboard',
           component: () => import(/* webpackChunkName: "user-tab-home" */ './components/user/UserTabHome.vue'),
+          meta: {
+            depthWeight: 2,
+          },
         },
         {
           path: 'bookmarks',
