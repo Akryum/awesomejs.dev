@@ -44,12 +44,6 @@ export default {
     }
   },
 
-  data () {
-    return {
-      packages: [],
-    }
-  },
-
   metaInfo: {
     title: 'My Bookmarks',
   },
