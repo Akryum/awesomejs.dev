@@ -1,10 +1,9 @@
 <template>
   <div>
-    <div class="mt-8">
-      Nice seeing you!
-    </div>
-    <div class="mt-2">
-      Your Dashboard will be shown here soon 🛠️
+    <div class="mt-16 flex flex-col items-center text-gray-600">
+      <i class="material-icons text-5xl">build</i>
+
+      <span class="text-xl mt-4">Work in progress</span>
     </div>
   </div>
 </template>

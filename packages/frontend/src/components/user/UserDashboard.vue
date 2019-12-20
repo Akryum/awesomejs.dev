@@ -39,11 +39,11 @@ export default {
     />
 
     <div v-else-if="currentUser">
-      <PageTitle>
+      <PageTitle class="justify-center lg:pl-4">
         Hello {{ currentUser.nickname }}! 👋️
       </PageTitle>
 
-      <div class="overflow-x-auto flex">
+      <div class="overflow-x-auto flex pb-4 lg:pb-0">
         <RouteTab
           :to="{ name: 'user-dashboard' }"
           exact
