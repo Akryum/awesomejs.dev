@@ -39,7 +39,7 @@ export default {
     />
 
     <div v-else-if="currentUser">
-      <PageTitle class="justify-center lg:pl-4">
+      <PageTitle class="justify-center mb-4 lg:pl-4">
         Hello {{ currentUser.nickname }}! 👋️
       </PageTitle>
 
