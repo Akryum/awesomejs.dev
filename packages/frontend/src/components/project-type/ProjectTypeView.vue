@@ -124,7 +124,7 @@ export default {
 
       <div
         v-if="sortedTags.length"
-        class="my-2 xl:mt-0 lg:my-4 xl:mb-8 flex flex-wrap justify-stretch -mr-2"
+        class="my-2 xl:mt-0 lg:my-4 xl:mb-4 flex flex-wrap justify-stretch -mr-2"
       >
         <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
         <PackageTag
@@ -147,7 +147,10 @@ export default {
     <div class="flex">
       <div
         v-if="!$responsive.lg || !packageId"
-        class="w-full lg:w-1/3 lg:pb-64"
+        class="w-full lg:w-1/3 lg:pb-64 lg:mt-4 lg:sticky lg:top-4 lg:max-h-screen lg:overflow-y-auto"
+        :class="{
+          'scroll-parent': !$responsive.lg,
+        }"
       >
         <ProjectTypePackageProposalsButton
           :project-type-id="projectType.id"
@@ -163,7 +166,7 @@ export default {
       <div
         v-if="!$responsive.lg || packageId"
         ref="scroller"
-        class="w-full lg:w-2/3 lg:pl-16 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto"
+        class="w-full lg:w-2/3 lg:pl-16"
       >
         <router-view
           :project-type-id="projectType.id"

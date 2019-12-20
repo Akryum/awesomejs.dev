@@ -4,9 +4,10 @@ module.exports = {
       colors: {
         'gray-850': '#212935',
       },
-      inset: {
+      inset: theme => ({
         'full': '100%',
-      },
+        ...theme('spacing'),
+      }),
       opacity: {
         '10': '0.1',
         '90': '0.9',

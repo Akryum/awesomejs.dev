@@ -4,7 +4,7 @@
       Nice seeing you!
     </div>
     <div class="mt-2">
-      Your Dashboard will appear here soon 🛠️
+      Your Dashboard will be shown here soon 🛠️
     </div>
   </div>
 </template>

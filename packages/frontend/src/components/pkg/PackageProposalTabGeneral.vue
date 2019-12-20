@@ -40,7 +40,7 @@ export default {
 </script>
 
 <template>
-  <div class="mt-4">
+  <div>
     <PackageLinks
       :pkg="pkg"
       class="mb-4"

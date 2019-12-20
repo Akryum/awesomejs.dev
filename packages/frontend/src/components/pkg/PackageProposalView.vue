@@ -88,7 +88,7 @@ export default {
         />
       </div>
 
-      <div class="overflow-x-auto flex">
+      <div class="overflow-x-auto flex pb-4 lg:sticky lg:top-0 lg:bg-gray-900 lg:z-10">
         <RouteTab
           :to="{ name: 'package-proposal' }"
           class="flex-none"

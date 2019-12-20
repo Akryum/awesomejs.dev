@@ -46,7 +46,7 @@ export default {
 </script>
 
 <template>
-  <div class="mt-4">
+  <div>
     <LoadingIndicator
       v-if="loading"
       class="p-8"

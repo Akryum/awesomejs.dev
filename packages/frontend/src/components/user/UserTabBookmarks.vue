@@ -57,11 +57,11 @@ export default {
 </script>
 
 <template>
-  <div class="mt-8">
-    <div class="flex mt-8">
+  <div>
+    <div class="flex">
       <div
         v-if="!$responsive.lg || !packageId"
-        class="w-full lg:w-1/3 lg:pb-64"
+        class="w-full lg:w-1/3 lg:pb-64 lg:mt-4 lg:sticky lg:top-4 lg:max-h-screen lg:overflow-y-auto"
       >
         <LoadingIndicator
           v-if="loading"
@@ -82,7 +82,7 @@ export default {
       </div>
       <div
         v-if="!$responsive.lg || packageId"
-        class="w-full lg:w-2/3 lg:pl-16 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-auto"
+        class="w-full lg:w-2/3 lg:pl-16"
       >
         <router-view />
       </div>

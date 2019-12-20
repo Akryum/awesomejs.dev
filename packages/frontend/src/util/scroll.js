@@ -5,7 +5,7 @@ function getScrollParent (node) {
     return null
   }
 
-  if (node.scrollHeight > node.clientHeight) {
+  if (node.scrollHeight > node.clientHeight || node.classList.contains('scroll-parent')) {
     if (node === document.documentElement) {
       return { emitter: document, scroller: document.documentElement }
     }
@@ -30,6 +30,7 @@ export function onScrollBottom (handler, el, offsetFromBottom) {
     if (!el.value) return
     scrollParent = getScrollParent(el.value)
     if (scrollParent) {
+      console.log(scrollParent.scroller)
       scrollParent.emitter.addEventListener('scroll', onScroll)
     }
   }

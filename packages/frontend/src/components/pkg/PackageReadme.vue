@@ -3,7 +3,7 @@ import LoadingIndicator from '../LoadingIndicator.vue'
 
 import Vue from 'vue'
 import gql from 'graphql-tag'
-import { ref, computed, watch } from '@vue/composition-api'
+import { ref, watch } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
 
 const GOOGLE_IMG_PROXY = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url='
@@ -26,9 +26,6 @@ export default {
   },
 
   setup (props, { root }) {
-    const expand = ref(false)
-    const expanded = computed(() => expand.value || root.$responsive.lg)
-
     // Pkg
     const { result, loading } = useQuery(() => props.query || gql`
       query PackageReadme ($id: ID!) {
@@ -101,8 +98,6 @@ export default {
     })
 
     return {
-      expand,
-      expanded,
       pkg,
       loading,
       render,
@@ -118,40 +113,12 @@ export default {
   />
   <div
     v-else
-    class="readme relative pb-8 mt-4 border-t-2 border-gray-800"
-    :class="{
-      expand: expanded,
-      'overflow-y-hidden': !expanded
-    }"
+    class="readme pb-8 mt-4 border-t-2 border-gray-800"
   >
     <div
       ref="render"
       class="markdown pt-8 pb-64"
       v-html="pkg.readme"
     />
-
-    <div
-      v-if="!$responsive.lg"
-      class="action-overlay absolute bottom-0 left-0 w-full flex justify-center pt-6 pb-2"
-      @click="expand = !expand"
-    >
-      <BaseButton
-        class="p-1 bg-gray-800"
-      >
-        <i class="material-icons">{{ expand ? 'expand_less' : 'expand_more' }}</i>
-      </BaseButton>
-    </div>
   </div>
 </template>
-
-<style lang="postcss" scoped>
-.readme {
-  &:not(.expand) {
-    max-height: calc(100vh - 340px);
-  }
-}
-
-.action-overlay {
-  background: linear-gradient(to bottom, transparent, theme('colors.gray.900'));
-}
-</style>

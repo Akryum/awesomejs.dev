@@ -112,7 +112,7 @@ export default {
     class="max-w-3xl"
     @submit.prevent="submit()"
   >
-    <div class="lg:flex items-baseline mt-8">
+    <div class="lg:flex items-baseline mt-4">
       <label
         for="github-owner"
         class="flex-none lg:mr-8 lg:w-40 text-gray-500"

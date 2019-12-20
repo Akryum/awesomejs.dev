@@ -43,7 +43,7 @@ export default {
         Hello {{ currentUser.nickname }}! 👋️
       </PageTitle>
 
-      <div class="flex mt-2">
+      <div class="overflow-x-auto flex">
         <RouteTab
           :to="{ name: 'user-dashboard' }"
           exact
