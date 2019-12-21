@@ -1,6 +1,5 @@
 <script>
-import LoadingIndicator from '../LoadingIndicator.vue'
-import PackageGeneralInfo from './PackageGeneralInfo.vue'
+import PackageViewLayout from './PackageViewLayout.vue'
 import PackageBookmarkButton from './PackageBookmarkButton.vue'
 import PackageShareButton from './PackageShareButton.vue'
 import RouteTab from '../RouteTab.vue'
@@ -8,13 +7,11 @@ import RouteTab from '../RouteTab.vue'
 import gql from 'graphql-tag'
 import { pkgFragment } from './fragments'
 import { useQuery, useResult } from '@vue/apollo-composable'
-import { ref, watch } from '@vue/composition-api'
 import { useCurrentUser } from '../user/useCurrentUser'
 
 export default {
   components: {
-    LoadingIndicator,
-    PackageGeneralInfo,
+    PackageViewLayout,
     PackageBookmarkButton,
     PackageShareButton,
     RouteTab,
@@ -43,18 +40,10 @@ export default {
     `, props)
     const pkg = useResult(result)
 
-    const scrollMarker = ref()
-    watch(() => root.$route, () => {
-      if (scrollMarker.value) {
-        scrollMarker.value.scrollIntoView()
-      }
-    })
-
     return {
       pkg,
       loading,
       isAdmin: useCurrentUser().isAdmin,
-      scrollMarker,
     }
   },
 
@@ -81,64 +70,51 @@ export default {
 </script>
 
 <template>
-  <div>
-    <LoadingIndicator
-      v-if="loading"
-      class="p-8"
-    />
-    <template v-else>
-      <PackageGeneralInfo
-        :pkg="pkg"
+  <PackageViewLayout
+    :pkg="pkg"
+    :loading="loading"
+  >
+    <template #actions>
+      <PackageBookmarkButton
+        :package-id="pkg.id"
+        class="mr-4"
       />
 
-      <div class="mb-4 flex overflow-x-auto">
-        <PackageBookmarkButton
-          :package-id="pkg.id"
-          class="mr-4"
-        />
-
-        <PackageShareButton
-          :pkg="pkg"
-        />
-      </div>
-
-      <div ref="scrollMarker" />
-
-      <div class="overflow-x-auto flex pb-4 lg:sticky lg:top-0 lg:bg-gray-900 lg:z-10">
-        <RouteTab
-          :to="{ name: `${routePrefix}package` }"
-          class="flex-none"
-          exact
-        >
-          General
-        </RouteTab>
-
-        <RouteTab
-          :to="{ name: `${routePrefix}package-releases` }"
-          class="flex-none"
-        >
-          Releases
-        </RouteTab>
-
-        <RouteTab
-          :to="{ name: `${routePrefix}package-data-sources` }"
-          class="flex-none"
-        >
-          Data sources
-        </RouteTab>
-
-        <RouteTab
-          v-if="isAdmin"
-          :to="{ name: `${routePrefix}package-edit` }"
-          class="flex-none"
-        >
-          Edit
-        </RouteTab>
-      </div>
-
-      <div>
-        <router-view :pkg="pkg" />
-      </div>
+      <PackageShareButton
+        :pkg="pkg"
+      />
     </template>
-  </div>
+
+    <template #tabs>
+      <RouteTab
+        :to="{ name: `${routePrefix}package` }"
+        class="flex-none"
+        exact
+      >
+        General
+      </RouteTab>
+
+      <RouteTab
+        :to="{ name: `${routePrefix}package-releases` }"
+        class="flex-none"
+      >
+        Releases
+      </RouteTab>
+
+      <RouteTab
+        :to="{ name: `${routePrefix}package-data-sources` }"
+        class="flex-none"
+      >
+        Data sources
+      </RouteTab>
+
+      <RouteTab
+        v-if="isAdmin"
+        :to="{ name: `${routePrefix}package-edit` }"
+        class="flex-none"
+      >
+        Edit
+      </RouteTab>
+    </template>
+  </PackageViewLayout>
 </template>

@@ -1,22 +1,17 @@
 <script>
-import ErrorMessage from '../ErrorMessage.vue'
-import LoadingIndicator from '../LoadingIndicator.vue'
-import PackageGeneralInfo from './PackageGeneralInfo.vue'
+import PackageViewLayout from './PackageViewLayout.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 import PackageProposalApproveButton from './PackageProposalApproveButton.vue'
 import RouteTab from '../RouteTab.vue'
 
 import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
-import { ref, watch } from '@vue/composition-api'
 import { pkgProposalFragment } from './fragments'
 import { useCurrentUser } from '../user/useCurrentUser'
 
 export default {
   components: {
-    ErrorMessage,
-    LoadingIndicator,
-    PackageGeneralInfo,
+    PackageViewLayout,
     PackageProposalApproveButton,
     PackageProposalUpvoteButton,
     RouteTab,
@@ -47,18 +42,10 @@ export default {
     }))
     const pkg = useResult(result)
 
-    const scrollMarker = ref()
-    watch(() => root.$route, () => {
-      if (scrollMarker.value) {
-        scrollMarker.value.scrollIntoView()
-      }
-    })
-
     return {
       pkg,
       loading,
       isAdmin: useCurrentUser().isAdmin,
-      scrollMarker,
     }
   },
 
@@ -73,73 +60,55 @@ export default {
 </script>
 
 <template>
-  <div>
-    <LoadingIndicator
-      v-if="loading"
-      class="p-8"
-    />
-    <template v-else>
-      <PackageGeneralInfo
+  <PackageViewLayout
+    :pkg="pkg"
+    :loading="loading"
+    :error="pkg && !pkg.repo ? 'No GitHub repository found' : null"
+  >
+    <template #actions>
+      <PackageProposalUpvoteButton
         :pkg="pkg"
+        class="mr-4"
       />
 
-      <div class="mb-4 flex overflow-x-auto">
-        <PackageProposalUpvoteButton
-          :pkg="pkg"
-          class="mr-4"
-        />
-
-        <PackageProposalApproveButton
-          v-if="isAdmin"
-          :project-type-id="projectTypeId"
-          :proposal="pkg"
-          class="px-8 py-4"
-        />
-      </div>
-
-      <div ref="scrollMarker" />
-
-      <div class="overflow-x-auto flex pb-4 lg:sticky lg:top-0 lg:bg-gray-900 lg:z-10">
-        <RouteTab
-          :to="{ name: 'package-proposal' }"
-          class="flex-none"
-          exact
-        >
-          General
-        </RouteTab>
-
-        <RouteTab
-          :to="{ name: 'package-proposal-releases' }"
-          class="flex-none"
-        >
-          Releases
-        </RouteTab>
-
-        <RouteTab
-          :to="{ name: 'package-proposal-data-sources' }"
-          class="flex-none"
-        >
-          Data sources
-        </RouteTab>
-
-        <RouteTab
-          v-if="isAdmin"
-          :to="{ name: 'package-proposal-edit' }"
-          class="flex-none"
-        >
-          Edit
-        </RouteTab>
-      </div>
-
-      <ErrorMessage
-        v-if="!pkg.repo"
-        error="No GitHub repository found"
-        class="error-box mt-8"
+      <PackageProposalApproveButton
+        v-if="isAdmin"
+        :project-type-id="projectTypeId"
+        :proposal="pkg"
+        class="px-8 py-4"
       />
-
-      <div>
-        <router-view :pkg="pkg" />
-      </div>
     </template>
-  </div>
+
+    <template #tabs>
+      <RouteTab
+        :to="{ name: 'package-proposal' }"
+        class="flex-none"
+        exact
+      >
+        General
+      </RouteTab>
+
+      <RouteTab
+        :to="{ name: 'package-proposal-releases' }"
+        class="flex-none"
+      >
+        Releases
+      </RouteTab>
+
+      <RouteTab
+        :to="{ name: 'package-proposal-data-sources' }"
+        class="flex-none"
+      >
+        Data sources
+      </RouteTab>
+
+      <RouteTab
+        v-if="isAdmin"
+        :to="{ name: 'package-proposal-edit' }"
+        class="flex-none"
+      >
+        Edit
+      </RouteTab>
+    </template>
+  </PackageViewLayout>
 </template>
