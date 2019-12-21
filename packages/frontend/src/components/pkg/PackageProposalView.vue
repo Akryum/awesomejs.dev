@@ -8,6 +8,7 @@ import RouteTab from '../RouteTab.vue'
 
 import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
+import { ref, watch } from '@vue/composition-api'
 import { pkgProposalFragment } from './fragments'
 import { useCurrentUser } from '../user/useCurrentUser'
 
@@ -33,7 +34,7 @@ export default {
     },
   },
 
-  setup (props) {
+  setup (props, { root }) {
     const { result, loading } = useQuery(gql`
       query PackageProposal ($id: ID!) {
         pkg: packageProposal (id: $id) {
@@ -46,10 +47,18 @@ export default {
     }))
     const pkg = useResult(result)
 
+    const scrollMarker = ref()
+    watch(() => root.$route, () => {
+      if (scrollMarker.value) {
+        scrollMarker.value.scrollIntoView()
+      }
+    })
+
     return {
       pkg,
       loading,
       isAdmin: useCurrentUser().isAdmin,
+      scrollMarker,
     }
   },
 
@@ -87,6 +96,8 @@ export default {
           class="px-8 py-4"
         />
       </div>
+
+      <div ref="scrollMarker" />
 
       <div class="overflow-x-auto flex pb-4 lg:sticky lg:top-0 lg:bg-gray-900 lg:z-10">
         <RouteTab
