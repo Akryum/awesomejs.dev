@@ -30,7 +30,6 @@ export function onScrollBottom (handler, el, offsetFromBottom) {
     if (!el.value) return
     scrollParent = getScrollParent(el.value)
     if (scrollParent) {
-      console.log(scrollParent.scroller)
       scrollParent.emitter.addEventListener('scroll', onScroll)
     }
   }
