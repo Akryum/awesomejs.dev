@@ -5,6 +5,7 @@ import AppGlobalLoading from './app/AppGlobalLoading.vue'
 import AppServiceWorkerManager from './app/AppServiceWorkerManager.vue'
 import { watch, ref } from '@vue/composition-api'
 import { useResponsive } from '@/util/responsive'
+import { computeDepthWeight } from '@/util/router'
 
 const title = 'Awesome JS'
 
@@ -20,17 +21,6 @@ export default {
     const transitionName = ref()
 
     const { mobile } = useResponsive()
-
-    function computeDepthWeight (route) {
-      return route.matched.reduce((total, m) => {
-        if (m.meta.depthWeight) {
-          total += m.meta.depthWeight
-        } else {
-          total++
-        }
-        return total
-      }, 0)
-    }
 
     // Mobile page transition
     watch(() => root.$route, (value, oldValue) => {

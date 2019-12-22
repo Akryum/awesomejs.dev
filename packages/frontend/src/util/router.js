@@ -27,3 +27,14 @@ export function getNamedParents (routes, matched) {
   }
   return parents.slice(0, parents.length - 1)
 }
+
+export function computeDepthWeight (route) {
+  return route.matched.reduce((total, m) => {
+    if (m.meta.depthWeight) {
+      total += m.meta.depthWeight
+    } else {
+      total++
+    }
+    return total
+  }, 0)
+}
