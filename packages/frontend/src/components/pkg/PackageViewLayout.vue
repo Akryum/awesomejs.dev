@@ -32,7 +32,7 @@ export default {
   setup (props, { root }) {
     const scrollMarker = ref()
     watch(() => root.$route, () => {
-      if (scrollMarker.value) {
+      if (scrollMarker.value && scrollMarker.value.getBoundingClientRect().y < 0) {
         scrollMarker.value.scrollIntoView()
       }
     })
