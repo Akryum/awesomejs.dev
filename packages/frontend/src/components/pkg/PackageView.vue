@@ -1,6 +1,7 @@
 <script>
 import PackageViewLayout from './PackageViewLayout.vue'
 import PackageBookmarkButton from './PackageBookmarkButton.vue'
+import PackageReleaseCount from './PackageReleaseCount.vue'
 import PackageShareButton from './PackageShareButton.vue'
 import RouteTab from '../RouteTab.vue'
 
@@ -13,6 +14,7 @@ export default {
   components: {
     PackageViewLayout,
     PackageBookmarkButton,
+    PackageReleaseCount,
     PackageShareButton,
     RouteTab,
   },
@@ -99,6 +101,9 @@ export default {
         class="flex-none"
       >
         Releases
+        <PackageReleaseCount
+          :pkg="pkg"
+        />
       </RouteTab>
 
       <RouteTab

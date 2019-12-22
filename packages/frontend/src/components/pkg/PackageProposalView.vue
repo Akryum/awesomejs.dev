@@ -2,6 +2,7 @@
 import PackageViewLayout from './PackageViewLayout.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 import PackageProposalApproveButton from './PackageProposalApproveButton.vue'
+import PackageReleaseCount from './PackageReleaseCount.vue'
 import RouteTab from '../RouteTab.vue'
 
 import gql from 'graphql-tag'
@@ -14,6 +15,7 @@ export default {
     PackageViewLayout,
     PackageProposalApproveButton,
     PackageProposalUpvoteButton,
+    PackageReleaseCount,
     RouteTab,
   },
 
@@ -93,6 +95,9 @@ export default {
         class="flex-none"
       >
         Releases
+        <PackageReleaseCount
+          :pkg="pkg"
+        />
       </RouteTab>
 
       <RouteTab

@@ -124,6 +124,8 @@ export type Package = PackageInterface & {
   description?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
   releases: Array<PackageRelease>,
+  releaseCount?: Maybe<Scalars['Int']>,
+  tagCount?: Maybe<Scalars['Int']>,
   bookmarked?: Maybe<Scalars['Boolean']>,
 };
 
@@ -157,6 +159,8 @@ export type PackageInterface = {
   description?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
   releases: Array<PackageRelease>,
+  releaseCount?: Maybe<Scalars['Int']>,
+  tagCount?: Maybe<Scalars['Int']>,
 };
 
 export type PackageMaintainer = {
@@ -182,6 +186,8 @@ export type PackageProposal = PackageInterface & {
   description?: Maybe<Scalars['String']>,
   readme?: Maybe<Scalars['String']>,
   releases: Array<PackageRelease>,
+  releaseCount?: Maybe<Scalars['Int']>,
+  tagCount?: Maybe<Scalars['Int']>,
   user?: Maybe<User>,
   upvotes: Scalars['Int'],
   upvoted: Scalars['Boolean'],
@@ -500,6 +506,8 @@ export type PackageResolvers<ContextType = Context, ParentType extends Resolvers
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   releases?: Resolver<Array<ResolversTypes['PackageRelease']>, ParentType, ContextType>,
+  releaseCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  tagCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
 };
 
@@ -528,6 +536,8 @@ export type PackageInterfaceResolvers<ContextType = Context, ParentType extends 
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   releases?: Resolver<Array<ResolversTypes['PackageRelease']>, ParentType, ContextType>,
+  releaseCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  tagCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
 };
 
 export type PackageMaintainerResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageMaintainer'] = ResolversParentTypes['PackageMaintainer']> = {
@@ -551,6 +561,8 @@ export type PackageProposalResolvers<ContextType = Context, ParentType extends R
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   readme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   releases?: Resolver<Array<ResolversTypes['PackageRelease']>, ParentType, ContextType>,
+  releaseCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  tagCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
   upvotes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   upvoted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,

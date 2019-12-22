@@ -1,6 +1,7 @@
 import { getGithubDataSource } from '@/util/metadata'
 import gql from 'graphql-tag'
 import { Resolvers } from '@/generated/schema'
+import { getPageTotalCount } from '@/util/github'
 
 export const typeDefs = gql`
 type PackageRelease {
@@ -21,13 +22,20 @@ type PackageReleaseAsset {
 
 extend interface PackageInterface {
   releases: [PackageRelease!]!
+  releaseCount: Int
+  tagCount: Int
 }
 
 extend type Package {
   releases: [PackageRelease!]!
+  releaseCount: Int
+  tagCount: Int
 }
+
 extend type PackageProposal {
   releases: [PackageRelease!]!
+  releaseCount: Int
+  tagCount: Int
 }
 `
 
@@ -36,7 +44,6 @@ export const resolvers: Resolvers = {
   PackageInterface: {
     releases: async (pkg, args, ctx) => {
       const { owner, repo } = await getGithubDataSource(pkg, ctx)
-
       if (repo) {
         const { data } = await ctx.github.repos.listReleases({
           owner,
@@ -62,6 +69,30 @@ export const resolvers: Resolvers = {
       }
 
       return []
+    },
+
+    releaseCount: async (pkg, args, ctx) => {
+      const { owner, repo } = await getGithubDataSource(pkg, ctx)
+      if (repo) {
+        const result = await ctx.github.repos.listReleases({
+          owner,
+          repo,
+          per_page: 1,
+        })
+        return getPageTotalCount(result)
+      }
+    },
+
+    tagCount: async (pkg, args, ctx) => {
+      const { owner, repo } = await getGithubDataSource(pkg, ctx)
+      if (repo) {
+        const result = await ctx.github.repos.listTags({
+          owner,
+          repo,
+          per_page: 1,
+        })
+        return getPageTotalCount(result)
+      }
     },
   },
 }
