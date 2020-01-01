@@ -82,6 +82,7 @@ export const resolvers: Resolvers = {
       }
       return {
         id: pkg.ref.id,
+        ref,
         ...pkg.data,
       }
     },

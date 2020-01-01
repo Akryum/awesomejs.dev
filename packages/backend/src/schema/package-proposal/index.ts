@@ -20,22 +20,24 @@ extend type Query {
 export const resolvers: Resolvers = {
   PackageProposal: {
     projectType: async (proposal, args, ctx) => {
-      const { ref: { id }, data } = await ctx.db.query(
+      const { ref, data } = await ctx.db.query(
         q.Get(proposal.projectTypeRef),
       )
       return {
-        id,
+        id: ref.id,
+        ref,
         ...data,
       }
     },
 
     user: async (proposal, args, ctx) => {
       try {
-        const { ref: { id }, data } = await ctx.db.query(
+        const { ref, data } = await ctx.db.query(
           q.Get(proposal.userRef),
         )
         return {
-          id,
+          id: ref.id,
+          ref,
           ...data,
         }
       } catch (e) {

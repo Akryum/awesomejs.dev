@@ -55,6 +55,7 @@ export const resolvers: Resolvers = {
       await indexPackage(ctx, pkg, projectType)
       return {
         id: pkg.ref.id,
+        ref: pkg.ref,
         ...pkg.data,
       }
     },

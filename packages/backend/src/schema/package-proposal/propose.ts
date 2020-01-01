@@ -40,7 +40,7 @@ export const resolvers: Resolvers = {
         throw new ApolloError(`Package not found on npm`)
       }
 
-      const { ref: { id }, data } = await ctx.db.query(
+      const { ref, data } = await ctx.db.query(
         q.Create(
           q.Collection('PackageProposals'),
           {
@@ -62,7 +62,8 @@ export const resolvers: Resolvers = {
         ),
       )
       return {
-        id,
+        id: ref.id,
+        ref,
         ...data,
       }
     },

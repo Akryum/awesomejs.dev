@@ -76,6 +76,7 @@ export const resolvers: Resolvers = {
       }
       return {
         id: input.proposalId,
+        ref,
         ...data,
       }
     },
