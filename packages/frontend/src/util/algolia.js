@@ -1,11 +1,7 @@
 import * as Algolia from 'algoliasearch'
 import { ref, isRef, watch } from '@vue/composition-api'
 
-const client = Algolia(process.env.VUE_APP_ALGOLIA_ID, process.env.VUE_APP_ALGOLIA_KEY)
-
-export function getIndex (name) {
-  return client.initIndex(name)
-}
+const defaultClient = Algolia(process.env.VUE_APP_ALGOLIA_ID, process.env.VUE_APP_ALGOLIA_KEY)
 
 /** @typedef {import('@vue/composition-api').Ref} Ref */
 /** @typedef {import('algoliasearch').QueryParameters} QueryParameters */
@@ -14,9 +10,12 @@ export function getIndex (name) {
 /**
  * @param {string} indexName
  * @param {QueryParameters | Ref<QueryParameters>} queryParameters
+ * @param {QueryParameters} defaultQueryParameters
+ * @param {Algolia.Client} algoliaClient
+ * @param {any} options Other options
  */
-export function useSearch (indexName, queryParameters = {}) {
-  const index = getIndex(indexName)
+export function useSearch (indexName, queryParameters = {}, defaultQueryParameters = {}, algoliaClient = defaultClient, options = {}) {
+  const index = algoliaClient.initIndex(indexName)
   const searchText = ref('')
   /** @type {Ref<Response>} */
   const result = ref(null)
@@ -28,14 +27,19 @@ export function useSearch (indexName, queryParameters = {}) {
   })
 
   async function search () {
-    const response = await index.search({
-      query: searchText.value,
-      ...isRef(queryParameters) ? queryParameters.value : queryParameters,
-    })
-    response.hits.forEach((hit) => {
-      hit.id = hit.objectID
-    })
-    result.value = response
+    if (options.skipEmptyQuery && !searchText.value) {
+      result.value = null
+    } else {
+      const response = await index.search({
+        query: searchText.value,
+        ...defaultQueryParameters,
+        ...isRef(queryParameters) ? queryParameters.value : queryParameters,
+      })
+      response.hits.forEach((hit) => {
+        hit.id = hit.objectID
+      })
+      result.value = response
+    }
   }
 
   return {

@@ -6,9 +6,10 @@ import PackageAdded from './PackageAdded.vue'
 import ErrorMessage from '../ErrorMessage.vue'
 
 import gql from 'graphql-tag'
-import { ref, reactive, computed } from '@vue/composition-api'
+import { ref, reactive, computed, watch } from '@vue/composition-api'
 import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
 import { pkgProposalFragment } from './fragments'
+import { useNpmSearch } from '@/util/algolia-npm'
 
 export default {
   components: {
@@ -100,6 +101,20 @@ export default {
       added.value = false
     }
 
+    // NPM search
+    const { searchText: npmSearchText, result: npmSearchResult } = useNpmSearch({
+      hitsPerPage: 5,
+    })
+
+    watch(() => formData.packageName, value => {
+      npmSearchText.value = value
+    })
+
+    function selectNpmSuggestion (result) {
+      formData.packageName = result.name
+      formData.tags = result.keywords.join(', ')
+    }
+
     return {
       projectTypeId,
       formData,
@@ -114,6 +129,9 @@ export default {
       added,
       addedProposal,
       addAnother,
+
+      npmSearchResult,
+      selectNpmSuggestion,
     }
   },
 }
@@ -152,6 +170,30 @@ export default {
         <i class="material-icons text-lg mr-2">error</i>
         <span v-if="alreadyExists">This package already exists in the app</span>
         <span v-if="alreadyProposed">This package is already proposed</span>
+      </div>
+
+      <div
+        v-if="npmSearchResult && npmSearchResult.hits.length"
+        class="flex flex-col"
+      >
+        <BaseButton
+          v-for="result of npmSearchResult.hits"
+          :key="result.id"
+          class="bg-gray-800 hover:bg-gray-700 px-8 py-4 mt-4"
+          @click="selectNpmSuggestion(result)"
+        >
+          <div class="w-full text-left flex">
+            <div class="flex-none mr-4">
+              {{ result.name }}
+            </div>
+            <div
+              v-tooltip="result.description"
+              class="text-gray-600 truncate"
+            >
+              {{ result.description }}
+            </div>
+          </div>
+        </BaseButton>
       </div>
 
       <input
