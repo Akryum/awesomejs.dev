@@ -44,6 +44,10 @@ export default {
       mutation EditPackageInfo ($input: EditPackageInfoInput!) {
         editPackageInfo (input: $input) {
           ...pkg
+          dataSources {
+            type
+            data
+          }
         }
       }
       ${pkgFragment}
