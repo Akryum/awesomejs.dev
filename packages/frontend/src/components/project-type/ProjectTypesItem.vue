@@ -68,15 +68,6 @@ export default {
     </div>
 
     <div
-      v-if="projectType.bookmarked"
-      class="absolute top-0 right-0 pt-1 pr-2"
-    >
-      <i
-        class="material-icons text-lg text-gray-600"
-      >bookmark</i>
-    </div>
-
-    <div
       v-if="packageProposalCount"
       v-tooltip="'Proposed packages'"
       class="absolute top-0 left-0 pt-1 pl-1"

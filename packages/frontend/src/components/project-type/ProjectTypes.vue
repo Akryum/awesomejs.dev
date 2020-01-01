@@ -1,6 +1,6 @@
 <script>
 import LoadingIndicator from '../LoadingIndicator.vue'
-import ProjectTypesItem from './ProjectTypesItem.vue'
+import ProjectTypesGrid from './ProjectTypesGrid.vue'
 
 import gql from 'graphql-tag'
 import { computed } from '@vue/composition-api'
@@ -10,7 +10,7 @@ import { projectTypeFragment } from './fragments'
 export default {
   components: {
     LoadingIndicator,
-    ProjectTypesItem,
+    ProjectTypesGrid,
   },
 
   setup () {
@@ -24,19 +24,13 @@ export default {
     `)
     const projectTypes = useResult(result, [])
 
-    const sortedProjectTypes = computed(() => projectTypes.value.slice().sort((a, b) => {
-      if (a.bookmarked === b.bookmarked) {
-        return 0
-      } else if (a.bookmarked) {
-        return -1
-      } else {
-        return 1
-      }
-    }))
+    const bookmarkedProjectTypes = computed(() => projectTypes.value.filter(pt => pt.bookmarked))
+    const otherProjectTypes = computed(() => projectTypes.value.filter(pt => !pt.bookmarked))
 
     return {
       loading,
-      sortedProjectTypes,
+      bookmarkedProjectTypes,
+      otherProjectTypes,
     }
   },
 }
@@ -47,23 +41,28 @@ export default {
     v-if="loading"
     class="py-16"
   />
-  <div
-    v-else
-    class="project-types-grid my-4 sm:my-8"
-  >
-    <router-link
-      v-for="projectType of sortedProjectTypes"
-      :key="projectType.id"
-      :to="{
-        name: 'project-type',
-        params: {
-          projectTypeSlug: projectType.slug
-        }
-      }"
-    >
-      <ProjectTypesItem
-        :project-type="projectType"
+  <div v-else>
+    <template v-if="bookmarkedProjectTypes.length">
+      <h2 class="mt-8 mb-4 text-gray-600 sm:text-xl">
+        <i class="material-icons text-lg sm:text-2xl">bookmark</i>
+        Bookmarked
+      </h2>
+
+      <ProjectTypesGrid
+        :project-types="bookmarkedProjectTypes"
+        class="mb-8"
       />
-    </router-link>
+    </template>
+
+    <hr
+      v-if="bookmarkedProjectTypes.length && otherProjectTypes.length"
+      class="border-gray-800"
+    >
+
+    <ProjectTypesGrid
+      v-if="otherProjectTypes.length"
+      :project-types="otherProjectTypes"
+      class="my-8"
+    />
   </div>
 </template>
