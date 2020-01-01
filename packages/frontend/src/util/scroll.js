@@ -5,7 +5,7 @@ function getScrollParent (node) {
     return null
   }
 
-  if (node.scrollHeight > node.clientHeight || node.classList.contains('scroll-parent')) {
+  if (node.scrollHeight > node.clientHeight || (node.classList && node.classList.contains('scroll-parent'))) {
     if (node === document.documentElement) {
       return { emitter: document, scroller: document.documentElement }
     }
