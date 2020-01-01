@@ -25,7 +25,7 @@ export async function updateMetadata (
   }
   await ctx.db.query(
     q.Update(
-      q.Ref(q.Collection(ref.collection.id), ref.id),
+      ref,
       {
         data: {
           metadata: {
@@ -78,7 +78,7 @@ export const getNpmMetadata = mem(async (pkg: any, ctx: Context): Promise<any> =
     console.error(e)
     await ctx.db.query(
       q.Update(
-        q.Ref(q.Collection(pkg.ref.collection.id), pkg.ref.id),
+        pkg.ref,
         {
           data: {
             dataSources: {
@@ -112,7 +112,7 @@ export const getGithubDataSource = async (pkg: any, ctx: Context) => {
 
     await ctx.db.query(
       q.Update(
-        q.Ref(q.Collection(pkg.ref.collection.id), pkg.ref.id),
+        pkg.ref,
         {
           data: {
             github: null,
@@ -147,7 +147,7 @@ export const getGithubDataSource = async (pkg: any, ctx: Context) => {
 
       await ctx.db.query(
         q.Update(
-          q.Ref(q.Collection(pkg.ref.collection.id), pkg.ref.id),
+          pkg.ref,
           {
             data: {
               dataSources: {
