@@ -1,6 +1,7 @@
 <script>
 import { ref, watch } from '@vue/composition-api'
 import { useCurrentUser } from './useCurrentUser'
+import { STORE_ROUTE_BEFORE_REDIRECT } from '@/util/router'
 
 export default {
   setup (props, { root }) {
@@ -18,6 +19,15 @@ export default {
       loading,
       baseUrl: process.env.VUE_APP_API_BASE,
     }
+  },
+
+  beforeRouteEnter (from, to, next) {
+    if (to.name !== 'login') {
+      localStorage.setItem(STORE_ROUTE_BEFORE_REDIRECT, to.fullPath)
+    } else {
+      localStorage.removeItem(STORE_ROUTE_BEFORE_REDIRECT)
+    }
+    next()
   },
 
   metaInfo: {

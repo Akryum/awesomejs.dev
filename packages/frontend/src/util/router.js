@@ -1,3 +1,5 @@
+export const STORE_ROUTE_BEFORE_REDIRECT = 'dev.awesomejs.route.before-redirect'
+
 export function getNamedParents (routes, matched) {
   let parent = null
   const parents = []
