@@ -44,8 +44,8 @@ export const resolvers: Resolvers = {
               data: {
                 name: pkgProposal.data.name,
                 projectTypeId: projectType.ref.id,
-                github: pkgProposal.data.github,
                 info: pkgProposal.data.info,
+                dataSources: pkgProposal.data.dataSources,
                 metadata: pkgProposal.data.metadata,
               },
             },
