@@ -24,8 +24,14 @@ export default {
     // Form data
     const projectTypeId = ref(root.$route.query.projectTypeId || null)
     const formData = reactive({
-      packageName: '',
+      packageName: root.$route.query.packageName || '',
       tags: '',
+    })
+
+    watch(() => root.$route, value => {
+      projectTypeId.value = value.query.projectTypeId || null
+      formData.packageName = value.query.packageName || ''
+      autoFillFromNpm()
     })
 
     // Check for existing proposals & packages
@@ -114,6 +120,17 @@ export default {
       formData.packageName = result.name
       formData.tags = result.keywords.join(', ')
     }
+
+    function autoFillFromNpm () {
+      if (npmSearchResult && npmSearchResult.value) {
+        const hit = npmSearchResult.value.hits.find(h => h.name === formData.packageName)
+        if (hit && !formData.tags) {
+          selectNpmSuggestion(hit)
+        }
+      }
+    }
+
+    watch(npmSearchResult, () => autoFillFromNpm())
 
     return {
       projectTypeId,

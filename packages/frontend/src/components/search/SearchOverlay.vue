@@ -7,6 +7,7 @@ import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
 import { FocusTrap } from 'focus-trap-vue'
 import { ref, computed, watch, onActivated } from '@vue/composition-api'
 import { useSearch } from '@/util/algolia'
+import { useNpmSearch } from '@/util/algolia-npm'
 import { useLockScroll } from '@/util/lock-scroll'
 
 export default {
@@ -41,6 +42,7 @@ export default {
     // Filters
 
     // Project type filter
+    const projectTypeId = ref(null)
     const projectTypeSlug = ref(null)
     watch(projectTypeSlug, () => focusInput())
 
@@ -119,6 +121,38 @@ export default {
     onOpen()
     onActivated(onOpen)
 
+    // Npm Search
+    const { searchText: npmSearchText, result: npmSearchResult } = useNpmSearch()
+
+    watch(searchText, value => {
+      npmSearchText.value = value
+    })
+
+    const npmSearchResults = computed(() => {
+      if (npmSearchResult.value) {
+        const hits = npmSearchResult.value.hits
+        if (hits.length) {
+          const searchHits = result.value ? result.value.hits : []
+          const dictionary = searchHits.reduce((dic, hit) => {
+            dic[hit.name] = true
+            return dic
+          }, {})
+          return hits.filter(hit => !dictionary[hit.name])
+        }
+      }
+    })
+
+    function selectNpmResult (result) {
+      root.$router.push({
+        name: 'add-package',
+        query: {
+          packageName: result.name,
+          projectTypeId: projectTypeId.value,
+        },
+      })
+      close()
+    }
+
     return {
       close,
       input,
@@ -131,9 +165,12 @@ export default {
       focusPrevious,
       focusNext,
       selectFocused,
+      projectTypeId,
       projectTypeSlug,
       hasFilters,
       clearFilters,
+      npmSearchResults,
+      selectNpmResult,
     }
   },
 }
@@ -177,6 +214,7 @@ export default {
           >
 
           <ProjectTypeSelect
+            v-model="projectTypeId"
             :project-type-slug.sync="projectTypeSlug"
             placeholder="All types"
             class="flex-none mx-2"
@@ -198,7 +236,7 @@ export default {
         />
 
         <div
-          v-else-if="result.hits.length"
+          v-else-if="result.hits.length || npmSearchResults"
           ref="list"
           class="w-full flex-1 overflow-auto"
         >
@@ -213,6 +251,31 @@ export default {
             }"
             @mouseover.native="focusIndex = index"
           />
+
+          <div
+            v-if="npmSearchResults"
+            class="flex flex-col mt-8"
+          >
+            <div class="p-2 sm:px-6">
+              Other results
+            </div>
+
+            <BaseButton
+              v-for="result of npmSearchResults"
+              :key="result.id"
+              class="mt-4 p-2 sm:px-6 sm:py-4 bg-gray-800 hover:bg-gray-700"
+              @click="selectNpmResult(result)"
+            >
+              <div class="w-full text-left flex">
+                <div class="flex-none mr-4">
+                  {{ result.name }}
+                </div>
+                <div class="text-gray-600 truncate">
+                  {{ result.description }}
+                </div>
+              </div>
+            </BaseButton>
+          </div>
         </div>
 
         <EmptyMessage
