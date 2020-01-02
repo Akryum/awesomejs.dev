@@ -5,6 +5,7 @@ import { Resolvers } from '@/generated/schema'
 export const typeDefs = gql`
 extend type PackageProposal {
   user: User
+  projectType: ProjectType!
 }
 
 extend type ProjectType {

@@ -59,7 +59,7 @@ export default {
 
     const searchParams = computed(() => ({
       facetFilters: [
-        ...projectTypeSlug.value ? [`projectType.slug:${projectTypeSlug.value}`] : [],
+        ...projectTypeSlug.value ? [`projectTypes.slug:${projectTypeSlug.value}`] : [],
       ],
     }))
 

@@ -43,7 +43,9 @@ export const resolvers: Resolvers = {
             {
               data: {
                 name: pkgProposal.data.name,
-                projectTypeId: projectType.ref.id,
+                projectTypes: [
+                  q.Ref(q.Collection(projectType.ref.collection.id), projectType.ref.id),
+                ],
                 info: pkgProposal.data.info,
                 dataSources: pkgProposal.data.dataSources,
                 metadata: pkgProposal.data.metadata,
@@ -52,7 +54,7 @@ export const resolvers: Resolvers = {
           ),
         ),
       )
-      await indexPackage(ctx, pkg, projectType)
+      await indexPackage(ctx, pkg)
       return {
         id: pkg.ref.id,
         ref: pkg.ref,

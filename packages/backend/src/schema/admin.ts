@@ -61,7 +61,6 @@ export const resolvers: Resolvers = {
         await Promise.all(allPackages.map((doc: any) => getIndexObject(
           ctx,
           doc,
-          doc.projectType,
         ))),
       )
       return true
@@ -85,7 +84,7 @@ export const resolvers: Resolvers = {
           },
         )),
       )
-      await indexPackage(ctx, pkg, pkg.projectType)
+      await indexPackage(ctx, pkg)
       return true
     },
 

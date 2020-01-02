@@ -22,13 +22,12 @@ export const resolvers: Resolvers = {
       const pkg = await editPackageCommon(ref, input.common, ctx)
 
       // Update tags
-      await updateProjectTypeTags(pkg.data.projectTypeId, ctx)
+      for (const projectTypeRef of pkg.data.projectTypes) {
+        await updateProjectTypeTags(projectTypeRef, ctx)
+      }
 
       // Update search index
-      const projectType = await ctx.db.query(
-        q.Get(q.Ref(q.Collection('ProjectTypes'), pkg.data.projectTypeId)),
-      )
-      await updatePackageIndex(ctx, pkg, projectType)
+      await updatePackageIndex(ctx, pkg)
 
       return {
         id: input.common.id,

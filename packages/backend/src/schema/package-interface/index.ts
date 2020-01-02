@@ -5,21 +5,18 @@ export const typeDefs = gql`
 interface PackageInterface {
   id: ID!
   name: String!
-  projectType: ProjectType!
   info: PackageInfo!
 }
 
 type Package implements PackageInterface {
   id: ID!
   name: String!
-  projectType: ProjectType!
   info: PackageInfo!
 }
 
 type PackageProposal implements PackageInterface {
   id: ID!
   name: String!
-  projectType: ProjectType!
   info: PackageInfo!
 }
 

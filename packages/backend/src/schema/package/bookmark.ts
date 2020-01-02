@@ -74,7 +74,6 @@ export const resolvers: Resolvers = {
               data: {
                 packageRef: pkg.ref,
                 userRef,
-                projectTypeRef: q.Ref(q.Collection('ProjectTypes'), pkg.data.projectTypeId),
               },
             },
           ),

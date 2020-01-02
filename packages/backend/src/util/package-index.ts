@@ -1,9 +1,9 @@
 import { Context } from '@/context'
+import { query as q } from 'faunadb'
 
 export async function getIndexObject (
   ctx: Context,
   pkg: any,
-  projectType: any,
 ) {
   const npmData = await ctx.npm(`/${encodeURIComponent(pkg.data.name)}`)
   let githubData
@@ -19,6 +19,11 @@ export async function getIndexObject (
       owner: {},
     }
   }
+  const projectType = await ctx.db.query<any>(q.Get(pkg.data.projectTypes[0]))
+  const projectTypes = await ctx.db.query<any[]>(q.Map(
+    pkg.data.projectTypes,
+    q.Lambda(['ref'], q.Get(q.Var('ref'))),
+  ))
   return {
     objectID: pkg.ref.id,
     _tags: pkg.data.info.tags || [],
@@ -35,23 +40,27 @@ export async function getIndexObject (
       slug: projectType.data.slug,
       logo: projectType.data.logo,
     },
+    projectTypes: projectTypes.map((pt) => ({
+      id: pt.ref.id,
+      name: pt.data.name,
+      slug: pt.data.slug,
+      logo: pt.data.logo,
+    })),
   }
 }
 
 export async function indexPackage (
   ctx: Context,
   pkg: any,
-  projectType: any,
 ) {
   const index = ctx.algolia.initIndex('packages')
-  return index.addObject(await getIndexObject(ctx, pkg, projectType))
+  return index.addObject(await getIndexObject(ctx, pkg))
 }
 
 export async function updatePackageIndex (
   ctx: Context,
   pkg: any,
-  projectType: any,
 ) {
   const index = ctx.algolia.initIndex('packages')
-  return index.saveObject(await getIndexObject(ctx, pkg, projectType))
+  return index.saveObject(await getIndexObject(ctx, pkg))
 }
