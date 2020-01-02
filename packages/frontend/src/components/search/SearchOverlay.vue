@@ -52,6 +52,7 @@ export default {
 
     function clearFilters () {
       searchText.value = ''
+      projectTypeId.value = null
       projectTypeSlug.value = null
     }
 
