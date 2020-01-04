@@ -34,7 +34,10 @@ export default {
 
 <template>
   <div class="flex flex-wrap">
-    <i class="material-icons text-gray-600 mr-2">filter_list</i>
+    <i
+      v-tooltip="'Tags'"
+      class="material-icons text-gray-600 mr-2"
+    >filter_list</i>
     <PackageTag
       v-for="tag of sortedTags"
       :key="tag"
