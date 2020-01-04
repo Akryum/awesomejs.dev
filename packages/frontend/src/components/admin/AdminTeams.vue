@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { teamFragment } from './fragments'
 
 import LoadingIndicator from '../LoadingIndicator.vue'
+import { computed } from '@vue/composition-api'
 
 export const QUERY_TEAMS = gql`
   query AllTeams {
@@ -19,20 +20,16 @@ export default {
     LoadingIndicator,
   },
 
-  props: {
-    teamId: {
-      type: String,
-      default: null,
-    },
-  },
-
-  setup () {
+  setup (props, { root }) {
     const { result, loading } = useQuery(QUERY_TEAMS)
     const teams = useResult(result, [])
+
+    const isRootRoute = computed(() => root.$route.name === 'admin-teams')
 
     return {
       teams,
       loading,
+      isRootRoute,
     }
   },
 }
@@ -41,7 +38,7 @@ export default {
 <template>
   <div class="flex mt-4">
     <div
-      v-if="!$responsive.lg || !teamId"
+      v-if="!$responsive.lg || isRootRoute"
       class="w-full lg:w-1/3 lg:pb-64 lg:mt-4 lg:sticky lg:top-4 lg:max-h-screen lg:overflow-y-auto"
       :class="{
         'scroll-parent': !$responsive.lg,
@@ -78,7 +75,7 @@ export default {
     </div>
 
     <div
-      v-if="!$responsive.lg || packageId"
+      v-if="!$responsive.lg || !isRootRoute"
       class="w-full lg:w-2/3 lg:pl-16"
     >
       <router-view />
