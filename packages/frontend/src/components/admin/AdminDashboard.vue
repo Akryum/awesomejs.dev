@@ -29,6 +29,7 @@ export default {
     <ErrorMessage
       v-if="!isAdmin"
       error="Restricted area"
+      class="error-box"
     />
 
     <template v-else>
