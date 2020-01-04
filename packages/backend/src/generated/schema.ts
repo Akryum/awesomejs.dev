@@ -156,6 +156,7 @@ export type Package = PackageInterface & {
   projectTypes: Array<ProjectType>,
   info: PackageInfo,
   dataSources: Array<PackageDataSource>,
+  insight: PackageInsight,
   stars?: Maybe<Scalars['Int']>,
   repo?: Maybe<Scalars['String']>,
   defaultLogo?: Maybe<Scalars['String']>,
@@ -185,12 +186,18 @@ export type PackageInfoInput = {
   tags: Array<Scalars['String']>,
 };
 
+export type PackageInsight = {
+   __typename?: 'PackageInsight',
+  npm?: Maybe<PackageNpmInsight>,
+};
+
 export type PackageInterface = {
   id: Scalars['ID'],
   name: Scalars['String'],
   projectTypes: Array<ProjectType>,
   info: PackageInfo,
   dataSources: Array<PackageDataSource>,
+  insight: PackageInsight,
   stars?: Maybe<Scalars['Int']>,
   repo?: Maybe<Scalars['String']>,
   defaultLogo?: Maybe<Scalars['String']>,
@@ -211,6 +218,22 @@ export type PackageMaintainer = {
   avatar?: Maybe<Scalars['String']>,
 };
 
+export type PackageNpmInsight = {
+   __typename?: 'PackageNpmInsight',
+  downloads: Scalars['Int'],
+};
+
+
+export type PackageNpmInsightDownloadsArgs = {
+  range: PackageNpmInsightDownloadsRange
+};
+
+export enum PackageNpmInsightDownloadsRange {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month'
+}
+
 export type PackageProposal = PackageInterface & {
    __typename?: 'PackageProposal',
   id: Scalars['ID'],
@@ -218,6 +241,7 @@ export type PackageProposal = PackageInterface & {
   projectTypes: Array<ProjectType>,
   info: PackageInfo,
   dataSources: Array<PackageDataSource>,
+  insight: PackageInsight,
   stars?: Maybe<Scalars['Int']>,
   repo?: Maybe<Scalars['String']>,
   defaultLogo?: Maybe<Scalars['String']>,
@@ -468,6 +492,9 @@ export type ResolversTypes = {
   PackageInfo: ResolverTypeWrapper<PackageInfo>,
   PackageDataSource: ResolverTypeWrapper<PackageDataSource>,
   JSON: ResolverTypeWrapper<Scalars['JSON']>,
+  PackageInsight: ResolverTypeWrapper<PackageInsight>,
+  PackageNpmInsight: ResolverTypeWrapper<PackageNpmInsight>,
+  PackageNpmInsightDownloadsRange: PackageNpmInsightDownloadsRange,
   PackageMaintainer: ResolverTypeWrapper<PackageMaintainer>,
   PackageRelease: ResolverTypeWrapper<PackageRelease>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
@@ -509,6 +536,9 @@ export type ResolversParentTypes = {
   PackageInfo: PackageInfo,
   PackageDataSource: PackageDataSource,
   JSON: Scalars['JSON'],
+  PackageInsight: PackageInsight,
+  PackageNpmInsight: PackageNpmInsight,
+  PackageNpmInsightDownloadsRange: PackageNpmInsightDownloadsRange,
   PackageMaintainer: PackageMaintainer,
   PackageRelease: PackageRelease,
   Date: Scalars['Date'],
@@ -568,6 +598,7 @@ export type PackageResolvers<ContextType = Context, ParentType extends Resolvers
   projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
+  insight?: Resolver<ResolversTypes['PackageInsight'], ParentType, ContextType>,
   stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   repo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -591,13 +622,18 @@ export type PackageInfoResolvers<ContextType = Context, ParentType extends Resol
   tags?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>,
 };
 
+export type PackageInsightResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageInsight'] = ResolversParentTypes['PackageInsight']> = {
+  npm?: Resolver<Maybe<ResolversTypes['PackageNpmInsight']>, ParentType, ContextType>,
+};
+
 export type PackageInterfaceResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageInterface'] = ResolversParentTypes['PackageInterface']> = {
-  __resolveType: TypeResolveFn<'PackageProposal' | 'Package', ParentType, ContextType>,
+  __resolveType?: TypeResolveFn<'PackageProposal' | 'Package', ParentType, ContextType>,
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
+  insight?: Resolver<ResolversTypes['PackageInsight'], ParentType, ContextType>,
   stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   repo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -617,12 +653,17 @@ export type PackageMaintainerResolvers<ContextType = Context, ParentType extends
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
 };
 
+export type PackageNpmInsightResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageNpmInsight'] = ResolversParentTypes['PackageNpmInsight']> = {
+  downloads?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<PackageNpmInsightDownloadsArgs, 'range'>>,
+};
+
 export type PackageProposalResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageProposal'] = ResolversParentTypes['PackageProposal']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
+  insight?: Resolver<ResolversTypes['PackageInsight'], ParentType, ContextType>,
   stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   repo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   defaultLogo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -726,8 +767,10 @@ export type Resolvers<ContextType = Context> = {
   Package?: PackageResolvers<ContextType>,
   PackageDataSource?: PackageDataSourceResolvers<ContextType>,
   PackageInfo?: PackageInfoResolvers<ContextType>,
+  PackageInsight?: PackageInsightResolvers<ContextType>,
   PackageInterface?: PackageInterfaceResolvers,
   PackageMaintainer?: PackageMaintainerResolvers<ContextType>,
+  PackageNpmInsight?: PackageNpmInsightResolvers<ContextType>,
   PackageProposal?: PackageProposalResolvers<ContextType>,
   PackageRelease?: PackageReleaseResolvers<ContextType>,
   PackageReleaseAsset?: PackageReleaseAssetResolvers<ContextType>,

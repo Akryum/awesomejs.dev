@@ -10,8 +10,12 @@ onCreate(async (context: Context) => {
   addProp(context, 'npm', () => mem(npmFetch.json, {
     maxAge: ms('1s'),
   }))
+  addProp(context, 'npmApi', () => mem((url: string, opts: any = undefined) => npmFetch.json(`https://api.npmjs.org/${url}`, opts), {
+    maxAge: ms('1s'),
+  }))
 })
 
 export default interface NpmContext {
   npm: NpmFunction
+  npmApi: NpmFunction
 }

@@ -55,12 +55,15 @@ export default {
       </div>
     </div>
 
+    <slot />
+
     <a
       v-if="pkg.repo"
       :href="pkg.repo"
       target="_blank"
     >
       <PackageCount
+        v-tooltip="'GitHub stars'"
         :count="pkg.stars || 0"
       />
     </a>

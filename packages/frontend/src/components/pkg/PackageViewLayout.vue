@@ -3,12 +3,14 @@ import { ref, watch } from '@vue/composition-api'
 
 import ErrorMessage from '../ErrorMessage.vue'
 import LoadingIndicator from '../LoadingIndicator.vue'
+import PackageCount from './PackageCount.vue'
 import PackageGeneralInfo from './PackageGeneralInfo.vue'
 
 export default {
   components: {
     ErrorMessage,
     LoadingIndicator,
+    PackageCount,
     PackageGeneralInfo,
   },
 
@@ -53,7 +55,15 @@ export default {
     <template v-else>
       <PackageGeneralInfo
         :pkg="pkg"
-      />
+      >
+        <PackageCount
+          v-if="pkg.insight.npm"
+          v-tooltip="'NPM Downloads last month'"
+          :count="pkg.insight.npm.lastMonthDownloads"
+          icon="cloud_download"
+          class="mr-4"
+        />
+      </PackageGeneralInfo>
 
       <div class="mb-4 flex overflow-x-auto">
         <slot name="actions" />
