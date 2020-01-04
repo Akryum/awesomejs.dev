@@ -77,16 +77,16 @@ export default {
     :error="pkg && !pkg.repo ? 'No GitHub repository found' : null"
   >
     <template #actions>
-      <PackageProposalUpvoteButton
-        :pkg="pkg"
-        class="mr-4"
-      />
-
       <PackageProposalApproveButton
         v-if="inTeam"
         :project-type-id="projectTypeId"
         :proposal="pkg"
         class="px-8 py-4"
+      />
+
+      <PackageProposalUpvoteButton
+        :pkg="pkg"
+        class="ml-4"
       />
     </template>
 
