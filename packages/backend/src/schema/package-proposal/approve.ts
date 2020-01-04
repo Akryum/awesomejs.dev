@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { query as q } from 'faunadb'
+import { query as q, Expr, values } from 'faunadb'
 import { indexPackage } from '@/util/package-index'
 import { Resolvers } from '@/generated/schema'
 
@@ -19,33 +19,39 @@ export const resolvers: Resolvers = {
       const pkgProposal: any = await ctx.db.query(
         q.Get(q.Ref(q.Collection('PackageProposals'), input.proposalId)),
       )
-      const projectType: any = await ctx.db.query(
-        q.Get(pkgProposal.data.projectTypeRef),
-      )
-      const tagMap = projectType.data.tagMap
-      for (const tag of pkgProposal.data.info.tags) {
-        tagMap[tag] = tagMap[tag] || 0
-        tagMap[tag]++
+
+      // Update tag maps
+      const projectTypes = await ctx.db.query<Array<values.Document<any>>>(q.Map(
+        pkgProposal.data.projectTypes,
+        q.Lambda(['ref'], q.Get(q.Var('ref'))),
+      ))
+      const projectTypeUpdates: Expr[] = []
+      for (const projectType of projectTypes) {
+        const tagMap = projectType.data.tagMap
+        for (const tag of pkgProposal.data.info.tags) {
+          tagMap[tag] = tagMap[tag] || 0
+          tagMap[tag]++
+        }
+        projectTypeUpdates.push(q.Update(
+          projectType.ref,
+          {
+            data: {
+              tagMap,
+            },
+          },
+        ))
       }
+
       const pkg: any = await ctx.db.query(
         q.Do(
           q.Delete(pkgProposal.ref),
-          q.Update(
-            projectType.ref,
-            {
-              data: {
-                tagMap,
-              },
-            },
-          ),
+          ...projectTypeUpdates,
           q.Create(
             q.Collection('Packages'),
             {
               data: {
                 name: pkgProposal.data.name,
-                projectTypes: [
-                  q.Ref(q.Collection(projectType.ref.collection.id), projectType.ref.id),
-                ],
+                projectTypes: projectTypes.map((pt) => pt.ref),
                 info: pkgProposal.data.info,
                 dataSources: pkgProposal.data.dataSources,
                 metadata: pkgProposal.data.metadata,
@@ -54,7 +60,9 @@ export const resolvers: Resolvers = {
           ),
         ),
       )
+
       await indexPackage(ctx, pkg)
+
       return {
         id: pkg.ref.id,
         ref: pkg.ref,

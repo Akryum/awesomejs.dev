@@ -5,7 +5,6 @@ import { Resolvers } from '@/generated/schema'
 export const typeDefs = gql`
 extend type PackageProposal {
   user: User
-  projectType: ProjectType!
 }
 
 extend type ProjectType {
@@ -20,17 +19,6 @@ extend type Query {
 `
 export const resolvers: Resolvers = {
   PackageProposal: {
-    projectType: async (proposal, args, ctx) => {
-      const { ref, data } = await ctx.db.query(
-        q.Get(proposal.projectTypeRef),
-      )
-      return {
-        id: ref.id,
-        ref,
-        ...data,
-      }
-    },
-
     user: async (proposal, args, ctx) => {
       try {
         const { ref, data } = await ctx.db.query(
@@ -53,7 +41,7 @@ export const resolvers: Resolvers = {
         q.Map(
           q.Paginate(
             q.Match(
-              q.Index('packageproposals_by_projecttyperef_sort_by_upvote'),
+              q.Index('packageproposals_by_projecttypes_sort_by_upvote'),
               q.Ref(q.Collection('ProjectTypes'), projectType.id),
             ),
           ),
@@ -72,7 +60,7 @@ export const resolvers: Resolvers = {
         q.Count(
           q.Paginate(
             q.Match(
-              q.Index('packageproposals_by_projecttyperef_sort_by_upvote'),
+              q.Index('packageproposals_by_projecttypes_sort_by_upvote'),
               q.Ref(q.Collection('ProjectTypes'), projectType.id),
             ),
           ),

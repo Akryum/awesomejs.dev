@@ -46,7 +46,9 @@ export const resolvers: Resolvers = {
           {
             data: {
               name: input.packageName,
-              projectTypeRef: q.Ref(q.Collection('ProjectTypes'), input.projectTypeId),
+              projectTypes: [
+                q.Ref(q.Collection('ProjectTypes'), input.projectTypeId),
+              ],
               userRef: q.Ref(q.Collection('Users'), ctx.user.id),
               upvotes: 0,
               info: {
