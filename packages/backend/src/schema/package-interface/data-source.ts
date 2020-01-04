@@ -35,7 +35,6 @@ input NpmDataSourceInput {
 `
 
 export const resolvers: Resolvers = {
-  // @ts-ignore
   PackageInterface: {
     dataSources: async (pkg) => {
       return Object.keys(pkg.dataSources || {}).map((key) => ({

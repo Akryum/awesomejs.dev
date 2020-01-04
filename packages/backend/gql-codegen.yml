@@ -11,5 +11,6 @@ generates:
         ProjectType: '@/schema/project-type/db-types#DBProjectType'
         User: '@/schema/user/db-types#DBUser'
         UserAccount: '@/schema/user/db-types#DBUserAccount'
+      optionalResolveType: true
   schema-fragment-matcher.js:
     - fragment-matcher

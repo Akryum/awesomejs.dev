@@ -39,7 +39,6 @@ extend type PackageProposal {
 `
 
 export const resolvers: Resolvers = {
-  // @ts-ignore
   PackageInterface: {
     stars: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).stars,
     repo: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).htmlUrl,

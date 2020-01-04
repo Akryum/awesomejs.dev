@@ -40,7 +40,6 @@ extend type PackageProposal {
 `
 
 export const resolvers: Resolvers = {
-  // @ts-ignore
   PackageInterface: {
     releases: async (pkg, args, ctx) => {
       const { owner, repo } = await getGithubDataSource(pkg, ctx)
