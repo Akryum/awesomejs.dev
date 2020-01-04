@@ -1,9 +1,9 @@
-import { onCreate } from '@nodepack/app-context'
+import { onCreate, addProp } from '@nodepack/app-context'
 import { Client as FaunaClient } from 'faunadb'
 import { Context } from '../context'
 
-onCreate(async (context: Context) => {
-  context.db = new FaunaClient(context.config.db)
+onCreate((context: Context) => {
+  addProp(context, 'db', () => new FaunaClient(context.config.db))
 })
 
 export default interface FaunaContext {
