@@ -51,6 +51,7 @@ export default {
     hover:bg-gray-700
     "
     :class="{
+      'text-orange-200 bg-orange-900 hover:bg-orange-800': !isAdmin && projectType.inTeam,
       'text-purple-200 bg-purple-800 hover:bg-purple-700': selected,
     }"
   >
@@ -73,7 +74,7 @@ export default {
       v-tooltip="'Proposed packages'"
       class="absolute top-0 left-0 pt-1 pl-1"
     >
-      <div class="text-xs text-gray-500 bg-gray-700 px-1 rounded">
+      <div class="text-xs text-orange-100 bg-orange-700 px-1 rounded">
         {{ packageProposalCount }}
       </div>
     </div>
