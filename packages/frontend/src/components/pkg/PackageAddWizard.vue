@@ -199,8 +199,12 @@ export default {
 
       <div
         v-if="npmSearchResult && npmSearchResult.hits.length"
-        class="flex flex-col"
+        class="flex flex-col mt-4"
       >
+        <div class="text-gray-500">
+          Suggestions from NPM:
+        </div>
+
         <BaseButton
           v-for="result of npmSearchResult.hits"
           :key="result.id"
