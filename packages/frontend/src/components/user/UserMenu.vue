@@ -34,6 +34,9 @@ export default {
             :src="currentUser.avatar || require('@/assets/user.svg')"
             alt="User"
             class="avatar max-w-full max-h-full rounded-full bg-gray-700 border-2 border-gray-700 hover:border-gray-600"
+            :class="{
+              'border-red-700 hover:border-red-600': currentUser.admin,
+            }"
           >
         </BaseButton>
 
@@ -50,7 +53,7 @@ export default {
               :to="{ name: 'admin' }"
               icon-left="lock"
               align="left"
-              class="px-6 py-2 hover:bg-gray-800"
+              class="px-6 py-2 text-red-300 hover:bg-red-800"
               square
             >
               Admin
