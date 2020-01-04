@@ -38,7 +38,6 @@ export const resolvers: Resolvers = {
   // @ts-ignore
   PackageInterface: {
     dataSources: async (pkg) => {
-      console.log(pkg)
       return Object.keys(pkg.dataSources || {}).map((key) => ({
         type: key,
         // @ts-ignore
