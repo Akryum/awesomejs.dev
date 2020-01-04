@@ -1,14 +1,14 @@
 <script>
+import gql from 'graphql-tag'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import { pkgProposalFragment } from './fragments'
+import { computed } from '@vue/composition-api'
+
 import PackageViewLayout from './PackageViewLayout.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 import PackageProposalApproveButton from './PackageProposalApproveButton.vue'
 import PackageReleaseCount from './PackageReleaseCount.vue'
 import RouteTab from '../RouteTab.vue'
-
-import gql from 'graphql-tag'
-import { useQuery, useResult } from '@vue/apollo-composable'
-import { pkgProposalFragment } from './fragments'
-import { useCurrentUser } from '../user/useCurrentUser'
 
 export default {
   components: {
@@ -36,6 +36,10 @@ export default {
       query PackageProposal ($id: ID!) {
         pkg: packageProposal (id: $id) {
           ...pkgProposal
+          projectTypes {
+            id
+            inTeam
+          }
         }
       }
       ${pkgProposalFragment}
@@ -43,11 +47,16 @@ export default {
       id: props.packageId,
     }))
     const pkg = useResult(result)
+    const inTeam = computed(() => {
+      if (pkg.value) {
+        return pkg.value.projectTypes.some(pt => pt.inTeam)
+      }
+    })
 
     return {
       pkg,
       loading,
-      isAdmin: useCurrentUser().isAdmin,
+      inTeam,
     }
   },
 
@@ -74,7 +83,7 @@ export default {
       />
 
       <PackageProposalApproveButton
-        v-if="isAdmin"
+        v-if="inTeam"
         :project-type-id="projectTypeId"
         :proposal="pkg"
         class="px-8 py-4"
@@ -108,7 +117,7 @@ export default {
       </RouteTab>
 
       <RouteTab
-        v-if="isAdmin"
+        v-if="inTeam"
         :to="{ name: 'package-proposal-edit' }"
         class="flex-none"
       >

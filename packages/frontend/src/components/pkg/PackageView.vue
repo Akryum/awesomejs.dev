@@ -8,7 +8,7 @@ import RouteTab from '../RouteTab.vue'
 import gql from 'graphql-tag'
 import { pkgFragment } from './fragments'
 import { useQuery, useResult } from '@vue/apollo-composable'
-import { useCurrentUser } from '../user/useCurrentUser'
+import { computed } from '@vue/composition-api'
 
 export default {
   components: {
@@ -36,16 +36,25 @@ export default {
       query Package ($packageId: ID!) {
         pkg: package (id: $packageId) {
           ...pkg
+          projectTypes {
+            id
+            inTeam
+          }
         }
       }
       ${pkgFragment}
     `, props)
     const pkg = useResult(result)
+    const inTeam = computed(() => {
+      if (pkg.value) {
+        return pkg.value.projectTypes.some(pt => pt.inTeam)
+      }
+    })
 
     return {
       pkg,
       loading,
-      isAdmin: useCurrentUser().isAdmin,
+      inTeam,
     }
   },
 
@@ -114,7 +123,7 @@ export default {
       </RouteTab>
 
       <RouteTab
-        v-if="isAdmin"
+        v-if="inTeam"
         :to="{ name: `${routePrefix}package-edit` }"
         class="flex-none"
       >

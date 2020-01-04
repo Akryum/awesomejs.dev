@@ -47,10 +47,6 @@ function validateInput (
   if (!input.projectTypeIds.length) {
     throw new ApolloError('Select at least one project type', ErrorCode.ERROR_VALIDATION)
   }
-
-  if (!input.userIds.length) {
-    throw new ApolloError('Select at least one user', ErrorCode.ERROR_VALIDATION)
-  }
 }
 
 export const resolvers: Resolvers = {

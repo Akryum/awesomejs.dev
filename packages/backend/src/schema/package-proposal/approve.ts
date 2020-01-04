@@ -3,10 +3,11 @@ import { query as q, Expr, values } from 'faunadb'
 import { indexPackage } from '@/util/package-index'
 import { Resolvers } from '@/generated/schema'
 import { mapDocument } from '@/util/fauna'
+import { checkPackageTeamAccess } from '../team/team-access'
 
 export const typeDefs = gql`
 extend type Mutation {
-  approvePackageProposal (input: ApprovePackageProposalInput!): Package @admin @auth
+  approvePackageProposal (input: ApprovePackageProposalInput!): Package @auth
 }
 
 input ApprovePackageProposalInput {
@@ -17,8 +18,11 @@ input ApprovePackageProposalInput {
 export const resolvers: Resolvers = {
   Mutation: {
     approvePackageProposal: async (root, { input }, ctx) => {
+      const ref = q.Ref(q.Collection('PackageProposals'), input.proposalId)
+      await checkPackageTeamAccess(ctx, ref)
+
       const pkgProposal: any = await ctx.db.query(
-        q.Get(q.Ref(q.Collection('PackageProposals'), input.proposalId)),
+        q.Get(ref),
       )
 
       // Update tag maps

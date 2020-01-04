@@ -1,16 +1,17 @@
 <script>
+import gql from 'graphql-tag'
+import { watch, ref, onUnmounted } from '@vue/composition-api'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import { projectTypeFragment } from './fragments'
+import { setFavicon, resetFavicon } from '@/util/favicon'
+import { useCurrentUser } from '../user/useCurrentUser'
+
 import PageTitle from '../PageTitle.vue'
 import PackageList from '../pkg/PackageList.vue'
 import PackageTag from '../pkg/PackageTag.vue'
 import ProjectTypeAllTags from './ProjectTypeAllTags.vue'
 import ProjectTypeBookmarkButton from './ProjectTypeBookmarkButton.vue'
 import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
-
-import gql from 'graphql-tag'
-import { watch, ref, onUnmounted } from '@vue/composition-api'
-import { useQuery, useResult } from '@vue/apollo-composable'
-import { projectTypeFragment } from './fragments'
-import { setFavicon, resetFavicon } from '@/util/favicon'
 
 export default {
   components: {
@@ -79,6 +80,9 @@ export default {
       scroller.value && (scroller.value.scrollTop = 0)
     })
 
+    // Admin
+    const { isAdmin } = useCurrentUser()
+
     return {
       projectType,
 
@@ -87,6 +91,8 @@ export default {
       toggleTag,
 
       scroller,
+
+      isAdmin,
     }
   },
 
@@ -113,6 +119,15 @@ export default {
           <ProjectTypeBookmarkButton
             :project-type="projectType"
           />
+
+          <div
+            v-if="!isAdmin && projectType.inTeam"
+            v-tooltip="'You have moderation rights on this project type'"
+            class="text-orange-300 bg-orange-700 p-1 rounded ml-4 text-sm leading-none"
+          >
+            <i class="material-icons text-base">supervisor_account</i>
+            Team
+          </div>
         </template>
       </PageTitle>
 

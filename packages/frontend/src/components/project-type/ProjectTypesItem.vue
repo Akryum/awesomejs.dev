@@ -17,7 +17,7 @@ export default {
   },
 
   setup (props) {
-    const { isAdmin, loading: userLoading } = useCurrentUser()
+    const { isAdmin } = useCurrentUser()
 
     const { result } = useQuery(gql`
       query ProjectTypePackageProposalCount ($id: ID!) {
@@ -31,12 +31,13 @@ export default {
       id: props.projectType.id,
     }), () => ({
       fetchPolicy: 'cache-and-network',
-      enabled: !userLoading.value && isAdmin.value,
+      enabled: props.projectType.inTeam,
     }))
     const packageProposalCount = useResult(result, 0, data => data.projectType.packageProposalCount)
 
     return {
       packageProposalCount,
+      isAdmin,
     }
   },
 }
@@ -74,6 +75,16 @@ export default {
     >
       <div class="text-xs text-gray-500 bg-gray-700 px-1 rounded">
         {{ packageProposalCount }}
+      </div>
+    </div>
+
+    <div
+      v-if="!isAdmin && projectType.inTeam"
+      v-tooltip="'You have moderation rights on this project type'"
+      class="absolute top-0 right-0 pt-1 pr-1"
+    >
+      <div class="text-orange-300 bg-orange-700 px-1 rounded leading-none">
+        <i class="material-icons text-base">supervisor_account</i>
       </div>
     </div>
   </div>

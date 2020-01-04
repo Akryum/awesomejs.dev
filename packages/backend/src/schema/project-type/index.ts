@@ -4,6 +4,7 @@ import { Resolvers } from '@/generated/schema'
 import { isSpecialTag } from '@awesomejs/shared-utils/tags'
 import { DBProjectType } from './db-types'
 import { mapDocument, mapDocuments } from '@/util/fauna'
+import { hasTeamAccess } from '../team/team-access'
 
 export const typeDefs = gql`
 type ProjectType {
@@ -13,6 +14,7 @@ type ProjectType {
   logo: String!
   popularTags: [Tag!]!
   tags: [Tag!]!
+  inTeam: Boolean!
 }
 
 type Tag {
@@ -47,9 +49,12 @@ export const resolvers: Resolvers = {
     popularTags: (projectType) => {
       return getSortedTags(projectType).slice(0, 8)
     },
+
     tags: (projectType) => {
       return getSortedTags(projectType)
     },
+
+    inTeam: (projectType, args, ctx) => hasTeamAccess(ctx, projectType.id),
   },
 
   Query: {

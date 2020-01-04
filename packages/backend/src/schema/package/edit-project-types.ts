@@ -5,10 +5,11 @@ import { editPackageProjectTypes } from '../package-interface/edit-project-types
 import { updatePackageIndex } from '@/util/package-index'
 import { updateProjectTypeTags } from '@/util/tag-map'
 import { mapDocument } from '@/util/fauna'
+import { checkPackageTeamAccess } from '../team/team-access'
 
 export const typeDefs = gql`
 extend type Mutation {
-  editPackageProjectTypes (input: EditPackageProjectTypesInput!): Package
+  editPackageProjectTypes (input: EditPackageProjectTypesInput!): Package @auth
 }
 `
 
@@ -16,6 +17,7 @@ export const resolvers: Resolvers = {
   Mutation: {
     editPackageProjectTypes: async (root, { input }, ctx) => {
       const ref = q.Ref(q.Collection('Packages'), input.packageId)
+      await checkPackageTeamAccess(ctx, ref)
 
       const oldDoc = await ctx.db.query<values.Document<any>>(q.Get(ref))
 

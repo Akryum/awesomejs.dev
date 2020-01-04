@@ -5,10 +5,11 @@ import { updateProjectTypeTags } from '@/util/tag-map'
 import { updatePackageIndex } from '@/util/package-index'
 import { editPackageCommon } from '../package-interface/edit'
 import { mapDocument } from '@/util/fauna'
+import { checkPackageTeamAccess } from '../team/team-access'
 
 export const typeDefs = gql`
 extend type Mutation {
-  editPackageInfo (input: EditPackageInfoInput!): Package @admin @auth
+  editPackageInfo (input: EditPackageInfoInput!): Package @auth
 }
 
 input EditPackageInfoInput {
@@ -20,6 +21,7 @@ export const resolvers: Resolvers = {
   Mutation: {
     editPackageInfo: async (root, { input }, ctx) => {
       const ref = q.Ref(q.Collection('Packages'), input.common.id)
+      await checkPackageTeamAccess(ctx, ref)
       const pkg = await editPackageCommon(ref, input.common, ctx)
 
       // Update tags
