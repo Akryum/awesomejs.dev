@@ -1,23 +1,26 @@
 <script>
-import PageTitle from '../PageTitle.vue'
-import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
-import UserCheckSignedIn from '../user/UserCheckSignedIn.vue'
-import PackageAdded from './PackageAdded.vue'
-import ErrorMessage from '../ErrorMessage.vue'
-
 import gql from 'graphql-tag'
 import { ref, reactive, computed, watch } from '@vue/composition-api'
 import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
 import { pkgProposalFragment } from './fragments'
 import { useNpmSearch } from '@/util/algolia-npm'
+import { useAvailableTags } from '@/util/tags'
+
+import ErrorMessage from '../ErrorMessage.vue'
+import MultiSelect from 'vue-multiselect'
+import PackageAdded from './PackageAdded.vue'
+import PageTitle from '../PageTitle.vue'
+import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
+import UserCheckSignedIn from '../user/UserCheckSignedIn.vue'
 
 export default {
   components: {
+    ErrorMessage,
+    MultiSelect,
+    PackageAdded,
     PageTitle,
     ProjectTypeSelect,
     UserCheckSignedIn,
-    PackageAdded,
-    ErrorMessage,
   },
 
   setup (props, { root }) {
@@ -132,6 +135,9 @@ export default {
 
     watch(npmSearchResult, () => autoFillFromNpm())
 
+    // Available tags
+    const { availableTags } = useAvailableTags(projectTypeId, () => formData.tags)
+
     return {
       projectTypeId,
       formData,
@@ -149,6 +155,8 @@ export default {
 
       npmSearchResult,
       selectNpmSuggestion,
+
+      availableTags,
     }
   },
 }
@@ -213,12 +221,17 @@ export default {
         </BaseButton>
       </div>
 
-      <input
+      <MultiSelect
+        id="tags"
         v-model="formData.tags"
-        placeholder="Enter a list of tags separated with commas"
-        maxlength="200"
-        class="mt-8 bg-black px-8 py-4 rounded w-full"
-      >
+        :options="availableTags"
+        :close-on-select="false"
+        multiple
+        taggable
+        placeholder="Enter tags"
+        class="mt-8"
+        @tag="tag => formData.tags.push(tag)"
+      />
 
       <div class="mt-8 flex items-center justify-end">
         <BaseButton

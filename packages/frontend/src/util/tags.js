@@ -33,6 +33,8 @@ export function useAvailableTags (projectTypeIdRef, formTags) {
     }
   `, () => ({
     id: projectTypeIdRef.value,
+  }), () => ({
+    enabled: !!projectTypeIdRef.value,
   }))
   const availableTags = computed(() => {
     return Array.from(new Set([
