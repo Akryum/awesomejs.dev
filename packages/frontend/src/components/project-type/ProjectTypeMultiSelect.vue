@@ -54,6 +54,7 @@ export default {
     v-model="model"
     :options="projectTypes"
     :close-on-select="false"
+    :option-height="56"
     label="name"
     track-by="id"
     placeholder="Select project types..."
