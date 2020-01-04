@@ -48,6 +48,7 @@ export default {
     }, {
       lazy: true,
     })
+    watch(() => props.team, () => reset())
 
     function submit () {
       const result = {
