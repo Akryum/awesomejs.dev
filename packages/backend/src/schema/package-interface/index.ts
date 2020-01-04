@@ -1,7 +1,8 @@
 import gql from 'graphql-tag'
 import { Resolvers } from '@/generated/schema'
-import { query as q, values } from 'faunadb'
+import { query as q } from 'faunadb'
 import { DBProjectType } from '../project-type/db-types'
+import { mapDocuments } from '@/util/fauna'
 
 export const typeDefs = gql`
 interface PackageInterface {
@@ -55,10 +56,7 @@ export const resolvers: Resolvers = {
           q.Lambda(['ref'], q.Get(q.Var('ref'))),
         ),
       )
-      return list.map((doc: values.Document) => ({
-        id: doc.ref.id,
-        ...doc.data,
-      }) as DBProjectType)
+      return mapDocuments(list) as DBProjectType[]
     },
   },
 }

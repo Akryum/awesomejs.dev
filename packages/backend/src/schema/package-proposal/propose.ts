@@ -1,8 +1,9 @@
 import gql from 'graphql-tag'
-import { query as q } from 'faunadb'
+import { query as q, values } from 'faunadb'
 import { sanitizeTags } from '@/util/tags'
 import { ApolloError } from '@nodepack/plugin-apollo'
 import { Resolvers } from '@/generated/schema'
+import { mapDocument } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type Mutation {
@@ -40,7 +41,7 @@ export const resolvers: Resolvers = {
         throw new ApolloError(`Package not found on npm`)
       }
 
-      const { ref, data } = await ctx.db.query(
+      const doc = await ctx.db.query<values.Document<any>>(
         q.Create(
           q.Collection('PackageProposals'),
           {
@@ -63,11 +64,7 @@ export const resolvers: Resolvers = {
           },
         ),
       )
-      return {
-        id: ref.id,
-        ref,
-        ...data,
-      }
+      return mapDocument(doc)
     },
   },
 }

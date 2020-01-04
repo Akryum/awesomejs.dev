@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
-import { query as q } from 'faunadb'
+import { query as q, values } from 'faunadb'
 import { Resolvers } from '@/generated/schema'
+import { mapDocument } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type ProjectType {
@@ -37,7 +38,7 @@ export const resolvers: Resolvers = {
           bookmarks.splice(index, 1)
         }
       }
-      const { ref: { id }, data } = await ctx.db.query(
+      const doc = await ctx.db.query<values.Document<any>>(
         q.Do(
           q.Update(
             q.Ref(q.Collection('Users'), ctx.user.id),
@@ -50,11 +51,8 @@ export const resolvers: Resolvers = {
           q.Get(q.Ref(q.Collection('ProjectTypes'), projectTypeId)),
         ),
       )
-      if (data) {
-        return {
-          id,
-          ...data,
-        }
+      if (doc.data) {
+        return mapDocument(doc)
       }
     },
   },

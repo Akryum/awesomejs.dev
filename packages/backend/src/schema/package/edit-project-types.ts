@@ -4,6 +4,7 @@ import { query as q, values } from 'faunadb'
 import { editPackageProjectTypes } from '../package-interface/edit-project-types'
 import { updatePackageIndex } from '@/util/package-index'
 import { updateProjectTypeTags } from '@/util/tag-map'
+import { mapDocument } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type Mutation {
@@ -34,11 +35,7 @@ export const resolvers: Resolvers = {
       // Update index
       await updatePackageIndex(ctx, doc)
 
-      return {
-        id: doc.ref.id,
-        ref: doc.ref,
-        ...doc.data,
-      }
+      return mapDocument(doc)
     },
   },
 }

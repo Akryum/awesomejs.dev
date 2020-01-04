@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
 import { query as q, values, Expr } from 'faunadb'
 import { Resolvers } from '@/generated/schema'
+import { mapDocuments, mapDocument } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type ProjectType {
@@ -42,11 +43,7 @@ export const resolvers: Resolvers = {
         ),
       )
       return {
-        items: data.map((doc: values.Document) => ({
-          id: doc.ref.id,
-          ref: doc.ref,
-          ...doc.data,
-        })),
+        items: mapDocuments(data),
         after,
       }
     },
@@ -54,28 +51,20 @@ export const resolvers: Resolvers = {
 
   Query: {
     package: async (root, { id }, ctx) => {
-      const { ref, data } = await ctx.db.query(
+      const doc = await ctx.db.query<values.Document<any>>(
         q.Get(q.Ref(q.Collection('Packages'), id)),
       )
-      if (data) {
-        return {
-          id: ref.id,
-          ref,
-          ...data,
-        }
+      if (doc.data) {
+        return mapDocument(doc)
       }
     },
 
     packageByName: async (root, { name } , ctx) => {
       try {
-        const { ref, data } = await ctx.db.query(
+        const doc = await ctx.db.query<values.Document<any>>(
           q.Get(q.Match(q.Index('packages_by_name'), name)),
         )
-        return {
-          id: ref.id,
-          ref,
-          ...data,
-        }
+        return mapDocument(doc)
       } catch (e) {
         // Nothing
       }

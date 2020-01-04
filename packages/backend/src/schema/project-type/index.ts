@@ -3,6 +3,7 @@ import { query as q, values } from 'faunadb'
 import { Resolvers } from '@/generated/schema'
 import { isSpecialTag } from '@awesomejs/shared-utils/tags'
 import { DBProjectType } from './db-types'
+import { mapDocument, mapDocuments } from '@/util/fauna'
 
 export const typeDefs = gql`
 type ProjectType {
@@ -61,34 +62,21 @@ export const resolvers: Resolvers = {
           q.Lambda(['name', 'ref'], q.Get(q.Var('ref'))),
         ),
       )
-      return data.map((doc: values.Document) => ({
-        id: doc.ref.id,
-        ...doc.data,
-      }))
+      return mapDocuments(data)
     },
 
     projectType: async (root, { id }, ctx) => {
-      const { data } = await ctx.db.query(
+      const doc = await ctx.db.query<values.Document<any>>(
         q.Get(q.Ref(q.Collection('ProjectTypes'), id)),
       )
-      if (data) {
-        return {
-          id,
-          ...data,
-        }
-      }
+      return mapDocument(doc)
     },
 
     projectTypeBySlug: async (root, { slug }, ctx) => {
-      const { ref: { id }, data } = await ctx.db.query(
+      const doc = await ctx.db.query<values.Document<any>>(
         q.Get(q.Match(q.Index('projecttypes_by_slug'), slug)),
       )
-      if (data) {
-        return {
-          id,
-          ...data,
-        }
-      }
+      return mapDocument(doc)
     },
   },
 }

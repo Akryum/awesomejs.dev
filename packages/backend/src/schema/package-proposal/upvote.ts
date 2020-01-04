@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
-import { query as q } from 'faunadb'
+import { query as q, values } from 'faunadb'
 import { Resolvers } from '@/generated/schema'
+import { mapDocument } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type PackageProposal {
@@ -40,7 +41,7 @@ export const resolvers: Resolvers = {
         userRef,
         ref,
       )
-      const { data } = await ctx.db.query(
+      const doc = await ctx.db.query<values.Document<any>>(
         q.Get(ref),
       )
       if (await ctx.db.query(q.Exists(match))) {
@@ -49,7 +50,7 @@ export const resolvers: Resolvers = {
             q.Delete(q.Select(['ref'], q.Get(match))),
             q.Update(ref, {
               data: {
-                upvotes: --data.upvotes,
+                upvotes: --doc.data.upvotes,
               },
             }),
           ),
@@ -68,17 +69,13 @@ export const resolvers: Resolvers = {
             ),
             q.Update(ref, {
               data: {
-                upvotes: ++data.upvotes,
+                upvotes: ++doc.data.upvotes,
               },
             }),
           ),
         )
       }
-      return {
-        id: input.proposalId,
-        ref,
-        ...data,
-      }
+      return mapDocument(doc)
     },
   },
 }

@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 import { query as q } from 'faunadb'
 import { Resolvers } from '@/generated/schema'
 import { editPackageCommon } from '../package-interface/edit'
+import { mapDocument } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type Mutation {
@@ -18,11 +19,7 @@ export const resolvers: Resolvers = {
     editPackageProposalInfo: async (root, { input }, ctx) => {
       const ref = q.Ref(q.Collection('PackageProposals'), input.common.id)
       const item = await editPackageCommon(ref, input.common, ctx)
-      return {
-        id: input.common.id,
-        ref: item.ref,
-        ...item.data,
-      }
+      return mapDocument(item)
     },
   },
 }

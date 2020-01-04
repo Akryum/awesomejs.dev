@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 import { query as q, Expr, values } from 'faunadb'
 import { indexPackage } from '@/util/package-index'
 import { Resolvers } from '@/generated/schema'
+import { mapDocument } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type Mutation {
@@ -63,11 +64,7 @@ export const resolvers: Resolvers = {
 
       await indexPackage(ctx, pkg)
 
-      return {
-        id: pkg.ref.id,
-        ref: pkg.ref,
-        ...pkg.data,
-      }
+      return mapDocument(pkg)
     },
   },
 }

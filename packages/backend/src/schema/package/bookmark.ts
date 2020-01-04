@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
 import { Resolvers } from '@/generated/schema'
 import { query as q, values } from 'faunadb'
+import { mapDocument, mapDocuments } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type Package {
@@ -42,11 +43,7 @@ export const resolvers: Resolvers = {
           q.Lambda(['ref'], q.Get(q.Select(['data', 'packageRef'], q.Get(q.Var('ref'))))),
         ),
       )
-      return data.map((doc: values.Document) => ({
-        id: doc.ref.id,
-        ref: doc.ref,
-        ...doc.data,
-      }))
+      return mapDocuments(data)
     },
   },
 
@@ -79,11 +76,7 @@ export const resolvers: Resolvers = {
           ),
         )
       }
-      return {
-        id: pkg.ref.id,
-        ref,
-        ...pkg.data,
-      }
+      return mapDocument(pkg)
     },
   },
 }
