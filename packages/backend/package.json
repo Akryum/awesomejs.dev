@@ -14,7 +14,7 @@
     "@awesomejs/shared-utils": "^1.0.0",
     "@graphql-codegen/typescript-resolvers": "^1.9.1",
     "@nodepack/app": "^0.8.0",
-    "@nodepack/app-context": "0.8.0",
+    "@nodepack/app-context": "^0.8.0",
     "@octokit/rest": "^16.30.1",
     "algoliasearch": "^3.35.0",
     "faunadb": "^2.8.1",
