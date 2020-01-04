@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-core'
+import gql from 'graphql-tag'
 import { GraphQLScalarType, Kind } from 'graphql'
 
 export const typeDefs = gql`

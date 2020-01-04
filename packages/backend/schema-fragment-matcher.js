@@ -7,10 +7,10 @@
         "name": "PackageInterface",
         "possibleTypes": [
           {
-            "name": "Package"
+            "name": "PackageProposal"
           },
           {
-            "name": "PackageProposal"
+            "name": "Package"
           }
         ]
       }

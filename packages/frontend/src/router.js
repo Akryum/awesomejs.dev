@@ -149,5 +149,39 @@ export default new Router({
       name: 'about-privacy',
       component: () => import(/* webpackChunkName: "about-privacy" */ './components/about/Privacy.vue'),
     },
+    {
+      path: '/admin',
+      component: () => import(/* webpackChunkName: "admin-dashboard" */ './components/admin/AdminDashboard.vue'),
+      children: [
+        {
+          path: '',
+          name: 'admin',
+          component: () => import(/* webpackChunkName: "admin-home" */ './components/admin/AdminHome.vue'),
+        },
+        {
+          path: 'teams',
+          component: () => import(/* webpackChunkName: "admin-teams" */ './components/admin/AdminTeams.vue'),
+          props: true,
+          children: [
+            {
+              path: '',
+              name: 'admin-teams',
+              component: { render () { return null } },
+            },
+            {
+              path: 'create',
+              name: 'admin-team-create',
+              component: () => import(/* webpackChunkName: "admin-team-create" */ './components/admin/AdminTeamCreate.vue'),
+            },
+            {
+              path: ':teamId',
+              name: 'admin-team-view',
+              props: true,
+              component: () => import(/* webpackChunkName: "admin-team-view" */ './components/admin/AdminTeamView.vue'),
+            },
+          ],
+        },
+      ],
+    },
   ],
 })

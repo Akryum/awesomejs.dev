@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-core'
+import gql from 'graphql-tag'
 import GraphQLJSON from 'graphql-type-json'
 
 export const typeDefs = gql`

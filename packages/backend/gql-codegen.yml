@@ -9,5 +9,7 @@ generates:
       mappers:
         PackageProposal: '@/schema/package-proposal/db-types#DBPackageProposal'
         ProjectType: '@/schema/project-type/db-types#DBProjectType'
+        User: '@/schema/user/db-types#DBUser'
+        UserAccount: '@/schema/user/db-types#DBUserAccount'
   schema-fragment-matcher.js:
     - fragment-matcher

@@ -1,6 +1,6 @@
 import { SchemaDirectiveVisitor } from 'graphql-tools'
 import { defaultFieldResolver, GraphQLField } from 'graphql'
-import { gql } from 'apollo-server-core'
+import gql from 'graphql-tag'
 import { ErrorCode } from '@/const/error-codes'
 import { query as q } from 'faunadb'
 import { getIndexObject, indexPackage } from '../util/package-index'

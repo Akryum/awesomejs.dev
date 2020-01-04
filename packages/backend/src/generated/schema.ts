@@ -1,6 +1,7 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { DBPackageProposal } from '@/schema/package-proposal/db-types';
 import { DBProjectType } from '@/schema/project-type/db-types';
+import { DBUser, DBUserAccount } from '@/schema/user/db-types';
 import { Context } from '@/context';
 export type Maybe<T> = T | null;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -20,6 +21,12 @@ export type Scalars = {
 
 export type ApprovePackageProposalInput = {
   proposalId: Scalars['ID'],
+};
+
+export type CreateTeamInput = {
+  name: Scalars['String'],
+  projectTypeIds: Array<Scalars['ID']>,
+  userIds: Array<Scalars['ID']>,
 };
 
 export type DataSourcesInput = {
@@ -47,6 +54,13 @@ export type EditPackageProposalInfoInput = {
   common: EditPackageInterfaceInput,
 };
 
+export type EditTeamInput = {
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  projectTypeIds: Array<Scalars['ID']>,
+  userIds: Array<Scalars['ID']>,
+};
+
 export type GithubDataSourceInput = {
   owner: Scalars['String'],
   repo: Scalars['String'],
@@ -67,6 +81,8 @@ export type Mutation = {
   editPackageProjectTypes?: Maybe<Package>,
   editPackageInfo?: Maybe<Package>,
   toggleProjectTypeBookmark?: Maybe<ProjectType>,
+  createTeam?: Maybe<Team>,
+  editTeam?: Maybe<Team>,
 };
 
 
@@ -117,6 +133,16 @@ export type MutationEditPackageInfoArgs = {
 
 export type MutationToggleProjectTypeBookmarkArgs = {
   input: ToggleProjectTypeBookmarkInput
+};
+
+
+export type MutationCreateTeamArgs = {
+  input: CreateTeamInput
+};
+
+
+export type MutationEditTeamArgs = {
+  input: EditTeamInput
 };
 
 export type NpmDataSourceInput = {
@@ -261,6 +287,7 @@ export type ProposePackageInput = {
 export type Query = {
    __typename?: 'Query',
   currentUser?: Maybe<User>,
+  allUsers: Array<User>,
   packageProposal?: Maybe<PackageProposal>,
   packageProposalByName?: Maybe<PackageProposal>,
   package?: Maybe<Package>,
@@ -268,6 +295,8 @@ export type Query = {
   projectTypes: Array<ProjectType>,
   projectType?: Maybe<ProjectType>,
   projectTypeBySlug?: Maybe<ProjectType>,
+  team?: Maybe<Team>,
+  allTeams: Array<Team>,
 };
 
 
@@ -300,10 +329,23 @@ export type QueryProjectTypeBySlugArgs = {
   slug: Scalars['String']
 };
 
+
+export type QueryTeamArgs = {
+  id: Scalars['ID']
+};
+
 export type Tag = {
    __typename?: 'Tag',
   id: Scalars['ID'],
   count: Scalars['Int'],
+};
+
+export type Team = {
+   __typename?: 'Team',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  projectTypes: Array<ProjectType>,
+  users: Array<User>,
 };
 
 export type TogglePackageBookmarkInput = {
@@ -326,6 +368,7 @@ export type User = {
   accounts: Array<UserAccount>,
   avatar?: Maybe<Scalars['String']>,
   admin?: Maybe<Scalars['Boolean']>,
+  teams: Array<Team>,
   bookmarkedPackages: Array<Package>,
 };
 
@@ -410,17 +453,17 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>,
-  User: ResolverTypeWrapper<Omit<User, 'bookmarkedPackages'> & { bookmarkedPackages: Array<ResolversTypes['Package']> }>,
+  User: ResolverTypeWrapper<DBUser>,
   ID: ResolverTypeWrapper<Scalars['ID']>,
   String: ResolverTypeWrapper<Scalars['String']>,
-  UserAccount: ResolverTypeWrapper<UserAccount>,
+  UserAccount: ResolverTypeWrapper<DBUserAccount>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-  Package: ResolverTypeWrapper<Omit<Package, 'projectTypes'> & { projectTypes: Array<ResolversTypes['ProjectType']> }>,
-  PackageInterface: ResolverTypeWrapper<Omit<PackageInterface, 'projectTypes'> & { projectTypes: Array<ResolversTypes['ProjectType']> }>,
+  Team: ResolverTypeWrapper<Omit<Team, 'projectTypes' | 'users'> & { projectTypes: Array<ResolversTypes['ProjectType']>, users: Array<ResolversTypes['User']> }>,
   ProjectType: ResolverTypeWrapper<DBProjectType>,
   Tag: ResolverTypeWrapper<Tag>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   PackageProposal: ResolverTypeWrapper<DBPackageProposal>,
+  PackageInterface: ResolverTypeWrapper<Omit<PackageInterface, 'projectTypes'> & { projectTypes: Array<ResolversTypes['ProjectType']> }>,
   PackageInfo: ResolverTypeWrapper<PackageInfo>,
   PackageDataSource: ResolverTypeWrapper<PackageDataSource>,
   JSON: ResolverTypeWrapper<Scalars['JSON']>,
@@ -429,6 +472,7 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars['Date']>,
   PackageReleaseAsset: ResolverTypeWrapper<PackageReleaseAsset>,
   PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
+  Package: ResolverTypeWrapper<Omit<Package, 'projectTypes'> & { projectTypes: Array<ResolversTypes['ProjectType']> }>,
   Mutation: ResolverTypeWrapper<{}>,
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -443,22 +487,24 @@ export type ResolversTypes = {
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
   ToggleProjectTypeBookmarkInput: ToggleProjectTypeBookmarkInput,
+  CreateTeamInput: CreateTeamInput,
+  EditTeamInput: EditTeamInput,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Query: {},
-  User: Omit<User, 'bookmarkedPackages'> & { bookmarkedPackages: Array<ResolversParentTypes['Package']> },
+  User: DBUser,
   ID: Scalars['ID'],
   String: Scalars['String'],
-  UserAccount: UserAccount,
+  UserAccount: DBUserAccount,
   Boolean: Scalars['Boolean'],
-  Package: Omit<Package, 'projectTypes'> & { projectTypes: Array<ResolversParentTypes['ProjectType']> },
-  PackageInterface: Omit<PackageInterface, 'projectTypes'> & { projectTypes: Array<ResolversParentTypes['ProjectType']> },
+  Team: Omit<Team, 'projectTypes' | 'users'> & { projectTypes: Array<ResolversParentTypes['ProjectType']>, users: Array<ResolversParentTypes['User']> },
   ProjectType: DBProjectType,
   Tag: Tag,
   Int: Scalars['Int'],
   PackageProposal: DBPackageProposal,
+  PackageInterface: Omit<PackageInterface, 'projectTypes'> & { projectTypes: Array<ResolversParentTypes['ProjectType']> },
   PackageInfo: PackageInfo,
   PackageDataSource: PackageDataSource,
   JSON: Scalars['JSON'],
@@ -467,6 +513,7 @@ export type ResolversParentTypes = {
   Date: Scalars['Date'],
   PackageReleaseAsset: PackageReleaseAsset,
   PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
+  Package: Omit<Package, 'projectTypes'> & { projectTypes: Array<ResolversParentTypes['ProjectType']> },
   Mutation: {},
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
@@ -481,6 +528,8 @@ export type ResolversParentTypes = {
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
   ToggleProjectTypeBookmarkInput: ToggleProjectTypeBookmarkInput,
+  CreateTeamInput: CreateTeamInput,
+  EditTeamInput: EditTeamInput,
 };
 
 export type AdminDirectiveResolver<Result, Parent, ContextType = Context, Args = {  }> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
@@ -508,6 +557,8 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   editPackageProjectTypes?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationEditPackageProjectTypesArgs, 'input'>>,
   editPackageInfo?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationEditPackageInfoArgs, 'input'>>,
   toggleProjectTypeBookmark?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<MutationToggleProjectTypeBookmarkArgs, 'input'>>,
+  createTeam?: Resolver<Maybe<ResolversTypes['Team']>, ParentType, ContextType, RequireFields<MutationCreateTeamArgs, 'input'>>,
+  editTeam?: Resolver<Maybe<ResolversTypes['Team']>, ParentType, ContextType, RequireFields<MutationEditTeamArgs, 'input'>>,
 };
 
 export type PackageResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Package'] = ResolversParentTypes['Package']> = {
@@ -540,7 +591,7 @@ export type PackageInfoResolvers<ContextType = Context, ParentType extends Resol
 };
 
 export type PackageInterfaceResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageInterface'] = ResolversParentTypes['PackageInterface']> = {
-  __resolveType: TypeResolveFn<'Package' | 'PackageProposal', ParentType, ContextType>,
+  __resolveType: TypeResolveFn<'PackageProposal' | 'Package', ParentType, ContextType>,
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
@@ -623,6 +674,7 @@ export type ProjectTypeResolvers<ContextType = Context, ParentType extends Resol
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
+  allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>,
   packageProposal?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<QueryPackageProposalArgs, 'id'>>,
   packageProposalByName?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<QueryPackageProposalByNameArgs, 'name'>>,
   package?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<QueryPackageArgs, 'id'>>,
@@ -630,11 +682,20 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   projectType?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<QueryProjectTypeArgs, 'id'>>,
   projectTypeBySlug?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<QueryProjectTypeBySlugArgs, 'slug'>>,
+  team?: Resolver<Maybe<ResolversTypes['Team']>, ParentType, ContextType, RequireFields<QueryTeamArgs, 'id'>>,
+  allTeams?: Resolver<Array<ResolversTypes['Team']>, ParentType, ContextType>,
 };
 
 export type TagResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+};
+
+export type TeamResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Team'] = ResolversParentTypes['Team']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
+  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>,
 };
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -644,6 +705,7 @@ export type UserResolvers<ContextType = Context, ParentType extends ResolversPar
   accounts?: Resolver<Array<ResolversTypes['UserAccount']>, ParentType, ContextType>,
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   admin?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
+  teams?: Resolver<Array<ResolversTypes['Team']>, ParentType, ContextType>,
   bookmarkedPackages?: Resolver<Array<ResolversTypes['Package']>, ParentType, ContextType>,
 };
 
@@ -671,6 +733,7 @@ export type Resolvers<ContextType = Context> = {
   ProjectType?: ProjectTypeResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   Tag?: TagResolvers<ContextType>,
+  Team?: TeamResolvers<ContextType>,
   User?: UserResolvers<ContextType>,
   UserAccount?: UserAccountResolvers<ContextType>,
 };

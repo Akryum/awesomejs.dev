@@ -3,11 +3,12 @@ import { useCurrentUser } from './useCurrentUser'
 
 export default {
   setup () {
-    const { currentUser, loading } = useCurrentUser()
+    const { currentUser, loading, isAdmin } = useCurrentUser()
 
     return {
       currentUser,
       loading,
+      isAdmin,
       baseUrl: process.env.VUE_APP_API_BASE,
     }
   },
@@ -15,7 +16,11 @@ export default {
 </script>
 
 <template>
-  <div v-if="!loading">
+  <div
+    v-if="loading"
+    class="w-10 h-10 rounded-full bg-gray-700 border-2 border-gray-700"
+  />
+  <div v-else>
     <div
       v-if="currentUser"
       class="w-10 h-10 flex items-center justify-center"
@@ -38,6 +43,18 @@ export default {
               <i class="material-icons text-lg mr-1">account_circle</i>
               {{ currentUser.nickname }}
             </div>
+
+            <BaseButton
+              v-if="isAdmin"
+              v-close-popper
+              :to="{ name: 'admin' }"
+              icon-left="lock"
+              align="left"
+              class="px-6 py-2 hover:bg-gray-800"
+              square
+            >
+              Admin
+            </BaseButton>
 
             <BaseButton
               v-close-popper

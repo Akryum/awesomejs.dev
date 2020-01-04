@@ -22,22 +22,19 @@ export async function editPackageCommon (
 
   // Update data
   const item = await ctx.db.query<values.Document<any>>(
-    q.Do(
-      q.Update(ref, {
-        data: {
-          info: input.info,
-          dataSources: {
-            github: input.dataSources.github,
-            npm: input.dataSources.npm,
-          },
-          metadata: {
-            npm: null,
-            github: null,
-          },
+    q.Update(ref, {
+      data: {
+        info: input.info,
+        dataSources: {
+          github: input.dataSources.github,
+          npm: input.dataSources.npm,
         },
-      }),
-      q.Get(ref),
-    ),
+        metadata: {
+          npm: null,
+          github: null,
+        },
+      },
+    }),
   )
   return item
 }
