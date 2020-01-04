@@ -1,12 +1,16 @@
 <script>
-import { ref, watch } from '@vue/composition-api'
+import { ref, watch, computed } from '@vue/composition-api'
 import omit from 'lodash/omit'
+import { useQuery } from '@vue/apollo-composable'
+import { gql } from 'apollo-server-core'
 
 import ErrorMessage from '../ErrorMessage.vue'
+import MultiSelect from 'vue-multiselect'
 
 export default {
   components: {
     ErrorMessage,
+    MultiSelect,
   },
 
   props: {
@@ -38,7 +42,6 @@ export default {
       formData.value = {
         info: {
           ...omit(props.pkg.info, ['__typename']),
-          tags: props.pkg.info.tags.join(', '),
         },
         dataSources: {
           github: {
@@ -69,9 +72,6 @@ export default {
         dataSources: {},
       }
 
-      // Tags
-      result.info.tags = result.info.tags.split(',')
-
       // Github
       if (formData.value.dataSources.github.owner && formData.value.dataSources.github.repo) {
         result.dataSources.github = formData.value.dataSources.github
@@ -98,10 +98,31 @@ export default {
       }
     })
 
+    // Available tags
+    const { result: projectTypeResult } = useQuery(gql`
+      query ProjectTypeTags ($id: ID!) {
+        projectType (id: $id) {
+          id
+          tags {
+            id
+          }
+        }
+      }
+    `, () => ({
+      id: props.pkg.projectTypes[0].id,
+    }))
+    const availableTags = computed(() => {
+      return Array.from(new Set([
+        ...formData.value.info ? formData.value.info.tags : [],
+        ...projectTypeResult.value ? projectTypeResult.value.projectType.tags.map(t => t.id) : [],
+      ]))
+    })
+
     return {
       formData,
       submit,
       repoInput,
+      availableTags,
     }
   },
 }
@@ -155,7 +176,7 @@ export default {
       >
     </div>
 
-    <div class="lg:flex items-baseline mt-8">
+    <div class="lg:flex items-center mt-8">
       <label
         for="tags"
         class="flex-none lg:mr-8 lg:w-40 text-gray-500"
@@ -163,13 +184,16 @@ export default {
         Tags:
       </label>
 
-      <input
+      <MultiSelect
         id="tags"
         v-model="formData.info.tags"
-        placeholder="Enter a list of tags separated with commas"
-        maxlength="200"
-        class="mt-2 lg:mt-0 bg-black px-8 py-4 rounded w-full"
-      >
+        :options="availableTags"
+        :close-on-select="false"
+        multiple
+        taggable
+        placeholder="Enter tags"
+        @tag="tag => formData.info.tags.push(tag)"
+      />
     </div>
 
     <div class="mt-8 flex items-center justify-end">
