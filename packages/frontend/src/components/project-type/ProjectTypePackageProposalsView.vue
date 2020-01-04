@@ -1,10 +1,11 @@
 <script>
-import PageTitle from '../PageTitle.vue'
-import PackageProposalList from '../pkg/PackageProposalList.vue'
-
 import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { projectTypeFragment } from './fragments'
+import { useCurrentUser } from '../user/useCurrentUser'
+
+import PageTitle from '../PageTitle.vue'
+import PackageProposalList from '../pkg/PackageProposalList.vue'
 
 export default {
   components: {
@@ -37,8 +38,12 @@ export default {
     }))
     const projectType = useResult(result)
 
+    // Admin
+    const { isAdmin } = useCurrentUser()
+
     return {
       projectType,
+      isAdmin,
     }
   },
 
@@ -65,6 +70,17 @@ export default {
       class="mb-8"
     >
       Proposed {{ projectType.name }} packages
+
+      <template #after>
+        <div
+          v-if="!isAdmin && projectType.inTeam"
+          v-tooltip="'You have moderation rights on this project type'"
+          class="text-orange-300 bg-orange-700 p-1 rounded ml-4 text-sm leading-none"
+        >
+          <i class="material-icons text-base">supervisor_account</i>
+          Team
+        </div>
+      </template>
     </PageTitle>
 
     <div class="flex">
