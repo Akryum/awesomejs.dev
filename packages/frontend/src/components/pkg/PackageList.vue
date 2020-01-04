@@ -103,7 +103,7 @@ export default {
         v-for="pkg of packages"
         :key="pkg.id"
         :to="{
-          name: 'package',
+          name: $route.path.includes('/pkg/') && $route.params.packageId !== pkg.id ? undefined : 'package',
           params: { packageId: pkg.id },
         }"
         :pkg="pkg"

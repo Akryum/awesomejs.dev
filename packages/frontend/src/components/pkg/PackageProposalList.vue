@@ -63,7 +63,7 @@ export default {
         :key="pkg.id"
         :pkg="pkg"
         :to="{
-          name: 'package-proposal',
+          name: $route.path.includes('/pkg/') && $route.params.packageId !== pkg.id ? undefined : 'package-proposal',
           params: { packageId: pkg.id },
         }"
         class="mb-6"
