@@ -40,6 +40,11 @@ export type EditPackageInterfaceInput = {
   dataSources: DataSourcesInput,
 };
 
+export type EditPackageProjectTypesInput = {
+  packageId: Scalars['ID'],
+  projectTypeIds: Array<Scalars['ID']>,
+};
+
 export type EditPackageProposalInfoInput = {
   common: EditPackageInterfaceInput,
 };
@@ -57,9 +62,11 @@ export type Mutation = {
   indexPackage?: Maybe<Scalars['Boolean']>,
   resetProjectTypeTagCounters?: Maybe<Scalars['Boolean']>,
   approvePackageProposal?: Maybe<Package>,
+  editPackageProposalProjectTypes?: Maybe<PackageProposal>,
   editPackageProposalInfo?: Maybe<PackageProposal>,
   proposePackage?: Maybe<PackageProposal>,
   togglePackageProposalUpvote?: Maybe<PackageProposal>,
+  editPackageProjectTypes?: Maybe<Package>,
   editPackageInfo?: Maybe<Package>,
   toggleProjectTypeBookmark?: Maybe<ProjectType>,
 };
@@ -80,6 +87,11 @@ export type MutationApprovePackageProposalArgs = {
 };
 
 
+export type MutationEditPackageProposalProjectTypesArgs = {
+  input: EditPackageProjectTypesInput
+};
+
+
 export type MutationEditPackageProposalInfoArgs = {
   input: EditPackageProposalInfoInput
 };
@@ -92,6 +104,11 @@ export type MutationProposePackageArgs = {
 
 export type MutationTogglePackageProposalUpvoteArgs = {
   input: TogglePackageProposalUpvoteInput
+};
+
+
+export type MutationEditPackageProjectTypesArgs = {
+  input: EditPackageProjectTypesInput
 };
 
 
@@ -112,6 +129,7 @@ export type Package = PackageInterface & {
    __typename?: 'Package',
   id: Scalars['ID'],
   name: Scalars['String'],
+  projectTypes: Array<ProjectType>,
   info: PackageInfo,
   dataSources: Array<PackageDataSource>,
   stars?: Maybe<Scalars['Int']>,
@@ -126,7 +144,6 @@ export type Package = PackageInterface & {
   releaseCount?: Maybe<Scalars['Int']>,
   tagCount?: Maybe<Scalars['Int']>,
   bookmarked?: Maybe<Scalars['Boolean']>,
-  projectTypes: Array<ProjectType>,
 };
 
 export type PackageDataSource = {
@@ -147,6 +164,7 @@ export type PackageInfoInput = {
 export type PackageInterface = {
   id: Scalars['ID'],
   name: Scalars['String'],
+  projectTypes: Array<ProjectType>,
   info: PackageInfo,
   dataSources: Array<PackageDataSource>,
   stars?: Maybe<Scalars['Int']>,
@@ -173,6 +191,7 @@ export type PackageProposal = PackageInterface & {
    __typename?: 'PackageProposal',
   id: Scalars['ID'],
   name: Scalars['String'],
+  projectTypes: Array<ProjectType>,
   info: PackageInfo,
   dataSources: Array<PackageDataSource>,
   stars?: Maybe<Scalars['Int']>,
@@ -187,7 +206,6 @@ export type PackageProposal = PackageInterface & {
   releaseCount?: Maybe<Scalars['Int']>,
   tagCount?: Maybe<Scalars['Int']>,
   user?: Maybe<User>,
-  projectType: ProjectType,
   upvotes: Scalars['Int'],
   upvoted: Scalars['Boolean'],
 };
@@ -400,22 +418,23 @@ export type ResolversTypes = {
   UserAccount: ResolverTypeWrapper<UserAccount>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
   Package: ResolverTypeWrapper<Omit<Package, 'projectTypes'> & { projectTypes: Array<ResolversTypes['ProjectType']> }>,
-  PackageInterface: ResolverTypeWrapper<PackageInterface>,
+  PackageInterface: ResolverTypeWrapper<Omit<PackageInterface, 'projectTypes'> & { projectTypes: Array<ResolversTypes['ProjectType']> }>,
+  ProjectType: ResolverTypeWrapper<DBProjectType>,
+  Tag: ResolverTypeWrapper<Tag>,
+  Int: ResolverTypeWrapper<Scalars['Int']>,
+  PackageProposal: ResolverTypeWrapper<DBPackageProposal>,
   PackageInfo: ResolverTypeWrapper<PackageInfo>,
   PackageDataSource: ResolverTypeWrapper<PackageDataSource>,
   JSON: ResolverTypeWrapper<Scalars['JSON']>,
-  Int: ResolverTypeWrapper<Scalars['Int']>,
   PackageMaintainer: ResolverTypeWrapper<PackageMaintainer>,
   PackageRelease: ResolverTypeWrapper<PackageRelease>,
   Date: ResolverTypeWrapper<Scalars['Date']>,
   PackageReleaseAsset: ResolverTypeWrapper<PackageReleaseAsset>,
-  ProjectType: ResolverTypeWrapper<DBProjectType>,
-  Tag: ResolverTypeWrapper<Tag>,
-  PackageProposal: ResolverTypeWrapper<DBPackageProposal>,
   PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
   Mutation: ResolverTypeWrapper<{}>,
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
+  EditPackageProjectTypesInput: EditPackageProjectTypesInput,
   EditPackageProposalInfoInput: EditPackageProposalInfoInput,
   EditPackageInterfaceInput: EditPackageInterfaceInput,
   PackageInfoInput: PackageInfoInput,
@@ -437,22 +456,23 @@ export type ResolversParentTypes = {
   UserAccount: UserAccount,
   Boolean: Scalars['Boolean'],
   Package: Omit<Package, 'projectTypes'> & { projectTypes: Array<ResolversParentTypes['ProjectType']> },
-  PackageInterface: PackageInterface,
+  PackageInterface: Omit<PackageInterface, 'projectTypes'> & { projectTypes: Array<ResolversParentTypes['ProjectType']> },
+  ProjectType: DBProjectType,
+  Tag: Tag,
+  Int: Scalars['Int'],
+  PackageProposal: DBPackageProposal,
   PackageInfo: PackageInfo,
   PackageDataSource: PackageDataSource,
   JSON: Scalars['JSON'],
-  Int: Scalars['Int'],
   PackageMaintainer: PackageMaintainer,
   PackageRelease: PackageRelease,
   Date: Scalars['Date'],
   PackageReleaseAsset: PackageReleaseAsset,
-  ProjectType: DBProjectType,
-  Tag: Tag,
-  PackageProposal: DBPackageProposal,
   PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
   Mutation: {},
   TogglePackageBookmarkInput: TogglePackageBookmarkInput,
   ApprovePackageProposalInput: ApprovePackageProposalInput,
+  EditPackageProjectTypesInput: EditPackageProjectTypesInput,
   EditPackageProposalInfoInput: EditPackageProposalInfoInput,
   EditPackageInterfaceInput: EditPackageInterfaceInput,
   PackageInfoInput: PackageInfoInput,
@@ -483,9 +503,11 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   indexPackage?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationIndexPackageArgs, 'id'>>,
   resetProjectTypeTagCounters?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
   approvePackageProposal?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationApprovePackageProposalArgs, 'input'>>,
+  editPackageProposalProjectTypes?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationEditPackageProposalProjectTypesArgs, 'input'>>,
   editPackageProposalInfo?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationEditPackageProposalInfoArgs, 'input'>>,
   proposePackage?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationProposePackageArgs, 'input'>>,
   togglePackageProposalUpvote?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationTogglePackageProposalUpvoteArgs, 'input'>>,
+  editPackageProjectTypes?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationEditPackageProjectTypesArgs, 'input'>>,
   editPackageInfo?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationEditPackageInfoArgs, 'input'>>,
   toggleProjectTypeBookmark?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<MutationToggleProjectTypeBookmarkArgs, 'input'>>,
 };
@@ -493,6 +515,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 export type PackageResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Package'] = ResolversParentTypes['Package']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
   stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
@@ -507,7 +530,6 @@ export type PackageResolvers<ContextType = Context, ParentType extends Resolvers
   releaseCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   tagCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   bookmarked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>,
-  projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
 };
 
 export type PackageDataSourceResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageDataSource'] = ResolversParentTypes['PackageDataSource']> = {
@@ -523,6 +545,7 @@ export type PackageInterfaceResolvers<ContextType = Context, ParentType extends 
   __resolveType: TypeResolveFn<'Package' | 'PackageProposal', ParentType, ContextType>,
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
   stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
@@ -547,6 +570,7 @@ export type PackageMaintainerResolvers<ContextType = Context, ParentType extends
 export type PackageProposalResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageProposal'] = ResolversParentTypes['PackageProposal']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   info?: Resolver<ResolversTypes['PackageInfo'], ParentType, ContextType>,
   dataSources?: Resolver<Array<ResolversTypes['PackageDataSource']>, ParentType, ContextType>,
   stars?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
@@ -561,7 +585,6 @@ export type PackageProposalResolvers<ContextType = Context, ParentType extends R
   releaseCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   tagCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>,
-  projectType?: Resolver<ResolversTypes['ProjectType'], ParentType, ContextType>,
   upvotes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   upvoted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
 };

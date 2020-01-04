@@ -1,6 +1,7 @@
 <script>
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageEditForm from './PackageEditForm.vue'
+import PackageEditProjectTypesForm from './PackageEditProjectTypesForm.vue'
 
 import gql from 'graphql-tag'
 import { useMutation, useQuery, useResult } from '@vue/apollo-composable'
@@ -12,6 +13,7 @@ export default {
   components: {
     LoadingIndicator,
     PackageEditForm,
+    PackageEditProjectTypesForm,
   },
 
   props: {
@@ -33,12 +35,17 @@ export default {
             type
             data
           }
+          projectTypes {
+            id
+          }
         }
       }
     `, () => ({
       id: props.pkg.id,
     }))
     const pkgEditInfo = useResult(result, { dataSources: [] })
+
+    // Package info
 
     const { mutate, loading: submitting, error } = useMutation(gql`
       mutation EditPackageInfo ($input: EditPackageInfoInput!) {
@@ -53,7 +60,7 @@ export default {
       ${pkgFragment}
     `)
 
-    async function editProposal (data) {
+    async function editPackage (data) {
       await mutate({
         input: {
           common: {
@@ -63,6 +70,8 @@ export default {
         },
       })
     }
+
+    // Official
 
     const { isOfficial } = useTags(() => props.pkg)
     async function toggleOfficial () {
@@ -84,16 +93,46 @@ export default {
       })
     }
 
+    // Project types
+
+    const {
+      mutate: mutateProjectTypes,
+      loading: submittingProjectTypes,
+      error: projectTypesError,
+    } = useMutation(gql`
+      mutation EditPackageInfo ($input: EditPackageProjectTypesInput!) {
+        editPackageProjectTypes (input: $input) {
+          id
+          projectTypes {
+            id
+          }
+        }
+      }
+    `)
+
+    async function editProjectTypes (data) {
+      await mutateProjectTypes({
+        input: {
+          packageId: props.pkg.id,
+          ...data,
+        },
+      })
+    }
+
     return {
       loading,
       pkgEditInfo,
 
-      editProposal,
+      editPackage,
       submitting,
       error,
 
       isOfficial,
       toggleOfficial,
+
+      editProjectTypes,
+      submittingProjectTypes,
+      projectTypesError,
     }
   },
 }
@@ -105,22 +144,35 @@ export default {
     class="mt-8"
   />
 
-  <PackageEditForm
+  <div
     v-else
-    :pkg="pkgEditInfo"
-    :submitting="submitting"
-    :error="error"
-    @submit="editProposal"
+    class="pb-64"
   >
-    <template #actions>
-      <BaseButton
-        :disabled="submitting"
-        class="text-orange-400 bg-yellow-900 hover:bg-yellow-800 px-8 py-4 mr-4"
-        :icon-left="isOfficial ? 'check_box' : 'check_box_outline_blank'"
-        @click="toggleOfficial()"
-      >
-        Official
-      </BaseButton>
-    </template>
-  </PackageEditForm>
+    <PackageEditForm
+      :pkg="pkgEditInfo"
+      :submitting="submitting"
+      :error="error"
+      @submit="editPackage"
+    >
+      <template #actions>
+        <BaseButton
+          :disabled="submitting"
+          class="text-orange-400 bg-yellow-900 hover:bg-yellow-800 px-8 py-4 mr-4"
+          :icon-left="isOfficial ? 'check_box' : 'check_box_outline_blank'"
+          @click="toggleOfficial()"
+        >
+          Official
+        </BaseButton>
+      </template>
+    </PackageEditForm>
+
+    <hr class="border-gray-800 my-8 max-w-3xl">
+
+    <PackageEditProjectTypesForm
+      :pkg="pkgEditInfo"
+      :submitting="submittingProjectTypes"
+      :error="projectTypesError"
+      @submit="editProjectTypes"
+    />
+  </div>
 </template>

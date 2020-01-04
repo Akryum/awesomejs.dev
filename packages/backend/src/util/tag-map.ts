@@ -1,7 +1,7 @@
 import { Context } from '@/context'
-import { query as q, values } from 'faunadb'
+import { query as q, values, Expr } from 'faunadb'
 
-export async function updateProjectTypeTags (projectTypeRef: values.Ref, ctx: Context) {
+export async function updateProjectTypeTags (projectTypeRef: values.Ref | Expr, ctx: Context) {
   const { data: packages } = await ctx.db.query(q.Map(
     q.Paginate(q.Match(q.Index('packages_by_project_type'), projectTypeRef), { size: 100000 }),
     q.Lambda('ref', q.Get(q.Var('ref'))),
