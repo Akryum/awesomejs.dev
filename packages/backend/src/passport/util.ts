@@ -5,6 +5,7 @@ import { hook } from '@nodepack/app-context'
 import { Context } from '@/context'
 import passport, { AuthenticateOptions } from 'passport'
 import fetch from 'node-fetch'
+import { mapDocument } from '@/util/fauna'
 
 export interface UserAccount {
   provider: string
@@ -58,13 +59,10 @@ export function use (
 deserializeUser(async (passportCtx, { serialized }) => {
   try {
     const ctx = passportCtx as Context
-    const { ref: { id }, data } = await ctx.db.query(
+    const doc = await ctx.db.query<values.Document<any>>(
       q.Get(q.Ref(q.Collection('Users'), serialized)),
     )
-    return {
-      id,
-      ...data,
-    }
+    return mapDocument(doc)
   } catch (e) {
     console.error(e)
     return null
@@ -140,10 +138,7 @@ export function verifyOAuth (provider: string, ctx: Context) {
           q.Get(account.data.userRef),
         )
       }
-      done(null, user ? {
-        id: user.ref.id,
-        ...user.data,
-      } : null)
+      done(null, user ? mapDocument(user) : null)
     } catch (err) {
       console.error(err)
       done(err)
