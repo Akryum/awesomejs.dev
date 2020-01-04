@@ -7,11 +7,10 @@ import ProjectTypeBookmarkButton from './ProjectTypeBookmarkButton.vue'
 import ProjectTypePackageProposalsButton from './ProjectTypePackageProposalsButton.vue'
 
 import gql from 'graphql-tag'
-import { watch, ref, onUnmounted, computed } from '@vue/composition-api'
+import { watch, ref, onUnmounted } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { projectTypeFragment } from './fragments'
 import { setFavicon, resetFavicon } from '@/util/favicon'
-import { isSpecialTag } from '@/util/tags'
 
 export default {
   components: {
@@ -64,11 +63,6 @@ export default {
 
     // Tags
     const tags = useResult(result, [], data => data.projectType.popularTags)
-    const sortedTags = computed(() => tags.value.sort((a, b) => {
-      if (isSpecialTag(a.id)) return -1
-      if (isSpecialTag(b.id)) return 1
-      return 0
-    }))
     const selectedTags = ref([])
     function toggleTag (tag) {
       const index = selectedTags.value.indexOf(tag)
@@ -88,7 +82,7 @@ export default {
     return {
       projectType,
 
-      sortedTags,
+      tags,
       selectedTags,
       toggleTag,
 
@@ -123,12 +117,12 @@ export default {
       </PageTitle>
 
       <div
-        v-if="sortedTags.length"
+        v-if="tags.length"
         class="my-2 xl:mt-0 lg:my-4 xl:mb-4 flex flex-wrap justify-stretch -mr-2"
       >
         <i class="material-icons text-gray-600 mr-2 text-xl flex-none">filter_list</i>
         <PackageTag
-          v-for="tag of sortedTags"
+          v-for="tag of tags"
           :key="tag.id"
           v-tooltip="`${tag.count} package${tag.count > 1 ? 's' : ''}`"
           :tag="tag.id"

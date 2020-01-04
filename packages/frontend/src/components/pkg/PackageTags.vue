@@ -1,6 +1,7 @@
 <script>
 import { computed } from '@vue/composition-api'
-import { useTags, isSpecialTag } from '@/util/tags'
+import { useTags } from '@/util/tags'
+import { isSpecialTag } from '@awesomejs/shared-utils/tags'
 
 import PackageTag from './PackageTag.vue'
 

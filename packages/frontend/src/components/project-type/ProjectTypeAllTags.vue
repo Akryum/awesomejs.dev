@@ -2,7 +2,6 @@
 import { useQuery, useResult } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { computed, ref, watch } from '@vue/composition-api'
-import { isSpecialTag } from '@/util/tags'
 
 import LoadingIndicator from '../LoadingIndicator.vue'
 import PackageTag from '../pkg/PackageTag.vue'
@@ -48,11 +47,6 @@ export default {
       enabled: !!isOpen.value,
     }))
     const tags = useResult(result, [], data => data.projectType.tags)
-    const sortedTags = computed(() => tags.value.sort((a, b) => {
-      if (isSpecialTag(a.id)) return -1
-      if (isSpecialTag(b.id)) return 1
-      return 0
-    }))
 
     const popularTags = useResult(result, [], data => data.projectType.popularTags)
     const otherSelectedTags = computed(() => props.selectedTags.filter(id => !popularTags.value.find(t => t.id === id)))
@@ -61,9 +55,9 @@ export default {
     const filteredTags = computed(() => {
       if (searchText.value) {
         const reg = new RegExp(searchText.value.trim().replace(/\s+/g, '|'), 'i')
-        return sortedTags.value.filter(t => t.id.match(reg))
+        return tags.value.filter(t => t.id.match(reg))
       } else {
-        return sortedTags.value
+        return tags.value
       }
     })
 

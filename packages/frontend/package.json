@@ -9,6 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
+    "@awesomejs/shared-utils": "^1.0.0",
     "@vue/apollo-composable": "^4.0.0-alpha.1",
     "@vue/apollo-util": "^4.0.0-alpha.1",
     "@vue/composition-api": "^0.3.4",

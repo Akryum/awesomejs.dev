@@ -1,0 +1,14 @@
+{
+  "name": "@awesomejs/shared-utils",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "tsc -d"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.4"
+  }
+}

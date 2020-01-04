@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
 import { query as q, values } from 'faunadb'
 import { Resolvers } from '@/generated/schema'
+import { isSpecialTag } from '@awesomejs/shared-utils/tags'
 import { DBProjectType } from './db-types'
 
 export const typeDefs = gql`
@@ -32,7 +33,11 @@ function getSortedTags (projectType: DBProjectType) {
     id: key,
     count: projectType.tagMap[key],
   })).sort(
-    (a, b) => b.count - a.count,
+    (a, b) => {
+      if (isSpecialTag(a.id)) { return -1 }
+      if (isSpecialTag(b.id)) { return 1 }
+      return b.count - a.count
+    },
   )
 }
 
