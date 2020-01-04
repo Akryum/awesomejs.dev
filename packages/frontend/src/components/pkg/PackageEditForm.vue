@@ -1,8 +1,7 @@
 <script>
-import { ref, watch, computed } from '@vue/composition-api'
+import { ref, watch } from '@vue/composition-api'
 import omit from 'lodash/omit'
-import { useQuery } from '@vue/apollo-composable'
-import { gql } from 'apollo-server-core'
+import { useAvailableTags } from '@/util/tags'
 
 import ErrorMessage from '../ErrorMessage.vue'
 import MultiSelect from 'vue-multiselect'
@@ -99,24 +98,10 @@ export default {
     })
 
     // Available tags
-    const { result: projectTypeResult } = useQuery(gql`
-      query ProjectTypeTags ($id: ID!) {
-        projectType (id: $id) {
-          id
-          tags {
-            id
-          }
-        }
-      }
-    `, () => ({
-      id: props.pkg.projectTypes[0].id,
-    }))
-    const availableTags = computed(() => {
-      return Array.from(new Set([
-        ...formData.value.info ? formData.value.info.tags : [],
-        ...projectTypeResult.value ? projectTypeResult.value.projectType.tags.map(t => t.id) : [],
-      ]))
-    })
+    const { availableTags } = useAvailableTags(
+      () => props.pkg.projectTypes[0].id,
+      () => formData.value.info ? formData.value.info.tags : [],
+    )
 
     return {
       formData,
