@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { query as q } from 'faunadb'
 import { sanitizeTags } from '@/util/tags'
-import { ApolloError } from 'apollo-server-core'
+import { ApolloError } from '@nodepack/plugin-apollo'
 import { Resolvers } from '@/generated/schema'
 
 export const typeDefs = gql`

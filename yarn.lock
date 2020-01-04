@@ -2161,9 +2161,9 @@
   integrity sha512-NS36Bp5+ozxxi2ojZdvUumlKZmg3R6vyNYnmPzIPGh5KpZcE6aBhDRNhxL9ZGgtI4GTMAVjH8aZKF9xU5mKMAg==
 
 "@nodepack/plugin-apollo@^0.8.0":
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/@nodepack/plugin-apollo/-/plugin-apollo-0.8.3.tgz#bbe77d9096b25b5912d0d24a2134c0b9e35946e2"
-  integrity sha512-X1G9D6x7Cz8e0+yAVZAGOOkJYHLyXmMOk8M3nlZh2VDlsUYyS5N6hoUHdNt7g8QcnZTqokBCaQ+cRNl8XaQmow==
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/@nodepack/plugin-apollo/-/plugin-apollo-0.8.5.tgz#51f6e73c386d2a335767b319301c925200abecda"
+  integrity sha512-AKQD4paZekK0wl9zYIHNloCM6AMGzEhwZ1PusmkDYekcrb35cFFd1ai9pIIUR3QdaA1eoSJavT6FInH65SDyBw==
   dependencies:
     "@akryum/mock-express-response" "^0.2.3"
     "@types/express" "^4.11.1"

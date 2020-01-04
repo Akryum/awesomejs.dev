@@ -1,6 +1,7 @@
 import { SchemaDirectiveVisitor } from 'graphql-tools'
 import { defaultFieldResolver, GraphQLField } from 'graphql'
-import { gql, ApolloError } from 'apollo-server-core'
+import { gql } from 'apollo-server-core'
+import { ApolloError } from '@nodepack/plugin-apollo'
 import { ErrorCode } from '@/const/error-codes'
 
 export const typeDefs = gql`

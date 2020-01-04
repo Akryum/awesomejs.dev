@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { Context } from '@/context'
 import { Expr, query as q, values } from 'faunadb'
-import { ApolloError } from 'apollo-server-express'
+import { ApolloError } from '@nodepack/plugin-apollo'
 
 export const typeDefs = gql`
 input EditPackageProjectTypesInput {
