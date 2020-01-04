@@ -12,9 +12,7 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
-  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any,
-  /** Date timestamp. It's serialized as a time number in ms, for example `1550923964562`. */
   Date: any,
 };
 
