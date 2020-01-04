@@ -1,5 +1,5 @@
 /** @type {import('@nodepack/service').ProjectOptions} */
 module.exports = {
-  minify: true,
-  externals: false,
+  minify: false,
+  externals: true,
 }
