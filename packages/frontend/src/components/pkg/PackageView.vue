@@ -36,23 +36,26 @@ export default {
       query Package ($packageId: ID!) {
         pkg: package (id: $packageId) {
           ...pkg
-          projectTypes {
-            id
-            inTeam
-          }
-          insight {
-            npm {
-              lastMonthDownloads: downloads (range: month)
-            }
-          }
         }
       }
       ${pkgFragment}
     `, props)
     const pkg = useResult(result)
+
+    const { result: additionalResult } = useQuery(gql`
+      query Package ($packageId: ID!) {
+        pkg: package (id: $packageId) {
+          id
+          projectTypes {
+            id
+            inTeam
+          }
+        }
+      }
+    `, props)
     const inTeam = computed(() => {
-      if (pkg.value) {
-        return pkg.value.projectTypes.some(pt => pt.inTeam)
+      if (additionalResult.value) {
+        return additionalResult.value.pkg.projectTypes.some(pt => pt.inTeam)
       }
     })
 

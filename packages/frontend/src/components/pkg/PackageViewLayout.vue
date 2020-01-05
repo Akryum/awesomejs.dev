@@ -3,14 +3,14 @@ import { ref, watch } from '@vue/composition-api'
 
 import ErrorMessage from '../ErrorMessage.vue'
 import LoadingIndicator from '../LoadingIndicator.vue'
-import PackageCount from './PackageCount.vue'
+import PackageDownloadsCount from './PackageDownloadsCount.vue'
 import PackageGeneralInfo from './PackageGeneralInfo.vue'
 
 export default {
   components: {
     ErrorMessage,
     LoadingIndicator,
-    PackageCount,
+    PackageDownloadsCount,
     PackageGeneralInfo,
   },
 
@@ -88,11 +88,8 @@ export default {
       <PackageGeneralInfo
         :pkg="pkg"
       >
-        <PackageCount
-          v-if="pkg.insight.npm"
-          v-tooltip="'NPM Downloads last month'"
-          :count="pkg.insight.npm.lastMonthDownloads"
-          icon="cloud_download"
+        <PackageDownloadsCount
+          :pkg="pkg"
           class="mr-4"
         />
       </PackageGeneralInfo>

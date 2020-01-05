@@ -40,11 +40,6 @@ export default {
             id
             inTeam
           }
-          insight {
-            npm {
-              lastMonthDownloads: downloads (range: month)
-            }
-          }
         }
       }
       ${pkgProposalFragment}
