@@ -110,6 +110,7 @@ export default {
       >
         Releases
         <PackageReleaseCount
+          v-if="!loading"
           :pkg="pkg"
         />
       </RouteTab>
