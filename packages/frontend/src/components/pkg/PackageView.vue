@@ -43,7 +43,7 @@ export default {
     const pkg = useResult(result)
 
     const { result: additionalResult } = useQuery(gql`
-      query Package ($packageId: ID!) {
+      query PackageProjectTypes ($packageId: ID!) {
         pkg: package (id: $packageId) {
           id
           projectTypes {

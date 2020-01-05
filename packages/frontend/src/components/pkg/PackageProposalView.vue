@@ -36,10 +36,6 @@ export default {
       query PackageProposal ($id: ID!) {
         pkg: packageProposal (id: $id) {
           ...pkgProposal
-          projectTypes {
-            id
-            inTeam
-          }
         }
       }
       ${pkgProposalFragment}
@@ -47,9 +43,21 @@ export default {
       id: props.packageId,
     }))
     const pkg = useResult(result)
+
+    const { result: additionalResult } = useQuery(gql`
+      query PackageProposalProjectTypes ($packageId: ID!) {
+        pkg: packageProposal (id: $packageId) {
+          id
+          projectTypes {
+            id
+            inTeam
+          }
+        }
+      }
+    `, props)
     const inTeam = computed(() => {
-      if (pkg.value) {
-        return pkg.value.projectTypes.some(pt => pt.inTeam)
+      if (additionalResult.value) {
+        return additionalResult.value.pkg.projectTypes.some(pt => pt.inTeam)
       }
     })
 
