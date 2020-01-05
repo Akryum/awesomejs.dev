@@ -32,7 +32,7 @@ export function getNamedParents (routes, matched) {
 
 export function computeDepthWeight (route) {
   return route.matched.reduce((total, m) => {
-    if (m.meta.depthWeight) {
+    if (typeof m.meta.depthWeight === 'number') {
       total += m.meta.depthWeight
     } else {
       total++

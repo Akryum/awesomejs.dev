@@ -39,6 +39,9 @@ const packageRoute = (namePrefix = '') => ({
     {
       path: 'insight',
       component: () => import(/* webpackChunkName: "package-tab-insight" */ './components/pkg/PackageTabInsight.vue'),
+      meta: {
+        depthWeight: 0,
+      },
       children: [
         {
           path: '',
@@ -149,6 +152,9 @@ export default new Router({
             {
               path: 'insight',
               component: () => import(/* webpackChunkName: "package-tab-insight" */ './components/pkg/PackageTabInsight.vue'),
+              meta: {
+                depthWeight: 0,
+              },
               children: [
                 {
                   path: '',
