@@ -43,6 +43,7 @@ Vue.use(VTooltip, {
         hide: 0,
       },
       offset: 8,
+      instantMove: true,
     },
     dropdown: {
       offset: 8,

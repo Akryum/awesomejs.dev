@@ -115,6 +115,13 @@ export default {
       </RouteTab>
 
       <RouteTab
+        :to="{ name: 'package-proposal-insight' }"
+        class="flex-none"
+      >
+        Insight
+      </RouteTab>
+
+      <RouteTab
         :to="{ name: 'package-proposal-data-sources' }"
         class="flex-none"
       >

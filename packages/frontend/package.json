@@ -15,6 +15,7 @@
     "@vue/composition-api": "^0.3.4",
     "algoliasearch": "^3.35.0",
     "core-js": "^3.2.1",
+    "d3": "^5.15.0",
     "emoji-toolkit": "^5.0.5",
     "focus-trap": "^5.0.2",
     "focus-trap-vue": "^0.0.4",

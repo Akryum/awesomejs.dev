@@ -121,6 +121,13 @@ export default {
       </RouteTab>
 
       <RouteTab
+        :to="{ name: `${routePrefix}package-insight` }"
+        class="flex-none"
+      >
+        Insight
+      </RouteTab>
+
+      <RouteTab
         :to="{ name: `${routePrefix}package-data-sources` }"
         class="flex-none"
       >

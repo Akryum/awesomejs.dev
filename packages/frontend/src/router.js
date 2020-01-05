@@ -36,6 +36,17 @@ const packageRoute = (namePrefix = '') => ({
       name: `${namePrefix}package-releases`,
       component: () => import(/* webpackChunkName: "package-tab-releases" */ './components/pkg/PackageTabReleases.vue'),
     },
+    {
+      path: 'insight',
+      component: () => import(/* webpackChunkName: "package-tab-insight" */ './components/pkg/PackageTabInsight.vue'),
+      children: [
+        {
+          path: '',
+          name: `${namePrefix}package-insight`,
+          component: () => import(/* webpackChunkName: "package-tab-insight-npm-downloads" */ './components/pkg/PackageInsightNpmDownloads.vue'),
+        },
+      ],
+    },
   ],
 })
 
@@ -134,6 +145,17 @@ export default new Router({
               path: 'releases',
               name: `package-proposal-releases`,
               component: () => import(/* webpackChunkName: "package-tab-releases" */ './components/pkg/PackageTabReleases.vue'),
+            },
+            {
+              path: 'insight',
+              component: () => import(/* webpackChunkName: "package-tab-insight" */ './components/pkg/PackageTabInsight.vue'),
+              children: [
+                {
+                  path: '',
+                  name: `package-proposal-insight`,
+                  component: () => import(/* webpackChunkName: "package-tab-insight-npm-downloads" */ './components/pkg/PackageInsightNpmDownloads.vue'),
+                },
+              ],
             },
           ],
         },

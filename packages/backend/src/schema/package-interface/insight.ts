@@ -20,6 +20,12 @@ type PackageInsight {
 
 type PackageNpmInsight {
   downloads (range: PackageNpmInsightDownloadsRange!): Int!
+  downloadsPoints (range: PackageNpmInsightDownloadsRange!): [DownloadsPoint!]!
+}
+
+type DownloadsPoint {
+  downloads: Int!
+  day: Date!
 }
 
 enum PackageNpmInsightDownloadsRange {
@@ -41,6 +47,11 @@ export const resolvers: Resolvers = {
   PackageNpmInsight: {
     downloads: async (pkg: any, { range }, ctx) => {
       const data = await ctx.npmApi(`/downloads/point/last-${range}/${encodeURIComponent(pkg.dataSources.npm.name)}`)
+      return data.downloads
+    },
+
+    downloadsPoints: async (pkg: any, { range }, ctx) => {
+      const data = await ctx.npmApi(`/downloads/range/last-${range}/${encodeURIComponent(pkg.dataSources.npm.name)}`)
       return data.downloads
     },
   },

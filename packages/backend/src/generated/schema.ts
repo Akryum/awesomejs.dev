@@ -35,6 +35,12 @@ export type DataSourcesInput = {
 };
 
 
+export type DownloadsPoint = {
+   __typename?: 'DownloadsPoint',
+  downloads: Scalars['Int'],
+  day: Scalars['Date'],
+};
+
 export type EditPackageInfoInput = {
   common: EditPackageInterfaceInput,
 };
@@ -221,10 +227,16 @@ export type PackageMaintainer = {
 export type PackageNpmInsight = {
    __typename?: 'PackageNpmInsight',
   downloads: Scalars['Int'],
+  downloadsPoints: Array<DownloadsPoint>,
 };
 
 
 export type PackageNpmInsightDownloadsArgs = {
+  range: PackageNpmInsightDownloadsRange
+};
+
+
+export type PackageNpmInsightDownloadsPointsArgs = {
   range: PackageNpmInsightDownloadsRange
 };
 
@@ -495,9 +507,10 @@ export type ResolversTypes = {
   PackageInsight: ResolverTypeWrapper<PackageInsight>,
   PackageNpmInsight: ResolverTypeWrapper<PackageNpmInsight>,
   PackageNpmInsightDownloadsRange: PackageNpmInsightDownloadsRange,
+  DownloadsPoint: ResolverTypeWrapper<DownloadsPoint>,
+  Date: ResolverTypeWrapper<Scalars['Date']>,
   PackageMaintainer: ResolverTypeWrapper<PackageMaintainer>,
   PackageRelease: ResolverTypeWrapper<PackageRelease>,
-  Date: ResolverTypeWrapper<Scalars['Date']>,
   PackageReleaseAsset: ResolverTypeWrapper<PackageReleaseAsset>,
   PackagesPage: ResolverTypeWrapper<Omit<PackagesPage, 'items'> & { items: Array<ResolversTypes['Package']> }>,
   Package: ResolverTypeWrapper<Omit<Package, 'projectTypes'> & { projectTypes: Array<ResolversTypes['ProjectType']> }>,
@@ -539,9 +552,10 @@ export type ResolversParentTypes = {
   PackageInsight: PackageInsight,
   PackageNpmInsight: PackageNpmInsight,
   PackageNpmInsightDownloadsRange: PackageNpmInsightDownloadsRange,
+  DownloadsPoint: DownloadsPoint,
+  Date: Scalars['Date'],
   PackageMaintainer: PackageMaintainer,
   PackageRelease: PackageRelease,
-  Date: Scalars['Date'],
   PackageReleaseAsset: PackageReleaseAsset,
   PackagesPage: Omit<PackagesPage, 'items'> & { items: Array<ResolversParentTypes['Package']> },
   Package: Omit<Package, 'projectTypes'> & { projectTypes: Array<ResolversParentTypes['ProjectType']> },
@@ -570,6 +584,11 @@ export type AuthDirectiveResolver<Result, Parent, ContextType = Context, Args = 
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date'
 }
+
+export type DownloadsPointResolvers<ContextType = Context, ParentType extends ResolversParentTypes['DownloadsPoint'] = ResolversParentTypes['DownloadsPoint']> = {
+  downloads?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  day?: Resolver<ResolversTypes['Date'], ParentType, ContextType>,
+};
 
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON'
@@ -655,6 +674,7 @@ export type PackageMaintainerResolvers<ContextType = Context, ParentType extends
 
 export type PackageNpmInsightResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageNpmInsight'] = ResolversParentTypes['PackageNpmInsight']> = {
   downloads?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<PackageNpmInsightDownloadsArgs, 'range'>>,
+  downloadsPoints?: Resolver<Array<ResolversTypes['DownloadsPoint']>, ParentType, ContextType, RequireFields<PackageNpmInsightDownloadsPointsArgs, 'range'>>,
 };
 
 export type PackageProposalResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PackageProposal'] = ResolversParentTypes['PackageProposal']> = {
@@ -762,6 +782,7 @@ export type UserAccountResolvers<ContextType = Context, ParentType extends Resol
 
 export type Resolvers<ContextType = Context> = {
   Date?: GraphQLScalarType,
+  DownloadsPoint?: DownloadsPointResolvers<ContextType>,
   JSON?: GraphQLScalarType,
   Mutation?: MutationResolvers<ContextType>,
   Package?: PackageResolvers<ContextType>,
