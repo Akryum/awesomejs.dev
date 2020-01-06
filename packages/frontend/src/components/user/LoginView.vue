@@ -1,15 +1,16 @@
 <script>
 import { ref, watch } from '@vue/composition-api'
 import { useCurrentUser } from './useCurrentUser'
-import { STORE_ROUTE_BEFORE_REDIRECT } from '@/util/router'
+import { STORE_ROUTE_BEFORE_REDIRECT, useRouter } from '@/util/router'
 
 export default {
-  setup (props, { root }) {
+  setup (props) {
     // Redirect if already logged in
     const { currentUser } = useCurrentUser()
+    const router = useRouter()
     watch(currentUser, value => {
       if (value) {
-        root.$router.replace({ name: 'home' })
+        router.replace({ name: 'home' })
       }
     })
 

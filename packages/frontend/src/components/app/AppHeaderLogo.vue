@@ -2,12 +2,13 @@
 import gql from 'graphql-tag'
 import { computed, ref } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
-import { getNamedParents } from '@/util/router'
+import { getNamedParents, useRouter, useRoute } from '@/util/router'
 import { projectTypeFragment } from '../project-type/fragments'
 
 export default {
   setup (props, { root }) {
-    const hasProjectType = computed(() => !!root.$route.params.projectTypeSlug)
+    const currentRoute = useRoute()
+    const hasProjectType = computed(() => !!currentRoute.value.params.projectTypeSlug)
 
     const { result } = useQuery(gql`
       query ProjectType ($slug: String!) {
@@ -17,7 +18,7 @@ export default {
       }
       ${projectTypeFragment}
     `, () => ({
-      slug: root.$route.params.projectTypeSlug,
+      slug: currentRoute.value.params.projectTypeSlug,
     }), () => ({
       enabled: !!hasProjectType.value,
     }))
@@ -30,9 +31,10 @@ export default {
       return require('@/assets/logo.png')
     })
 
+    const router = useRouter()
     const route = computed(() => {
       if (root.$responsive.lg) {
-        const parents = getNamedParents(root.$router.options.routes, root.$route.matched)
+        const parents = getNamedParents(router.options.routes, currentRoute.value.matched)
         if (parents.length) {
           return {
             name: parents[parents.length - 1].name,
@@ -44,7 +46,7 @@ export default {
 
     // Back button
     const hover = ref(false)
-    const showBack = computed(() => hover.value && root.$route.matched.length > 1)
+    const showBack = computed(() => hover.value && currentRoute.value.matched.length > 1)
 
     return {
       route,

@@ -9,6 +9,7 @@ import { ref, computed, watch, onActivated } from '@vue/composition-api'
 import { useSearch } from '@/util/algolia'
 import { useNpmSearch } from '@/util/algolia-npm'
 import { useLockScroll } from '@/util/lock-scroll'
+import { useRouter, useRoute } from '@/util/router'
 
 export default {
   components: {
@@ -19,12 +20,15 @@ export default {
     ProjectTypeSelect,
   },
 
-  setup (props, { emit, root }) {
+  setup (props, { emit }) {
+    const router = useRouter()
+    const currentRoute = useRoute()
+
     // Close
     function close () {
       emit('close')
     }
-    watch(() => root.$route, () => close(), {
+    watch(currentRoute, () => close(), {
       lazy: true,
     })
 
@@ -106,7 +110,7 @@ export default {
 
     function selectFocused () {
       if (focusIndex.value < result.value.hits.length) {
-        root.$router.push(getRoute(result.value.hits[focusIndex.value]))
+        router.push(getRoute(result.value.hits[focusIndex.value]))
       }
     }
 
@@ -115,7 +119,7 @@ export default {
     // Open overlay
 
     function onOpen () {
-      projectTypeSlug.value = root.$route.params.projectTypeSlug
+      projectTypeSlug.value = currentRoute.value.params.projectTypeSlug
       focusInput()
     }
 
@@ -144,7 +148,7 @@ export default {
     })
 
     function selectNpmResult (result) {
-      root.$router.push({
+      router.push({
         name: 'add-package',
         query: {
           packageName: result.name,

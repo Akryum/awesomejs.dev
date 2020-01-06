@@ -3,6 +3,7 @@ import { ref } from '@vue/composition-api'
 import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { teamFragment } from './fragments'
+import { useRouter } from '@/util/router'
 
 import AdminTeamEditForm from './AdminTeamEditForm.vue'
 import { QUERY_TEAMS } from './AdminTeams.vue'
@@ -12,7 +13,7 @@ export default {
     AdminTeamEditForm,
   },
 
-  setup (props, { root }) {
+  setup (props) {
     const team = ref({
       name: '',
       projectTypes: [],
@@ -35,8 +36,9 @@ export default {
     })
 
     // Redirect after create
+    const router = useRouter()
     onDone((result) => {
-      root.$router.push({
+      router.push({
         name: 'admin-team-view',
         params: {
           teamId: result.data.createTeam.id,

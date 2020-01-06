@@ -3,6 +3,7 @@ import PopupModal from '../PopupModal.vue'
 import { ref } from '@vue/composition-api'
 import { useQrcode } from '@/util/qrcode'
 import { useShare } from '@/util/share'
+import { useRouter } from '@/util/router'
 
 export default {
   components: {
@@ -16,12 +17,13 @@ export default {
     },
   },
 
-  setup (props, { emit, root }) {
+  setup (props, { emit }) {
     function close () {
       emit('close')
     }
 
-    const url = ref(window.location.origin + root.$router.resolve({
+    const router = useRouter()
+    const url = ref(window.location.origin + router.resolve({
       name: 'package',
       params: {
         packageId: props.pkg.id,

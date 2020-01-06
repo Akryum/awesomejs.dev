@@ -1,4 +1,4 @@
-import { getCurrentInstance } from '@vue/composition-api'
+import { getCurrentInstance, computed } from '@vue/composition-api'
 
 export const STORE_ROUTE_BEFORE_REDIRECT = 'dev.awesomejs.route.before-redirect'
 
@@ -7,7 +7,8 @@ export function useRouter () {
 }
 
 export function useRoute () {
-  return getCurrentInstance().$route
+  const vm = getCurrentInstance()
+  return computed(() => vm.$route)
 }
 
 export function getNamedParents (routes, matched) {
