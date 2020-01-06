@@ -18,7 +18,7 @@ export default {
 <template>
   <div class="max-w-lg">
     <PageTitle>
-      {{ proposal.projectType.name }} package submitted!
+      {{ proposal.projectTypes[0].name }} package submitted!
     </PageTitle>
 
     <div class="flex items-center my-8">
@@ -30,7 +30,7 @@ export default {
           :to="{
             name: 'package-proposal',
             params: {
-              projectTypeSlug: proposal.projectType.slug,
+              projectTypeSlug: proposal.projectTypes[0].slug,
               packageId: proposal.id,
             }
           }"
@@ -66,7 +66,7 @@ export default {
         :to="{
           name: 'package-proposal',
           params: {
-            projectTypeSlug: proposal.projectType.slug,
+            projectTypeSlug: proposal.projectTypes[0].slug,
             packageId: proposal.id,
           }
         }"

@@ -2,13 +2,14 @@
 import gql from 'graphql-tag'
 import { ref, reactive, computed, watch } from '@vue/composition-api'
 import { useQuery, useResult, useMutation } from '@vue/apollo-composable'
-import { pkgProposalFragment } from './fragments'
+import { pkgFragment, pkgProposalFragment } from './fragments'
 import { useNpmSearch } from '@/util/algolia-npm'
 import { useAvailableTags } from '@/util/tags'
 
 import ErrorMessage from '../ErrorMessage.vue'
 import MultiSelect from 'vue-multiselect'
 import PackageAdded from './PackageAdded.vue'
+import PackageListItem from './PackageListItem.vue'
 import PageTitle from '../PageTitle.vue'
 import ProjectTypeSelect from '../project-type/ProjectTypeSelect.vue'
 import UserCheckSignedIn from '../user/UserCheckSignedIn.vue'
@@ -18,6 +19,7 @@ export default {
     ErrorMessage,
     MultiSelect,
     PackageAdded,
+    PackageListItem,
     PageTitle,
     ProjectTypeSelect,
     UserCheckSignedIn,
@@ -41,18 +43,30 @@ export default {
     const { result, loading } = useQuery(gql`
       query PackageProposalAndPackageByName ($name: String!) {
         proposal: packageProposalByName (name: $name) {
-          id
+          ...pkgProposal
+          projectTypes {
+            id
+            name
+            slug
+          }
         }
 
         pkg: packageByName (name: $name) {
-          id
+          ...pkg
+          projectTypes {
+            id
+            name
+            slug
+          }
         }
       }
+      ${pkgFragment}
+      ${pkgProposalFragment}
     `, () => ({
       name: formData.packageName,
     }), () => ({
       enabled: !!formData.packageName,
-      debounce: 2000,
+      debounce: 1000,
     }))
     const proposal = useResult(result, null, data => data.proposal)
     const pkg = useResult(result, null, data => data.pkg)
@@ -73,7 +87,7 @@ export default {
       mutation ProposePackage ($input: ProposePackageInput!) {
         proposePackage (input: $input) {
           ...pkgProposal
-          projectType {
+          projectTypes {
             id
             name
             slug
@@ -143,7 +157,9 @@ export default {
       formData,
 
       alreadyProposed,
+      proposal,
       alreadyExists,
+      pkg,
 
       submit,
       submitting,
@@ -190,12 +206,25 @@ export default {
 
       <div
         v-if="alreadyProposed || alreadyExists"
-        class="text-orange-500 mt-2"
+        class="text-orange-500 mt-4"
       >
         <i class="material-icons text-lg mr-2">error</i>
-        <span v-if="alreadyExists">This package already exists in the app</span>
-        <span v-if="alreadyProposed">This package is already proposed</span>
+        <span v-if="alreadyExists">This package already exists in the app:</span>
+        <span v-if="alreadyProposed">This package is already proposed:</span>
       </div>
+
+      <PackageListItem
+        v-if="pkg || proposal"
+        :pkg="pkg || proposal"
+        :to="{
+          name: pkg ? 'package' : 'package-proposal',
+          params: {
+            projectTypeSlug: (pkg || proposal).projectTypes[0].slug,
+            packageId: (pkg || proposal).id,
+          },
+        }"
+        class="mt-4"
+      />
 
       <div
         v-if="npmSearchResult && npmSearchResult.hits.length"
