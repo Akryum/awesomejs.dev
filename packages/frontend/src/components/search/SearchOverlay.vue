@@ -72,7 +72,7 @@ export default {
       return {
         name: 'package',
         params: {
-          projectTypeSlug: hit.projectType.slug,
+          projectTypeSlug: hit.projectTypes[0].slug,
           packageId: hit.id,
         },
       }
