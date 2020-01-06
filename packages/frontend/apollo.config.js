@@ -11,7 +11,7 @@ module.exports = {
   client: {
     service: {
       name: 'awesomejs',
-      url: 'http://localhost:4000/graphql',
+      url: 'http://localhost:4040/graphql',
     },
     includes: ['src/**/*.{js,jsx,ts,tsx,vue,gql}'],
   },

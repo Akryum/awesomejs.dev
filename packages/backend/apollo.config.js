@@ -10,7 +10,7 @@ const env = loadEnv([
 module.exports = {
   service: {
     endpoint: {
-      url: 'http://localhost:4000/graphql'
+      url: 'http://localhost:4040/graphql'
     }
   },
   engine: {

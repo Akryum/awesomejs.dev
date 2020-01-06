@@ -52,7 +52,7 @@
     }
   ],
   "env": {
-    "PORT": "4000",
+    "PORT": "4040",
     "BASE_API_PATH": "/api",
     "CLIENT_BASE_URL": "",
     "DB_SECRET": "@awesomejs_db_secret",

@@ -18,7 +18,7 @@ ALGOLIA_ID=xxxxxxxxxxxxxxxxxxxxx
 ALGOLIA_KEY=xxxxxxxxxxxxxxxxxxxxx
 OAUTH_GITHUB_ID=xxxxxxxxxxxxxxxxxxxxx
 OAUTH_GITHUB_SECRET=xxxxxxxxxxxxxxxxxxxxx
-OAUTH_GITHUB_CALLBACK=http://localhost:4000/auth/github/callback
+OAUTH_GITHUB_CALLBACK=http://localhost:4040/auth/github/callback
 ```
 
 - `DB_SECRET` must be a valid FaunaDB secret
