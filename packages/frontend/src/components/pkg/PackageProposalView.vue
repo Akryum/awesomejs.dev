@@ -7,6 +7,7 @@ import { computed } from '@vue/composition-api'
 import PackageViewLayout from './PackageViewLayout.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 import PackageProposalApproveButton from './PackageProposalApproveButton.vue'
+import PackageProposalRemoveButton from './PackageProposalRemoveButton.vue'
 import PackageReleaseCount from './PackageReleaseCount.vue'
 import RouteTab from '../RouteTab.vue'
 
@@ -14,6 +15,7 @@ export default {
   components: {
     PackageViewLayout,
     PackageProposalApproveButton,
+    PackageProposalRemoveButton,
     PackageProposalUpvoteButton,
     PackageReleaseCount,
     RouteTab,
@@ -85,16 +87,22 @@ export default {
     :error="pkg && !pkg.repo ? 'No GitHub repository found' : null"
   >
     <template #actions>
-      <PackageProposalApproveButton
-        v-if="inTeam"
-        :project-type-id="projectTypeId"
-        :proposal="pkg"
-        class="px-8 py-4"
-      />
+      <template v-if="inTeam">
+        <PackageProposalApproveButton
+          :project-type-id="projectTypeId"
+          :proposal="pkg"
+          class="px-8 py-4 mr-4"
+        />
+
+        <PackageProposalRemoveButton
+          :project-type-id="projectTypeId"
+          :proposal="pkg"
+          class="px-8 py-4 mr-4"
+        />
+      </template>
 
       <PackageProposalUpvoteButton
         :pkg="pkg"
-        class="ml-4"
       />
     </template>
 

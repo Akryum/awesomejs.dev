@@ -1,6 +1,5 @@
 <script>
 import gql from 'graphql-tag'
-import { pkgFragment } from './fragments'
 import { useMutation } from '@vue/apollo-composable'
 import { useSelectNextProposal, removeProposalFromCache } from '@/util/proposal'
 
@@ -20,37 +19,31 @@ export default {
   setup (props) {
     // Action
     const { mutate } = useMutation(gql`
-      mutation ApprovePackageProposal ($input: ApprovePackageProposalInput!) {
-        approvePackageProposal (input: $input) {
-          ...pkg
-        }
+      mutation RemovePackageProposal ($input: RemovePackageProposalInput!) {
+        removePackageProposal (input: $input)
       }
-      ${pkgFragment}
     `, () => {
       // Save current proposal ID as it will change since we immediately select another proposal
       const currentProposalId = props.proposal.id
       return {
         variables: {
           input: {
-            proposalId: currentProposalId,
+            id: currentProposalId,
           },
         },
-        update: (cache, { data: { approvePackageProposal } }) => {
+        update: (cache) => {
           removeProposalFromCache(cache, props.projectTypeId, currentProposalId)
         },
         optimisticResponse: {
           __typename: 'Mutation',
-          approvePackageProposal: {
-            __typename: 'Package',
-            ...props.proposal,
-          },
+          removePackageProposal: true,
         },
       }
     })
 
     const { selectNext } = useSelectNextProposal()
 
-    async function approve () {
+    async function remove () {
       await selectNext(props.projectTypeId, props.proposal.id)
 
       // Approve mutation
@@ -58,7 +51,7 @@ export default {
     }
 
     return {
-      approve,
+      remove,
     }
   },
 }
@@ -66,11 +59,10 @@ export default {
 
 <template>
   <BaseButton
-    :disabled="!proposal.repo"
-    icon-left="done"
-    class="bg-orange-700 hover:bg-orange-800"
-    @click="approve()"
+    icon-left="delete_forever"
+    class="bg-red-700 hover:bg-red-800"
+    @click="remove()"
   >
-    Approve
+    Delete
   </BaseButton>
 </template>

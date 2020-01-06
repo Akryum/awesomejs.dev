@@ -83,6 +83,7 @@ export type Mutation = {
   editPackageProposalProjectTypes?: Maybe<PackageProposal>,
   editPackageProposalInfo?: Maybe<PackageProposal>,
   proposePackage?: Maybe<PackageProposal>,
+  removePackageProposal: Scalars['Boolean'],
   togglePackageProposalUpvote?: Maybe<PackageProposal>,
   editPackageProjectTypes?: Maybe<Package>,
   editPackageInfo?: Maybe<Package>,
@@ -119,6 +120,11 @@ export type MutationEditPackageProposalInfoArgs = {
 
 export type MutationProposePackageArgs = {
   input: ProposePackageInput
+};
+
+
+export type MutationRemovePackageProposalArgs = {
+  input: RemovePackageProposalInput
 };
 
 
@@ -371,6 +377,10 @@ export type QueryTeamArgs = {
   id: Scalars['ID']
 };
 
+export type RemovePackageProposalInput = {
+  id: Scalars['ID'],
+};
+
 export type Tag = {
    __typename?: 'Tag',
   id: Scalars['ID'],
@@ -525,6 +535,7 @@ export type ResolversTypes = {
   GithubDataSourceInput: GithubDataSourceInput,
   NpmDataSourceInput: NpmDataSourceInput,
   ProposePackageInput: ProposePackageInput,
+  RemovePackageProposalInput: RemovePackageProposalInput,
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
   ToggleProjectTypeBookmarkInput: ToggleProjectTypeBookmarkInput,
@@ -570,6 +581,7 @@ export type ResolversParentTypes = {
   GithubDataSourceInput: GithubDataSourceInput,
   NpmDataSourceInput: NpmDataSourceInput,
   ProposePackageInput: ProposePackageInput,
+  RemovePackageProposalInput: RemovePackageProposalInput,
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
   ToggleProjectTypeBookmarkInput: ToggleProjectTypeBookmarkInput,
@@ -603,6 +615,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   editPackageProposalProjectTypes?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationEditPackageProposalProjectTypesArgs, 'input'>>,
   editPackageProposalInfo?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationEditPackageProposalInfoArgs, 'input'>>,
   proposePackage?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationProposePackageArgs, 'input'>>,
+  removePackageProposal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemovePackageProposalArgs, 'input'>>,
   togglePackageProposalUpvote?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationTogglePackageProposalUpvoteArgs, 'input'>>,
   editPackageProjectTypes?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationEditPackageProjectTypesArgs, 'input'>>,
   editPackageInfo?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationEditPackageInfoArgs, 'input'>>,
