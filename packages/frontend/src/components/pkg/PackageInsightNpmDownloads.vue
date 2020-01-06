@@ -60,5 +60,6 @@ export default {
     :points="points"
     title="NPM Downloads"
     icon="cloud_download"
+    class="max-w-192"
   />
 </template>

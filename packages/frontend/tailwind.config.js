@@ -4,9 +4,17 @@ module.exports = {
       colors: {
         'gray-850': '#212935',
       },
+      spacing: {
+        128: '32rem',
+        192: '48rem',
+        256: '64rem',
+      },
       inset: theme => ({
         'full': '100%',
         ...theme('spacing'),
+      }),
+      maxWidth: theme => ({
+        ...theme('width'),
       }),
       opacity: {
         '10': '0.1',
