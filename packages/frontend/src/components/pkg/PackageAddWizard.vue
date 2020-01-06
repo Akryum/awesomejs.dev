@@ -30,13 +30,12 @@ export default {
     const projectTypeId = ref(root.$route.query.projectTypeId || null)
     const formData = reactive({
       packageName: root.$route.query.packageName || '',
-      tags: '',
+      tags: [],
     })
 
     watch(() => root.$route, value => {
       projectTypeId.value = value.query.projectTypeId || null
       formData.packageName = value.query.packageName || ''
-      autoFillFromNpm()
     })
 
     // Check for existing proposals & packages
@@ -108,7 +107,7 @@ export default {
         input: {
           projectTypeId: projectTypeId.value,
           packageName: formData.packageName,
-          tags: formData.tags.trim().split(',').map(t => t.trim()).filter(t => t.length),
+          tags: formData.tags,
         },
       })
     }
@@ -120,7 +119,7 @@ export default {
 
     function addAnother () {
       formData.packageName = ''
-      formData.tags = ''
+      formData.tags = []
       added.value = false
     }
 
@@ -135,19 +134,8 @@ export default {
 
     function selectNpmSuggestion (result) {
       formData.packageName = result.name
-      formData.tags = result.keywords.join(', ')
+      formData.tags = result.keywords
     }
-
-    function autoFillFromNpm () {
-      if (npmSearchResult && npmSearchResult.value) {
-        const hit = npmSearchResult.value.hits.find(h => h.name === formData.packageName)
-        if (hit && !formData.tags) {
-          selectNpmSuggestion(hit)
-        }
-      }
-    }
-
-    watch(npmSearchResult, () => autoFillFromNpm())
 
     // Available tags
     const { availableTags } = useAvailableTags(projectTypeId, () => formData.tags)
