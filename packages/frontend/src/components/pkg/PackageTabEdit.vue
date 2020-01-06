@@ -84,10 +84,12 @@ export default {
 
       await mutate({
         input: {
-          packageId: props.pkg.id,
-          info: {
-            ...omit(props.pkg.info, ['__typename']),
-            tags,
+          common: {
+            id: props.pkg.id,
+            info: {
+              ...omit(props.pkg.info, ['__typename']),
+              tags,
+            },
           },
         },
       })

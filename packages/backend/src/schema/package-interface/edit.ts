@@ -7,8 +7,8 @@ import { EditPackageInterfaceInput } from '@/generated/schema'
 export const typeDefs = gql`
 input EditPackageInterfaceInput {
   id: ID!
-  info: PackageInfoInput!
-  dataSources: DataSourcesInput!
+  info: PackageInfoInput
+  dataSources: DataSourcesInput
 }
 `
 
@@ -24,15 +24,14 @@ export async function editPackageCommon (
   const item = await ctx.db.query<values.Document<any>>(
     q.Update(ref, {
       data: {
-        info: input.info,
-        dataSources: {
-          github: input.dataSources.github,
-          npm: input.dataSources.npm,
-        },
-        metadata: {
-          npm: null,
-          github: null,
-        },
+        ...input.info ? { info: input.info } : {},
+        ...input.dataSources ? {
+          dataSources: input.dataSources,
+          metadata: {
+            npm: null,
+            github: null,
+          },
+        } : {},
       },
     }),
   )

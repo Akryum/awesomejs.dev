@@ -47,8 +47,8 @@ export type EditPackageInfoInput = {
 
 export type EditPackageInterfaceInput = {
   id: Scalars['ID'],
-  info: PackageInfoInput,
-  dataSources: DataSourcesInput,
+  info?: Maybe<PackageInfoInput>,
+  dataSources?: Maybe<DataSourcesInput>,
 };
 
 export type EditPackageProjectTypesInput = {
