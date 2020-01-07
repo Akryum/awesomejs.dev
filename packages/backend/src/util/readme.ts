@@ -1,27 +1,59 @@
 import { Context } from '@/context'
+import { getNpmMetadata, getGithubMetadata } from './metadata'
+import { GithubDataSource } from '@/schema/package-interface/data-source'
+
+export async function getFileContent (
+  githubDatasource: GithubDataSource,
+  path: string,
+  ctx: Context,
+) {
+  const { data }: { data: string } = await ctx.github.repos.getContents({
+    owner: githubDatasource.owner,
+    repo: githubDatasource.repo,
+    headers: {
+      accept: 'application/vnd.github.3.html',
+    },
+    path,
+  }) as any
+  return data
+}
+
+export async function getReadmeContent (
+  githubDatasource: GithubDataSource,
+  ctx: Context,
+) {
+  const { data }: { data: string } = await ctx.github.repos.getReadme({
+    owner: githubDatasource.owner,
+    repo: githubDatasource.repo,
+    headers: {
+      accept: 'application/vnd.github.3.html',
+    },
+  }) as any
+  return data
+}
 
 export async function getReadme (
   pkg: any,
-  getGithubMetadata: ((pkg: any, ctx: Context) => Promise<any>),
   ctx: Context,
-) {
-  const { slug, defaultBranch } = await getGithubMetadata(pkg, ctx)
-  if (slug) {
-    let { data }: { data: string } = await ctx.github.repos.getReadme({
-      owner: slug.owner,
-      repo: slug.repo,
-      headers: {
-        accept: 'application/vnd.github.3.html',
-      },
-    }) as any
-    data = processReadme(data, slug, defaultBranch)
+): Promise<string> {
+  if (pkg.dataSources.github) {
+    const npmMetadata = pkg.dataSources.npm ? await getNpmMetadata(pkg, ctx) : null
+    let data: string
+    if (npmMetadata?.repository?.directory) {
+      data = await getFileContent(pkg.dataSources.github, `${npmMetadata.repository.directory}/README.md`, ctx)
+    }
+    if (!data) {
+      data = await getReadmeContent(pkg.dataSources.github, ctx)
+    }
+    const githubMetadata = await getGithubMetadata(pkg, ctx)
+    data = processReadme(pkg.dataSources.github, data, githubMetadata.defaultBranch)
     return data
   }
 }
 
 export function processReadme (
+  githubDatasource: GithubDataSource,
   text: string,
-  slug: { owner: string, repo: string },
   defaultBranch: string,
 ) {
   // Fix image urls
@@ -30,15 +62,15 @@ export function processReadme (
       return result
     } else if (group1.startsWith('/')) {
       return `src="https://github.com/${
-        encodeURIComponent(slug.owner)
+        encodeURIComponent(githubDatasource.owner)
       }/${
-        encodeURIComponent(slug.repo)
+        encodeURIComponent(githubDatasource.repo)
       }/raw/${defaultBranch}${group1}`
     } else {
       return `src="https://raw.githubusercontent.com/${
-        encodeURIComponent(slug.owner)
+        encodeURIComponent(githubDatasource.owner)
       }/${
-        encodeURIComponent(slug.repo)
+        encodeURIComponent(githubDatasource.repo)
       }/${defaultBranch}/${group1}${group1.endsWith('svg') ? '?sanitize=true' : ''}`
     }
   })

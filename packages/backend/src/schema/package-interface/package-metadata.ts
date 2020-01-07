@@ -48,6 +48,6 @@ export const resolvers: Resolvers = {
     license: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).license,
     description: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).description ||
       (await getNpmMetadata(pkg, ctx)).description,
-    readme: async (pkg, args, ctx) => getReadme(pkg, getGithubMetadata, ctx),
+    readme: async (pkg, args, ctx) => getReadme(pkg, ctx),
   },
 }

@@ -34,6 +34,15 @@ input NpmDataSourceInput {
 }
 `
 
+export interface NpmDataSource {
+  name: string
+}
+
+export interface GithubDataSource {
+  owner: string
+  repo: string
+}
+
 export const resolvers: Resolvers = {
   PackageInterface: {
     dataSources: async (pkg) => {
