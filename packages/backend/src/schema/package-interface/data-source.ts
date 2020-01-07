@@ -43,6 +43,11 @@ export interface GithubDataSource {
   repo: string
 }
 
+export interface PackageDataSources {
+  npm: NpmDataSource
+  github: GithubDataSource
+}
+
 export const resolvers: Resolvers = {
   PackageInterface: {
     dataSources: async (pkg) => {

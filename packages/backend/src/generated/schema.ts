@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import { DBPackageInterface } from '@/schema/package-interface/db-types';
 import { DBPackageProposal } from '@/schema/package-proposal/db-types';
 import { DBProjectType } from '@/schema/project-type/db-types';
 import { DBUser, DBUserAccount } from '@/schema/user/db-types';
@@ -510,7 +511,7 @@ export type ResolversTypes = {
   Tag: ResolverTypeWrapper<Tag>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   PackageProposal: ResolverTypeWrapper<DBPackageProposal>,
-  PackageInterface: ResolverTypeWrapper<Omit<PackageInterface, 'projectTypes'> & { projectTypes: Array<ResolversTypes['ProjectType']> }>,
+  PackageInterface: ResolverTypeWrapper<DBPackageInterface>,
   PackageInfo: ResolverTypeWrapper<PackageInfo>,
   PackageDataSource: ResolverTypeWrapper<PackageDataSource>,
   JSON: ResolverTypeWrapper<Scalars['JSON']>,
@@ -556,7 +557,7 @@ export type ResolversParentTypes = {
   Tag: Tag,
   Int: Scalars['Int'],
   PackageProposal: DBPackageProposal,
-  PackageInterface: Omit<PackageInterface, 'projectTypes'> & { projectTypes: Array<ResolversParentTypes['ProjectType']> },
+  PackageInterface: DBPackageInterface,
   PackageInfo: PackageInfo,
   PackageDataSource: PackageDataSource,
   JSON: Scalars['JSON'],

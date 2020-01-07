@@ -7,6 +7,7 @@ generates:
     config:
       contextType: '@/context#Context'
       mappers:
+        PackageInterface: '@/schema/package-interface/db-types#DBPackageInterface'
         PackageProposal: '@/schema/package-proposal/db-types#DBPackageProposal'
         ProjectType: '@/schema/project-type/db-types#DBProjectType'
         User: '@/schema/user/db-types#DBUser'

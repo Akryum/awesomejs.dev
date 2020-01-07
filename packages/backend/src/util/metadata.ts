@@ -2,6 +2,7 @@ import mem from 'p-memoize'
 import ms from 'ms'
 import { Context } from '@/context'
 import { query as q, values } from 'faunadb'
+import { DBPackageInterface } from '@/schema/package-interface/db-types'
 
 const METADATA_MAX_AGE = ms('6h')
 
@@ -39,55 +40,41 @@ export async function updateMetadata (
   return result
 }
 
-const NPM_METADATA_VERSION = 5
+const NPM_METADATA_VERSION = 6
 
-export const getNpmMetadata = mem(async (pkg: any, ctx: Context): Promise<any> => {
+export const getNpmMetadata = mem(async (pkg: DBPackageInterface, ctx: Context): Promise<any> => {
   try {
-    if (pkg.dataSources?.npm !== 'error') {
-      let result = pkg.metadata?.npm
-      if (!result || result.version !== NPM_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
-        let npmName: string
+    let result = pkg.metadata?.npm
+    if (!result || result.version !== NPM_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
+      let npmName: string
 
-        if (pkg.dataSources?.npm) {
-          npmName = pkg.dataSources.npm.name
-        } else {
-          npmName = pkg.name
-        }
-
-        const data = await ctx.npm(`/${encodeURIComponent(npmName)}`)
-        console.log('REQUEST npm', npmName)
-        // Add new data props to be saved here
-        // and increment NPM_METADATA_VERSION
-        result = await updateMetadata(ctx, pkg.ref, 'npm', {
-          maintainers: data.maintainers,
-          repository: data.repository,
-          homepage: data.homepage,
-          license: data.license,
-          description: data.description,
-        }, NPM_METADATA_VERSION, {
-          dataSources: {
-            npm: {
-              name: npmName,
-            },
-          },
-        })
+      if (pkg.dataSources?.npm) {
+        npmName = pkg.dataSources.npm.name
+      } else {
+        npmName = pkg.name
       }
-      return result.data
-    }
-  } catch (e) {
-    console.error(e)
-    await ctx.db.query(
-      q.Update(
-        pkg.ref,
-        {
-          data: {
-            dataSources: {
-              npm: 'error',
-            },
+
+      const data = await ctx.npm(`/${encodeURIComponent(npmName)}`)
+      console.log('REQUEST npm', npmName)
+      // Add new data props to be saved here
+      // and increment NPM_METADATA_VERSION
+      result = await updateMetadata(ctx, pkg.ref, 'npm', {
+        maintainers: data.maintainers,
+        repository: data.repository,
+        homepage: data.homepage,
+        license: data.license,
+        description: data.description,
+      }, NPM_METADATA_VERSION, {
+        dataSources: {
+          npm: {
+            name: npmName,
           },
         },
-      ),
-    )
+      })
+    }
+    return result.data
+  } catch (e) {
+    console.error(e)
   }
   return {
     maintainers: [],
@@ -99,7 +86,7 @@ export const getNpmMetadata = mem(async (pkg: any, ctx: Context): Promise<any> =
 
 const GITHUB_METADATA_VERSION = 7
 
-export const getGithubDataSource = async (pkg: any, ctx: Context) => {
+export const getGithubDataSource = async (pkg: DBPackageInterface, ctx: Context) => {
   let owner: string
   let repo: string
   if (pkg.dataSources?.github) {
@@ -169,7 +156,7 @@ export const getGithubDataSource = async (pkg: any, ctx: Context) => {
   }
 }
 
-export const getGithubMetadata = mem(async (pkg: any, ctx: Context): Promise<any> => {
+export const getGithubMetadata = mem(async (pkg: DBPackageInterface, ctx: Context): Promise<any> => {
   try {
     let result = pkg.metadata?.github
     if (!result || result.version !== GITHUB_METADATA_VERSION || Date.now() - result.ts > METADATA_MAX_AGE) {
