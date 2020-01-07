@@ -13,15 +13,34 @@ export default {
   setup (props) {
     const src = ref(null)
 
-    watch(() => props.pkg.id, id => {
+    watch(() => props.pkg.id, async id => {
       src.value = null
-      const img = new Image()
-      img.onload = () => {
-        if (id !== props.pkg.id) return
-        src.value = img.src
-      }
-      img.src = `https://unpkg.com/${props.pkg.name}/logo.png`
+      await tryLogo(id, 'logo.svg')
+      await tryLogo(id, 'logo.png')
     })
+
+    function tryLogo (id, filename) {
+      return new Promise(resolve => {
+        const checkId = () => id === props.pkg.id
+
+        if (!checkId()) {
+          return resolve(false)
+        }
+
+        const img = new Image()
+        img.onload = () => {
+          if (!checkId()) {
+            resolve(false)
+          } else {
+            src.value = img.src
+          }
+        }
+        img.onerror = () => {
+          resolve(false)
+        }
+        img.src = `https://unpkg.com/${props.pkg.name}/${filename}`
+      })
+    }
 
     function onError () {
       src.value = genericLogo
