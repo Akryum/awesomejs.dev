@@ -64,6 +64,8 @@ export const getNpmMetadata = mem(async (pkg: DBPackageInterface, ctx: Context):
         homepage: data.homepage,
         license: data.license,
         description: data.description,
+        logo: data.logo,
+        awesomejs: data.awesomejs,
       }, NPM_METADATA_VERSION, {
         dataSources: {
           npm: {
