@@ -218,6 +218,21 @@ export default {
             @keyup.enter="selectFocused()"
           >
 
+          <a
+            href="https://algolia.com/"
+            target="_blank"
+            class="mx-2 flex items-center opacity-50 hover:opacity-100"
+          >
+            <span class="text-xs mr-1">
+              Search by
+            </span>
+            <img
+              src="~@/assets/algolia.svg"
+              alt="Search by Algolia"
+              class="w-16 mt-1"
+            >
+          </a>
+
           <ProjectTypeSelect
             v-model="projectTypeId"
             :project-type-slug.sync="projectTypeSlug"
