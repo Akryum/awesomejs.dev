@@ -3,6 +3,7 @@ import AppHeader from './app/AppHeader.vue'
 import AppFooter from './app/AppFooter.vue'
 import AppGlobalLoading from './app/AppGlobalLoading.vue'
 import AppServiceWorkerManager from './app/AppServiceWorkerManager.vue'
+import PackageInstallationManager from './pkg/PackageInstallationManager.vue'
 import { watch, ref } from '@vue/composition-api'
 import { useResponsive } from '@/util/responsive'
 import { computeDepthWeight } from '@/util/router'
@@ -15,6 +16,7 @@ export default {
     AppFooter,
     AppGlobalLoading,
     AppServiceWorkerManager,
+    PackageInstallationManager,
   },
 
   setup (props, { root }) {
@@ -100,6 +102,7 @@ export default {
     </transition>
 
     <AppServiceWorkerManager />
+    <PackageInstallationManager />
   </div>
 </template>
 

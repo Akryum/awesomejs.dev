@@ -3,12 +3,14 @@ import PackageViewLayout from './PackageViewLayout.vue'
 import PackageBookmarkButton from './PackageBookmarkButton.vue'
 import PackageReleaseCount from './PackageReleaseCount.vue'
 import PackageShareButton from './PackageShareButton.vue'
+import PackageInstallButton from './PackageInstallButton.vue'
 import RouteTab from '../RouteTab.vue'
 
 import gql from 'graphql-tag'
 import { pkgFragment } from './fragments'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { computed } from '@vue/composition-api'
+import { installationAvailable } from '@/util/installation'
 
 export default {
   components: {
@@ -16,6 +18,7 @@ export default {
     PackageBookmarkButton,
     PackageReleaseCount,
     PackageShareButton,
+    PackageInstallButton,
     RouteTab,
   },
 
@@ -63,6 +66,7 @@ export default {
       pkg,
       loading,
       inTeam,
+      installationAvailable,
     }
   },
 
@@ -94,6 +98,12 @@ export default {
     :loading="loading"
   >
     <template #actions>
+      <PackageInstallButton
+        v-if="installationAvailable"
+        :pkg="pkg"
+        class="mr-4"
+      />
+
       <PackageBookmarkButton
         :package-id="pkg.id"
         class="mr-4"

@@ -3,11 +3,13 @@ import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import { pkgProposalFragment } from './fragments'
 import { computed } from '@vue/composition-api'
+import { installationAvailable } from '@/util/installation'
 
 import PackageViewLayout from './PackageViewLayout.vue'
 import PackageProposalUpvoteButton from './PackageProposalUpvoteButton.vue'
 import PackageProposalApproveButton from './PackageProposalApproveButton.vue'
 import PackageProposalRemoveButton from './PackageProposalRemoveButton.vue'
+import PackageInstallButton from './PackageInstallButton.vue'
 import PackageReleaseCount from './PackageReleaseCount.vue'
 import RouteTab from '../RouteTab.vue'
 
@@ -18,6 +20,7 @@ export default {
     PackageProposalRemoveButton,
     PackageProposalUpvoteButton,
     PackageReleaseCount,
+    PackageInstallButton,
     RouteTab,
   },
 
@@ -67,6 +70,7 @@ export default {
       pkg,
       loading,
       inTeam,
+      installationAvailable,
     }
   },
 
@@ -88,6 +92,12 @@ export default {
   >
     <template #actions>
       <template v-if="inTeam">
+        <PackageInstallButton
+          v-if="installationAvailable"
+          :pkg="pkg"
+          class="mr-4"
+        />
+
         <PackageProposalApproveButton
           :project-type-id="projectTypeId"
           :proposal="pkg"
