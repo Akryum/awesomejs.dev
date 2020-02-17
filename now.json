@@ -73,7 +73,9 @@
       "ALGOLIA_ID": "@awesomejs_algolia_id",
       "ALGOLIA_KEY": "@awesomejs_algolia_key",
       "VUE_APP_ALGOLIA_ID": "@awesomejs_algolia_id",
-      "VUE_APP_ALGOLIA_KEY": "@awesomejs_algolia_key"
+      "VUE_APP_ALGOLIA_KEY": "@awesomejs_algolia_key",
+      "VUE_APP_GRAPHQL_HTTP": "/api/graphql",
+      "VUE_APP_API_BASE": "/api"
     }
   },
   "github": {
