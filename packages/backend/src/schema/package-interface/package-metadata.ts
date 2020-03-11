@@ -53,7 +53,7 @@ export const resolvers: Resolvers = {
       }
       return (await getGithubMetadata(pkg, ctx)).owner?.avatar
     },
-    maintainers: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).maintainers,
+    maintainers: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).maintainers || [],
     homepage: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).homepage,
     license: async (pkg, args, ctx) => (await getNpmMetadata(pkg, ctx)).license,
     description: async (pkg, args, ctx) => (await getGithubMetadata(pkg, ctx)).description ||
