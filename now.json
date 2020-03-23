@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "regions": [
+    "all"
+  ],
   "builds": [
     {
       "src": "packages/frontend/package.json",
