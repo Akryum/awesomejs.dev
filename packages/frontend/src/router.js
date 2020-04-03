@@ -178,6 +178,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about-privacy" */ './components/about/Privacy.vue'),
     },
     {
+      path: '/about/contributing',
+      name: 'about-contributing',
+      component: () => import(/* webpackChunkName: "about-privacy" */ './components/about/Contributing.vue'),
+    },
+    {
       path: '/admin',
       component: () => import(/* webpackChunkName: "admin-dashboard" */ './components/admin/AdminDashboard.vue'),
       children: [

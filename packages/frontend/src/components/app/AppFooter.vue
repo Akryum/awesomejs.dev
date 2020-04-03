@@ -11,6 +11,13 @@
       </span>
 
       <span class="inline-block mr-4">
+        <router-link
+          :to="{ name: 'about-contributing' }"
+          class="underline"
+        >Contributing</router-link>
+      </span>
+
+      <span class="inline-block mr-4">
         Follow us on
         <a
           href="https://twitter.com/awesomejsapp"
