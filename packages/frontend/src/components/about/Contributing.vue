@@ -72,7 +72,7 @@ export default {
       <li class="ml-8">
         The project is active and maintained.
       </li>
-      
+
       <li class="ml-8">
         Must have a link to the github repository.
       </li>
