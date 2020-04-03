@@ -180,7 +180,7 @@ export default new Router({
     {
       path: '/about/contributing',
       name: 'about-contributing',
-      component: () => import(/* webpackChunkName: "about-privacy" */ './components/about/Contributing.vue'),
+      component: () => import(/* webpackChunkName: "about-contributing" */ './components/about/Contributing.vue'),
     },
     {
       path: '/admin',
