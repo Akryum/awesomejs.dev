@@ -1,7 +1,7 @@
 import * as Algolia from 'algoliasearch'
 import { useSearch } from './algolia'
 
-const client = Algolia('OFCNCOG2CU', 'db283631f89b5b8a10707311f911fd00')
+const client = Algolia(process.env.VUE_APP_ALGOLIA_ID, process.env.VUE_APP_ALGOLIA_KEY)
 
 export function useNpmSearch (queryParameters = {}) {
   return useSearch('npm-search', queryParameters, {

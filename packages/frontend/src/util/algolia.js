@@ -1,7 +1,4 @@
-import * as Algolia from 'algoliasearch'
 import { ref, isRef, watch } from '@vue/composition-api'
-
-const defaultClient = Algolia(process.env.VUE_APP_ALGOLIA_ID, process.env.VUE_APP_ALGOLIA_KEY)
 
 /** @typedef {import('@vue/composition-api').Ref} Ref */
 /** @typedef {import('algoliasearch').QueryParameters} QueryParameters */
@@ -14,7 +11,7 @@ const defaultClient = Algolia(process.env.VUE_APP_ALGOLIA_ID, process.env.VUE_AP
  * @param {Algolia.Client} algoliaClient
  * @param {any} options Other options
  */
-export function useSearch (indexName, queryParameters = {}, defaultQueryParameters = {}, algoliaClient = defaultClient, options = {}) {
+export function useSearch (indexName, queryParameters = {}, defaultQueryParameters = {}, algoliaClient, options = {}) {
   const index = algoliaClient.initIndex(indexName)
   const searchText = ref('')
   /** @type {Ref<Response>} */
