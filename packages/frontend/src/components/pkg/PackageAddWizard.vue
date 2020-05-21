@@ -81,7 +81,11 @@ export default {
     const addedProposal = ref(null)
 
     // Read contributing
-    const readContributing = ref(false)
+    const readContributing = ref(root.$localStorage.get('readContributing'))
+
+    watch(() => readContributing.value, value => {
+      root.$localStorage.set('readContributing', value)
+    })
 
     // Submit
 
