@@ -109,6 +109,11 @@ export default new Router({
       ],
     },
     {
+      path: '/project-type/add',
+      name: 'add-project',
+      component: () => import(/* webpackChunkName: "project-add-wizard" */ './components/project-type/ProjectAddWizard.vue'),
+    },
+    {
       path: '/proposed/:projectTypeSlug',
       component: () => import(/* webpackChunkName: "project-type-package-proposals" */ './components/project-type/ProjectTypePackageProposalsView.vue'),
       props: true,

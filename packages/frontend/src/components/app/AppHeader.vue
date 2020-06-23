@@ -3,6 +3,7 @@ import { ref } from '@vue/composition-api'
 import { isMac } from '@/util/env'
 import AppHeaderLogo from './AppHeaderLogo.vue'
 import PackageAddButton from '../pkg/PackageAddButton.vue'
+import ProjectTypeAddButton from '../project-type/ProjectTypeAddButton.vue'
 import UserMenu from '../user/UserMenu.vue'
 import SearchOverlayAsyncState from '../search/SearchOverlayAsyncState.vue'
 const SearchOverlayLoading = {
@@ -33,6 +34,7 @@ export default {
   components: {
     AppHeaderLogo,
     PackageAddButton,
+    ProjectTypeAddButton,
     SearchOverlay,
     UserMenu,
   },
@@ -54,6 +56,9 @@ export default {
 
       <div class="flex-1" />
 
+      <ProjectTypeAddButton
+        class="mr-4"
+      />
       <PackageAddButton
         class="mr-4"
       />
