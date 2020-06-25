@@ -76,11 +76,12 @@ export default {
   <div v-if="!isShow">
     <div
       class="
-      flex flex-col items-center justify-center p-2 bg-gray-800 rounded-t
+      flex flex-col items-center justify-center p-2 bg-gray-800 rounded
       w-24 h-24 lg:w-32 lg:h-32 relative
       hover:bg-gray-700
       "
       :class="{
+        'rounded-b-none': isAdmin,
         'text-orange-200 bg-orange-900 hover:bg-orange-800': !isAdmin && projectType.inTeam,
         'text-purple-200 bg-purple-800 hover:bg-purple-700': selected,
       }"
@@ -100,11 +101,13 @@ export default {
       </div>
     </div>
     <BaseButton
+      v-if="isAdmin"
       class="bg-purple-800 hover:bg-purple-700 p-2 w-1/2 rounded-t-none rounded-r-none"
       icon-left="thumb_up"
       @click="approve()"
     />
     <BaseButton
+      v-if="isAdmin"
       icon-left="thumb_down"
       class="bg-red-800 hover:bg-red-700 p-2 w-1/2 rounded-t-none rounded-l-none"
       @click="reject()"
