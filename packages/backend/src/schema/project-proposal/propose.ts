@@ -5,7 +5,7 @@ import { mapDocument } from '@/util/fauna'
 
 export const typeDefs = gql`
 extend type Mutation {
-  proposeProject (input: ProposeProjectInput!): ProjectType
+  proposeProject (input: ProposeProjectInput!): ProjectType @auth
 }
 
 input ProposeProjectInput {
