@@ -6,6 +6,10 @@ export default {
     PageTitle,
   },
 
+  setup (props, { root }) {
+    root.$localStorage.set('readContributing', true)
+  },
+
   metaInfo: {
     title: 'Contributing',
   },

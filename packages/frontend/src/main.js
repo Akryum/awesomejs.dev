@@ -3,6 +3,7 @@ import './plugins'
 import Vue from 'vue'
 import App from './components/App.vue'
 import router from './router'
+import localStorage from './local-storage'
 import './registerServiceWorker'
 import { createClient } from './vue-apollo'
 import './components'
@@ -19,6 +20,8 @@ Vue.config.errorHandler = (err, vm, info) => {
 const apolloClient = createClient()
 
 const app = new Vue({
+  localStorage,
+
   router,
 
   setup () {
