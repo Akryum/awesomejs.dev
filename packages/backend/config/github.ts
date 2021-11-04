@@ -1,5 +1,5 @@
 import { Options } from '@octokit/rest'
 
-export default{
+export default {
   auth: process.env.GITHUB_AUTH,
 } as Options
