@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@awesomejs/shared-utils": "^1.0.0",
-    "@vue/apollo-composable": "^4.0.0-alpha.1",
-    "@vue/apollo-util": "^4.0.0-alpha.1",
+    "@vue/apollo-composable": "4.0.0-alpha.4",
+    "@vue/apollo-util": "4.0.0-alpha.2",
     "@vue/composition-api": "^0.3.4",
     "algoliasearch": "^3.35.0",
     "core-js": "^3.2.1",
