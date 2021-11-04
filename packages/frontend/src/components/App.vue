@@ -110,6 +110,6 @@ export default {
 @import '~@/assets/styles/tailwind.postcss';
 
 .main-view {
-  min-height: calc(100vh - 280px);
+  min-height: calc(100vh - 390px);
 }
 </style>

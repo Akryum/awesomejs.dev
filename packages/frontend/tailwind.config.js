@@ -16,6 +16,9 @@ module.exports = {
       maxWidth: theme => ({
         ...theme('width'),
       }),
+      maxHeight: theme => ({
+        ...theme('width'),
+      }),
       opacity: {
         '10': '0.1',
         '90': '0.9',

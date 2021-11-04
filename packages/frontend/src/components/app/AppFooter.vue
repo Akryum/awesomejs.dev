@@ -1,23 +1,35 @@
+<script>
+import AppSponsors from './AppSponsors.vue'
+
+export default {
+  components: {
+    AppSponsors,
+  },
+}
+</script>
+
 <template>
   <footer
     class="text-center text-gray-700 px-8 py-16"
   >
-    <div>
-      <span class="inline-block mr-4">
+    <AppSponsors />
+
+    <div class="space-x-4">
+      <span class="inline-block">
         <router-link
           :to="{ name: 'about-privacy' }"
           class="underline"
         >Privacy &amp; Cookies</router-link>
       </span>
 
-      <span class="inline-block mr-4">
+      <span class="inline-block">
         <router-link
           :to="{ name: 'about-contributing' }"
           class="underline"
         >Contributing</router-link>
       </span>
 
-      <span class="inline-block mr-4">
+      <span class="inline-block">
         Follow us on
         <a
           href="https://twitter.com/awesomejsapp"
@@ -26,7 +38,7 @@
         >Twitter</a>
       </span>
 
-      <span class="inline-block mr-4">
+      <span class="inline-block">
         Fork on
         <a
           href="https://github.com/Akryum/awesomejs.dev"
@@ -43,19 +55,6 @@
           class="underline"
         >icons8</a>
       </span>
-    </div>
-
-    <div class="flex justify-center mt-4">
-      <a
-        href="https://algolia.com"
-        target="_blank"
-      >
-        <img
-          src="~@/assets/search-by-algolia-dark-background.svg"
-          alt="Search by Algolia"
-          class="opacity-25"
-        >
-      </a>
     </div>
   </footer>
 </template>
