@@ -1,12 +1,18 @@
 <script>
 import ProjectTypesItem from './ProjectTypesItem.vue'
+import ProjectProposalItem from './ProjectProposalItem.vue'
 
 export default {
   components: {
     ProjectTypesItem,
+    ProjectProposalItem,
   },
 
   props: {
+    projectComponentItem: {
+      type: String,
+      default: 'ProjectTypesItem',
+    },
     projectTypes: {
       type: Array,
       required: true,
@@ -29,7 +35,8 @@ export default {
         }
       }"
     >
-      <ProjectTypesItem
+      <component
+        :is="projectComponentItem"
         :project-type="projectType"
       />
     </router-link>

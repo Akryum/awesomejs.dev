@@ -78,10 +78,12 @@ export const resolvers: Resolvers = {
     },
 
     projectTypeBySlug: async (root, { slug }, ctx) => {
-      const doc = await ctx.db.query<values.Document<any>>(
-        q.Get(q.Match(q.Index('projecttypes_by_slug'), slug)),
-      )
-      return mapDocument(doc)
+      try {
+        const doc = await ctx.db.query<values.Document<any>>(
+          q.Get(q.Match(q.Index('projecttypes_by_slug'), slug)),
+        )
+        return mapDocument(doc)
+    } catch { /* Nothing */ }
     },
   },
 }

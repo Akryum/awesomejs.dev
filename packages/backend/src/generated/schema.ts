@@ -24,6 +24,10 @@ export type ApprovePackageProposalInput = {
   proposalId: Scalars['ID'],
 };
 
+export type ApproveProjectProposalInput = {
+  projectId: Scalars['ID'],
+};
+
 export type CreateTeamInput = {
   name: Scalars['String'],
   projectTypeIds: Array<Scalars['ID']>,
@@ -88,6 +92,9 @@ export type Mutation = {
   togglePackageProposalUpvote?: Maybe<PackageProposal>,
   editPackageProjectTypes?: Maybe<Package>,
   editPackageInfo?: Maybe<Package>,
+  approveProjectProposal?: Maybe<ProjectType>,
+  proposeProject?: Maybe<ProjectType>,
+  removeProjectProposal: Scalars['Boolean'],
   toggleProjectTypeBookmark?: Maybe<ProjectType>,
   createTeam?: Maybe<Team>,
   editTeam?: Maybe<Team>,
@@ -141,6 +148,21 @@ export type MutationEditPackageProjectTypesArgs = {
 
 export type MutationEditPackageInfoArgs = {
   input: EditPackageInfoInput
+};
+
+
+export type MutationApproveProjectProposalArgs = {
+  input: ApproveProjectProposalInput
+};
+
+
+export type MutationProposeProjectArgs = {
+  input: ProposeProjectInput
+};
+
+
+export type MutationRemoveProjectProposalArgs = {
+  input: RemoveProjectProposalInput
 };
 
 
@@ -328,6 +350,10 @@ export type ProposePackageInput = {
   tags: Array<Scalars['String']>,
 };
 
+export type ProposeProjectInput = {
+  name: Scalars['String'],
+};
+
 export type Query = {
    __typename?: 'Query',
   currentUser?: Maybe<User>,
@@ -336,6 +362,8 @@ export type Query = {
   packageProposalByName?: Maybe<PackageProposal>,
   package?: Maybe<Package>,
   packageByName?: Maybe<Package>,
+  projectProposals: Array<ProjectType>,
+  projectProposalBySlug?: Maybe<ProjectType>,
   projectTypes: Array<ProjectType>,
   projectType?: Maybe<ProjectType>,
   projectTypeBySlug?: Maybe<ProjectType>,
@@ -364,6 +392,11 @@ export type QueryPackageByNameArgs = {
 };
 
 
+export type QueryProjectProposalBySlugArgs = {
+  slug: Scalars['String']
+};
+
+
 export type QueryProjectTypeArgs = {
   id: Scalars['ID']
 };
@@ -379,6 +412,10 @@ export type QueryTeamArgs = {
 };
 
 export type RemovePackageProposalInput = {
+  id: Scalars['ID'],
+};
+
+export type RemoveProjectProposalInput = {
   id: Scalars['ID'],
 };
 
@@ -539,6 +576,9 @@ export type ResolversTypes = {
   RemovePackageProposalInput: RemovePackageProposalInput,
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
+  ApproveProjectProposalInput: ApproveProjectProposalInput,
+  ProposeProjectInput: ProposeProjectInput,
+  RemoveProjectProposalInput: RemoveProjectProposalInput,
   ToggleProjectTypeBookmarkInput: ToggleProjectTypeBookmarkInput,
   CreateTeamInput: CreateTeamInput,
   EditTeamInput: EditTeamInput,
@@ -585,6 +625,9 @@ export type ResolversParentTypes = {
   RemovePackageProposalInput: RemovePackageProposalInput,
   TogglePackageProposalUpvoteInput: TogglePackageProposalUpvoteInput,
   EditPackageInfoInput: EditPackageInfoInput,
+  ApproveProjectProposalInput: ApproveProjectProposalInput,
+  ProposeProjectInput: ProposeProjectInput,
+  RemoveProjectProposalInput: RemoveProjectProposalInput,
   ToggleProjectTypeBookmarkInput: ToggleProjectTypeBookmarkInput,
   CreateTeamInput: CreateTeamInput,
   EditTeamInput: EditTeamInput,
@@ -620,6 +663,9 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   togglePackageProposalUpvote?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<MutationTogglePackageProposalUpvoteArgs, 'input'>>,
   editPackageProjectTypes?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationEditPackageProjectTypesArgs, 'input'>>,
   editPackageInfo?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<MutationEditPackageInfoArgs, 'input'>>,
+  approveProjectProposal?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<MutationApproveProjectProposalArgs, 'input'>>,
+  proposeProject?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<MutationProposeProjectArgs, 'input'>>,
+  removeProjectProposal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveProjectProposalArgs, 'input'>>,
   toggleProjectTypeBookmark?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<MutationToggleProjectTypeBookmarkArgs, 'input'>>,
   createTeam?: Resolver<Maybe<ResolversTypes['Team']>, ParentType, ContextType, RequireFields<MutationCreateTeamArgs, 'input'>>,
   editTeam?: Resolver<Maybe<ResolversTypes['Team']>, ParentType, ContextType, RequireFields<MutationEditTeamArgs, 'input'>>,
@@ -756,6 +802,8 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   packageProposalByName?: Resolver<Maybe<ResolversTypes['PackageProposal']>, ParentType, ContextType, RequireFields<QueryPackageProposalByNameArgs, 'name'>>,
   package?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<QueryPackageArgs, 'id'>>,
   packageByName?: Resolver<Maybe<ResolversTypes['Package']>, ParentType, ContextType, RequireFields<QueryPackageByNameArgs, 'name'>>,
+  projectProposals?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
+  projectProposalBySlug?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<QueryProjectProposalBySlugArgs, 'slug'>>,
   projectTypes?: Resolver<Array<ResolversTypes['ProjectType']>, ParentType, ContextType>,
   projectType?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<QueryProjectTypeArgs, 'id'>>,
   projectTypeBySlug?: Resolver<Maybe<ResolversTypes['ProjectType']>, ParentType, ContextType, RequireFields<QueryProjectTypeBySlugArgs, 'slug'>>,
