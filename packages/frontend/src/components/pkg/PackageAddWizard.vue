@@ -80,6 +80,13 @@ export default {
     const added = ref(false)
     const addedProposal = ref(null)
 
+    // Read contributing
+    const readContributing = ref(root.$localStorage.get('readContributing'))
+
+    watch(() => readContributing.value, value => {
+      root.$localStorage.set('readContributing', value)
+    })
+
     // Submit
 
     const { mutate, error, loading: submitting, onDone } = useMutation(gql`
@@ -156,6 +163,8 @@ export default {
       added,
       addedProposal,
       addAnother,
+
+      readContributing,
 
       npmSearchResult,
       selectNpmSuggestion,
@@ -254,8 +263,25 @@ export default {
         @tag="tag => formData.tags.push(tag)"
       />
 
-      <div class="mt-8 flex items-center justify-end">
+      <div class="mt-8 flex items-center justify-between">
+        <label class="custom-label flex">
+          <div class="bg-purple-800 rounded shadow w-6 h-6 p-1 flex justify-center items-center mr-2">
+            <input
+              v-model="readContributing"
+              type="checkbox"
+              class="hidden"
+            >
+            <i
+              :hidden="!readContributing"
+              class="text-base material-icons w-4 h-4 text-white pointer-events-none"
+            >
+              done
+            </i>
+          </div>
+          <span class="select-none"> I read the <span class="text-yellow-500">contribution guide</span></span>
+        </label>
         <BaseButton
+          :disabled="!readContributing"
           :loading="submitting"
           icon-left="add"
           class="bg-purple-800 hover:bg-purple-700 px-8 py-4"
